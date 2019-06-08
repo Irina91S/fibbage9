@@ -10,8 +10,8 @@ class AnswerResultsPage extends Component {
   }
 
   componentDidMount() {
-    const { id, questionId } = this.props.match.params;
-    this.fakeAnswersRef = fakeAnswers(id, questionId);
+    const { gameId, questionId } = this.props.match.params;
+    this.fakeAnswersRef = fakeAnswers(gameId, questionId);
 
     this.fakeAnswersRef.on('value', snapshot => {
       this.setState({
@@ -42,9 +42,10 @@ class AnswerResultsPage extends Component {
             <div>
               vote count: {answer[1].voteCount}
             </div>
-            <div>
+            {answer[1].votedBy && <div>
               voted by: {this.getVotes(answer[1].votedBy)}
-            </div>
+            </div>}
+            <hr />
           </div>
         ))}
       </div>
