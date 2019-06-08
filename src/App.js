@@ -6,7 +6,8 @@ import GameDetails from './pages/GameDetailsPage/GameDetails'
 import Start from './pages/StartPage/Start';
 import AnswerResultsPage from './pages/GameLobbyPage/AnswerResultsPage/AnswerResultsPage';
 import AddAnswerPage from './pages/GameLobbyPage/AddAnswerPage/AddAnswersPage';
-import AddNickname from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePage';
+import AddNicknamePage from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePage';
+import WaitPlayersPage from './pages/GameLobbyPage/WaitPlayersPage/WaitPlayersPage';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Route exact path="/games/:id" component={GameDetails} />
           <Route exact path="/games/:id/questions/:questionId/addAnswer" component={AddAnswerPage} />
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
-          <Route exact path="/lobby/:gameId/nickname" component={AddNickname} />
+          <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
+          <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
         </main>
       </div>
     </Router>
