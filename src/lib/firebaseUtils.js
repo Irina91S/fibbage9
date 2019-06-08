@@ -1,0 +1,1 @@
+export const getToupleFromSnapshot = (snapshot) => Object.entries(snapshot);
