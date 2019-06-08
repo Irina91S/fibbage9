@@ -16,8 +16,8 @@ function App() {
           <h3>This is the header</h3>
         </header>
         <main>
-          <Route path="/" exact component={Start} />
-          <Route path="/games" exact component={AdminDashboard} />
+          <Route exact path="/" component={Start} />
+          <Route exact path="/games" component={AdminDashboard} />
           <Route exact path="/games/:id" component={GameDetails} />
           <Route exact path="/games/:id/questions/:questionId/addAnswer" component={AddAnswerPage} />
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
