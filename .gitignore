@@ -1,0 +1,12 @@
+.dist/
+.next/
+node_modules/
+.env
+.DS_Store
+/out
+.idea/
+coverage/
+lib/iconstats.json
+
+.yalc/
+yalc.lock
