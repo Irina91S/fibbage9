@@ -11,13 +11,17 @@ class AddNickname extends Component {
     limit: 0,
     players: []
   }
+
+  gameRef;
+  playersRef;
+
   componentDidMount() {
     const { match: { params: { gameId } } } = this.props;
-    const gameRef = databaseRefs.game(gameId);
-    gameRef.on('value', (snapshot) => {
+    this.gameRef = databaseRefs.game(gameId);
+    this.gameRef.on('value', (snapshot) => {
       const { players, limit } = snapshot.val();
       this.setState({ 
-        players: getToupleFromSnapshot(players),
+        players: players ? getToupleFromSnapshot(players) : [],
         playersLength: players ? Object.values(players).length : 0,
         limit
       });
@@ -25,16 +29,15 @@ class AddNickname extends Component {
   }
 
   componentWillUnmount() {
-    const { match: { params: { gameId } } } = this.props;
-    const gameRef = databaseRefs.game(gameId);
-    gameRef.off();
+    this.gameRef.off();
+    this.playersRef.off();
   }
 
   setNickname = (newValues, actions) => {
     this.setState({ nickname: newValues.nickname });
     const { match: { params: { gameId } }, history } = this.props;
     const { playersLength, limit } = this.state;
-    const playersRef = databaseRefs.players(gameId);
+    this.playersRef = databaseRefs.players(gameId);
 
     if (!newValues.nickname || newValues.nickname.trim().length === 0) {
       actions.setFieldError('nickname', 'Lol, we actually thought of this, add a legit name');
@@ -48,7 +51,7 @@ class AddNickname extends Component {
         return;
       }
 
-      playersRef.push(newValues).then(snap => {
+      this.playersRef.push(newValues).then(snap => {
         const playerId = snap.key;
         localStorage.setItem('playerInfo', JSON.stringify({
           playerId,
