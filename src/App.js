@@ -5,6 +5,8 @@ import AdminDashboard from './pages/AdminDashboardPage/AdminDashboard';
 import GameDetails from './pages/GameDetailsPage/GameDetails'
 import Start from './pages/StartPage/Start';
 
+import PickAnswerPage from './pages/GameLobbyPage/PickAnswerPage/PickAnswerPage'
+
 function App() {
   return (
     <Router>
@@ -16,6 +18,7 @@ function App() {
           <Route path="/" exact component={Start} />
           <Route path="/games" exact component={AdminDashboard} />
           <Route path="/games/:id" component={GameDetails} />
+          <Route path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
         </main>
       </div>
     </Router>
