@@ -15,12 +15,12 @@ class AddAnswerPage extends Component {
   };
 
   componentDidMount() {
-    const { id, questionId } = this.props.match.params;
+    const { gameId, questionId } = this.props.match.params;
     this.setState({
-      id,
+      gameId,
       questionId
     });
-    this.questionRef = question(id, questionId);
+    this.questionRef = question(gameId, questionId);
 
     this.questionRef.on('value', snapshot => {
       const { question, fakeAnswers } = snapshot.val();
