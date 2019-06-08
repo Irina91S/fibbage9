@@ -21,7 +21,7 @@ function App() {
           <Route exact path="/games/:id" component={GameDetails} />
           <Route exact path="/games/:id/questions/:questionId/addAnswer" component={AddAnswerPage} />
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
-          <Route exact path="/lobby/:gameId/nickname" exact component={AddNickname} />
+          <Route exact path="/lobby/:gameId/nickname" component={AddNickname} />
         </main>
       </div>
     </Router>
