@@ -51,13 +51,18 @@ class PickAnswerPage extends Component {
     const { playerId, playerName } = playerInfo;
 
     const {
+      history,
       match: {
-        params: { gameId, questionId }
+        params: { gameId, questionId },
       }
     } = this.props;
-
+    
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
+
+    setTimeout(()=>{
+      history.push(`/lobby/${gameId}/questions/${questionId}/results`)
+    }, 10000)
   };
 
   componentDidMount() {
