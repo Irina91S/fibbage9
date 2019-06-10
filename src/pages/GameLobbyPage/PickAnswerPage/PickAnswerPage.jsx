@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
@@ -13,24 +13,51 @@ class PickAnswerPage extends Component {
     this.setState({ fakeAnswers });
   };
 
-  selectAnswer = fakeAnswerId => {
-    const playerId = "player1";
-    const playerName = "Nick Furry";
-    // const playerId = localStorage.getItem('playerId')
-    const {
-      match: {
-        params: { gameId, questionId }
-      }
-    } = this.props;
-
+  setAnswer = (gameId, questionId, fakeAnswerId, playerId, playerName) => {
     const lobbyRef = lobby(gameId, questionId);
-
     lobbyRef
       .child("/fakeAnswers")
       .child(fakeAnswerId)
       .child("/votedBy")
       .child(playerId)
       .set(playerName);
+  };
+
+  removeAnswer = (gameId, questionId, fakeAnswerId, playerId) => {
+    const { fakeAnswers } = this.state;
+    const lobbyRef = lobby(gameId, questionId);
+
+    fakeAnswers.forEach(item => {
+      const [key, data] = item;
+
+      if (fakeAnswerId === key) {
+        return;
+      }
+
+      if (Object.keys(data.votedBy).includes(playerId)) {
+        lobbyRef
+          .child("/fakeAnswers")
+          .child(key)
+          .child("/votedBy")
+          .child(playerId)
+          .remove()
+          .then(() => {});
+      }
+    });
+  };
+
+  selectAnswer = fakeAnswerId => {
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId, playerName } = playerInfo;
+
+    const {
+      match: {
+        params: { gameId, questionId }
+      }
+    } = this.props;
+
+    this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
+    this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
   };
 
   componentDidMount() {
@@ -54,12 +81,9 @@ class PickAnswerPage extends Component {
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
           return (
-            <Fragment>
-              <div key={key}>{data.value}</div>
-              <button onClick={() => this.selectAnswer(key)} key={key}>
-                select answer
-              </button>
-            </Fragment>
+            <div key={key}>
+              <div onClick={() => this.selectAnswer(key)}>{data.value}</div>
+            </div>
           );
         })}
       </div>

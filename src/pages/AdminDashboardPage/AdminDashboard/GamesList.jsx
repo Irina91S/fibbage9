@@ -38,6 +38,7 @@ class GamesList extends React.Component {
 
   componentDidMount() {
     games.on('value', (snapshot) => {
+
       console.log(getToupleFromSnapshot(snapshot.val()));
       this.setGamesList(getToupleFromSnapshot(snapshot.val()));
     });

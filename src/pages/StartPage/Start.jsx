@@ -28,12 +28,14 @@ class Start extends React.Component {
   };
 
   handleInsertPincode = ({ pincode }, actions) => {
+    let gameToJoin;
     const { activeGames } = this.state;
     const pincodeMatchGame = activeGames
       .filter(game => {
         const [key, data] = game;
 
         if (data.pincode === pincode) {
+          gameToJoin = key;
           return key
         }
 
@@ -42,10 +44,16 @@ class Start extends React.Component {
       .filter(Boolean);
 
     if (pincodeMatchGame.length === 1) {
-      console.log('redirect to game lobby');
+      console.log(gameToJoin);
+      this.redirectToGameLobby(gameToJoin);
     } else {
       actions.setFieldError('pincode', 'another one')
     }
+  };
+
+  redirectToGameLobby = (gameId) => {
+    const { history } = this.props;
+    history.push(`/lobby/${gameId}/nickname`);
   };
 
   componentDidMount() {

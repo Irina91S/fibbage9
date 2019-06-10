@@ -10,3 +10,4 @@ lib/iconstats.json
 
 .yalc/
 yalc.lock
+.vscode
