@@ -9,6 +9,8 @@ import AddAnswerPage from './pages/GameLobbyPage/AddAnswerPage/AddAnswersPage';
 import AddNicknamePage from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePage';
 import WaitPlayersPage from './pages/GameLobbyPage/WaitPlayersPage/WaitPlayersPage';
 
+import PickAnswerPage from './pages/GameLobbyPage/PickAnswerPage/PickAnswerPage'
+
 function App() {
   return (
     <Router>
@@ -21,9 +23,11 @@ function App() {
           <Route exact path="/games" component={AdminDashboard} />
           <Route exact path="/games/:id" component={GameDetails} />
           <Route exact path="/games/:id/questions/:questionId/addAnswer" component={AddAnswerPage} />
+          <Route path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
           <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
           <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
+
         </main>
       </div>
     </Router>
