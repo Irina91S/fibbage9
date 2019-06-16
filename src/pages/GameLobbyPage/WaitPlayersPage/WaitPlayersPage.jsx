@@ -1,24 +1,36 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { databaseRefs } from '../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import React, { Component } from "react";
+import { withRouter } from "react-router";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { databaseRefs } from "../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
 class WaitPlayersPage extends Component {
   state = {
     limit: 0,
-    players: []
-  }
+    players: [],
+    currentScreen: ""
+  };
 
   gameRef;
 
   componentDidMount() {
-    const { match: { params: { gameId } } } = this.props;
+    const {
+      match: {
+        params: { gameId }
+      }
+    } = this.props;
     this.gameRef = databaseRefs.game(gameId);
-    this.gameRef.on('value', (snapshot) => {
+
+    this.gameRef.on("value", snapshot => {
       const { players } = snapshot.val();
       console.log(getToupleFromSnapshot(players));
-      this.setState({players: getToupleFromSnapshot(players)});
+      this.setState({ players: getToupleFromSnapshot(players) });
+    });
+
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
+      const { history } = this.props;
+      const { route } = snapshot.val();
+      history.push(route);
     });
   }
 
@@ -39,12 +51,8 @@ class WaitPlayersPage extends Component {
   };
 
   render() {
-    return (
-      <ul>
-        {this.renderListOfPlayersReady()}
-      </ul>
-    )
-  };
+    return <ul>{this.renderListOfPlayersReady()}</ul>;
+  }
 }
 
 export default WaitPlayersPage;

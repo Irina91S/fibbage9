@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { databaseRefs } from './../../../lib/refs';
-import { Formik, Form, Field } from 'formik';
+import React, { Component } from "react";
+import { databaseRefs } from "./../../../lib/refs";
+import { Formik, Form, Field } from "formik";
 
 const { question } = databaseRefs;
 
 class AddAnswerPage extends Component {
-  questionRef = '';
+  questionRef = "";
   state = {
-    id: '',
-    questionId: '',
+    id: "",
+    questionId: "",
     fakeAnswers: {},
-    answer: '',
-    question: ''
+    answer: "",
+    question: ""
   };
 
   componentDidMount() {
@@ -20,25 +20,33 @@ class AddAnswerPage extends Component {
       gameId,
       questionId
     });
+
     this.questionRef = question(gameId, questionId);
 
-    this.questionRef.on('value', snapshot => {
-      const { question, fakeAnswers } = snapshot.val();
-      this.setState({
-        question,
-        fakeAnswers
-      })
-    })
-  };
-
-  componentWillUnmount() {
-    this.questionRef.off('value');
+    this.questionRef.on("value", snapshot => {
+      if (!snapshot.val().fakeAnswers) {
+        const { question } = snapshot.val();
+        this.setState({
+          question
+        });
+      } else {
+        const { fakeAnswers } = snapshot.val();
+        this.setState({
+          question,
+          fakeAnswers
+        });
+      }
+    });
   }
 
-  handleAnswerSubmit = async ({answer}, actions) => {
-    await this.questionRef.child('/fakeAnswers').push({
+  componentWillUnmount() {
+    this.questionRef.off("value");
+  }
+
+  handleAnswerSubmit = async ({ answer }, actions) => {
+    await this.questionRef.child("/fakeAnswers").push({
       value: answer,
-      authorTeam: localStorage.getItem('playerId'),
+      authorTeam: localStorage.getItem("playerId"),
       voteCount: 0,
       votedBy: {}
     });
@@ -46,7 +54,7 @@ class AddAnswerPage extends Component {
       submittedAnswer: answer
     });
     actions.resetForm();
-  }
+  };
 
   render() {
     const { question, submittedAnswer } = this.state;
@@ -54,33 +62,35 @@ class AddAnswerPage extends Component {
       <div>
         <div>
           Question:
-          {question}
+          {JSON.stringify(question)}
         </div>
-        Please add your answer: 
+        Please add your answer:
         <Formik
           initialValues={{
-            answer: ''
+            answer: ""
           }}
           onSubmit={this.handleAnswerSubmit}
-          render={() => ( 
+          render={() => (
             <Form>
-              <Field 
+              <Field
                 id="answer"
                 name="answer"
                 type="text"
                 placeholder="question answer"
               />
-              <br/>
+              <br />
               <button type="submit">add answer</button>
             </Form>
           )}
         />
-        {submittedAnswer && <div>
-          Your submitted answer:
-          {submittedAnswer}
-        </div>}
+        {submittedAnswer && (
+          <div>
+            Your submitted answer:
+            {submittedAnswer}
+          </div>
+        )}
       </div>
-    )
+    );
   }
 }
 

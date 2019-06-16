@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-const { lobby } = databaseRefs;
+const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
   state = {
@@ -53,16 +53,16 @@ class PickAnswerPage extends Component {
     const {
       history,
       match: {
-        params: { gameId, questionId },
+        params: { gameId, questionId }
       }
     } = this.props;
-    
+
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
 
-    setTimeout(()=>{
-      history.push(`/lobby/${gameId}/questions/${questionId}/results`)
-    }, 10000)
+    setTimeout(() => {
+      history.push(`/lobby/${gameId}/questions/${questionId}/results`);
+    }, 10000);
   };
 
   componentDidMount() {
@@ -71,7 +71,15 @@ class PickAnswerPage extends Component {
         params: { gameId, questionId }
       }
     } = this.props;
+    debugger;
     const lobbyRef = lobby(gameId, questionId);
+    const currentGameRef = game(gameId);
+
+    currentGameRef.on("value", snapshot => {
+      const currentGame = snapshot.val();
+      console.log(currentGame);
+      getToupleFromSnapshot(currentGame);
+    });
 
     lobbyRef.on("value", snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
