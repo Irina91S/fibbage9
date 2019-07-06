@@ -7,7 +7,7 @@ const { game } = databaseRefs;
 const { players } = databaseRefs;
 class gameControls extends Component {
   state = {
-    playes: [],
+    playersActive: [],
     ready: false
   };
 
@@ -22,8 +22,8 @@ class gameControls extends Component {
     this.setState({ playerId });
 
     activePlayer.on("value", snapshot => {
-      const players = snapshot.val();
-      this.setState({ players: getToupleFromSnapshot(players) });
+      const players = getToupleFromSnapshot(snapshot.val());
+      this.setState({ playersActive: players }, ()=>{console.log(players)});
     });
 
     activeGameRef.on("value", snapshot => {
@@ -32,41 +32,45 @@ class gameControls extends Component {
     });
   }
 
-  checkIfPlayersAreReady = players => {
-    players.forEach(player => {
+  checkIfPlayersAreReady = playersActive => {
+    const readyPlayers = [];
+    playersActive.forEach(player => {
       const [key, data] = player;
-      const readyPlayers = []
-
-      debugger;
       if (data.isReady) {
-        readyPlayers.push(key)
-        this.setState({ isReady: true });
+        readyPlayers.push(key);
       }
     });
+    if (readyPlayers.length === playersActive.length) {
+
+      this.setState({ ready: true });
+    }
   };
 
   constructAvailableAnswerRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready, players } = this.state;
+    const { ready,playersActive } = this.state;
 
     const activeGameRef = game(gameId);
     const currentScreen = {
       route: `/lobby/${gameId}/${questionId}/pick-answer`
     };
-    this.checkIfPlayersAreReady(players);
+
+    this.checkIfPlayersAreReady(playersActive);
     if (ready) {
+
       activeGameRef.child("/currentScreen").set(currentScreen);
     }
   };
 
   constructAvailableResultsRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready } = this.state;
+    const { ready,playersActive } = this.state;
 
     const activeGameRef = game(gameId);
     const currentScreen = {
       route: `/lobby/${gameId}/questions/${questionId}/results`
     };
+    this.checkIfPlayersAreReady(playersActive);
     if (ready) {
       activeGameRef.child("/currentScreen").set(currentScreen);
     }
@@ -74,12 +78,13 @@ class gameControls extends Component {
 
   constructNextStepRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready } = this.state;
+    const { ready,playersActive } = this.state;
 
     const activeGameRef = game(gameId);
     const currentScreen = {
       route: `/games/${gameId}/questions/${questionId}/addAnswer`
     };
+    this.checkIfPlayersAreReady(playersActive);
     if (ready) {
       activeGameRef.child("/currentScreen").set(currentScreen);
     }
