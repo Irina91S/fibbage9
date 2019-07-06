@@ -3,11 +3,9 @@ import React, { Fragment, Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-
 const { game } = databaseRefs;
 
 class gameControls extends Component {
-
   componentDidMount() {
     const { gameId } = this.props;
     const activeGameRef = game(gameId);
@@ -23,9 +21,7 @@ class gameControls extends Component {
     const currentScreen = {
       route: `/lobby/${gameId}/${questionId}/pick-answer`
     };
-    activeGameRef
-      .child("/currentScreen")
-      .set(currentScreen);
+    activeGameRef.child("/currentScreen").set(currentScreen);
   };
 
   constructAvailableResultsRoute = () => {
@@ -34,9 +30,7 @@ class gameControls extends Component {
     const currentScreen = {
       route: `/lobby/${gameId}/questions/${questionId}/results`
     };
-    activeGameRef
-      .child("/currentScreen")
-      .set(currentScreen);
+    activeGameRef.child("/currentScreen").set(currentScreen);
   };
 
   constructNextStepRoute = () => {
@@ -45,9 +39,7 @@ class gameControls extends Component {
     const currentScreen = {
       route: `/games/${gameId}/questions/${questionId}/addAnswer`
     };
-    activeGameRef
-      .child("/currentScreen")
-      .set(currentScreen);
+    activeGameRef.child("/currentScreen").set(currentScreen);
   };
 
   render() {
@@ -59,7 +51,7 @@ class gameControls extends Component {
         <button onClick={this.constructAvailableResultsRoute}>
           Answer Results
         </button>
-        <button onClick={this.constructNextStepRoute}>Next</button>
+        <button onClick={this.constructNextStepRoute}>Next Question</button>
       </Fragment>
     );
   }

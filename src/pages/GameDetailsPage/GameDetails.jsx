@@ -80,7 +80,7 @@ class GameDetails extends React.Component {
         <h4>
           {isActive ? "Game is active" : "Game not active"}
           <button onClick={() => this.handleGameActiveToggle()}>
-            {isActive ? "Activate Game" : "Kill Game"}
+            {isActive ? "Kill game" : "Activate Game"}
           </button>
           <button onClick={() => this.handleStartGame()}>Start</button>
         </h4>
