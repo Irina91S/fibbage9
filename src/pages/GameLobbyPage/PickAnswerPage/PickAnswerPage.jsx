@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-const { lobby } = databaseRefs;
+const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
   state = {
@@ -26,7 +26,6 @@ class PickAnswerPage extends Component {
   removeAnswer = (gameId, questionId, fakeAnswerId, playerId) => {
     const { fakeAnswers } = this.state;
     const lobbyRef = lobby(gameId, questionId);
-
     fakeAnswers.forEach(item => {
       const [key, data] = item;
 
@@ -34,7 +33,7 @@ class PickAnswerPage extends Component {
         return;
       }
 
-      if (Object.keys(data.votedBy).includes(playerId)) {
+      if (data.votedBy && Object.keys(data.votedBy).includes(playerId)) {
         lobbyRef
           .child("/fakeAnswers")
           .child(key)
@@ -49,20 +48,17 @@ class PickAnswerPage extends Component {
   selectAnswer = fakeAnswerId => {
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
-
+    debugger;
     const {
       history,
       match: {
-        params: { gameId, questionId },
+        params: { gameId, questionId }
       }
     } = this.props;
-    
+
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
-
-    setTimeout(()=>{
-      history.push(`/lobby/${gameId}/questions/${questionId}/results`)
-    }, 10000)
+    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   componentDidMount() {
@@ -72,6 +68,12 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
     const lobbyRef = lobby(gameId, questionId);
+    const currentGameRef = game(gameId);
+
+    currentGameRef.on("value", snapshot => {
+      const currentGame = snapshot.val();
+      getToupleFromSnapshot(currentGame);
+    });
 
     lobbyRef.on("value", snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
