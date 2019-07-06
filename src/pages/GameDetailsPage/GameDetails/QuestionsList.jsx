@@ -14,7 +14,7 @@ const QuestionsList = ({ questions, gameId }) => {
             </span>
           </h3>
           <h4>
-            The truth: {answer}
+            The truth: {answer.value}
           </h4>
           <h4>
             Score: {score} 

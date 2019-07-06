@@ -26,7 +26,9 @@ class GameDetails extends React.Component {
     
     await this.gameRef.child("/questions").push({
       question,
-      answer,
+      answer: {
+        value: answer
+      },
       score,
       index
     });
@@ -77,7 +79,6 @@ class GameDetails extends React.Component {
 
   render() {
     const { id, game } = this.state;
-
     const { pincode, name, limit, isActive, questions } = game;
     return (
       <div>

@@ -28,7 +28,6 @@ class AddAnswerPage extends Component {
     this.questionRef.on("value", snapshot => {
       if (!snapshot.val().fakeAnswers) {
         const { question } = snapshot.val();
-        console.log(JSON.stringify(question));
         this.setState({
           question
         });
@@ -39,13 +38,6 @@ class AddAnswerPage extends Component {
           fakeAnswers
         });
       }
-    });
-
-    const activeGameRef = game(gameId);
-    activeGameRef.on("value", snapshot => {
-      const currentGame = snapshot.val();
-      console.log();
-      getToupleFromSnapshot(currentGame);
     });
   }
 
