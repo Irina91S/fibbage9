@@ -1,8 +1,9 @@
 import React from "react";
 import { databaseRefs } from "./../../lib/refs";
-import { getToupleFromSnapshot } from "./../../lib/firebaseUtils";
+import { getToupleFromSnapshot, startTimerForGame } from "./../../lib/firebaseUtils";
 import AddQuestionsForm from "./GameDetails/AddQuestionForm";
 import QuestionsList from "./GameDetails/QuestionsList";
+import Timer from '../../shared/Timer';
 
 const { game } = databaseRefs;
 
@@ -12,6 +13,11 @@ class GameDetails extends React.Component {
   state = {
     id: "",
     game: {}
+  };
+
+  startTimer = async () => {
+    const { id } = this.state;
+    startTimerForGame(id);
   };
 
   handleQuestionSubmit = async ({ question, answer }, actions) => {
@@ -48,6 +54,7 @@ class GameDetails extends React.Component {
     this.gameRef = game(id);
 
     this.gameRef.on("value", snapshot => {
+      console.log(snapshot.val());
       this.setState({ game: snapshot.val() });
     });
   }
@@ -58,6 +65,8 @@ class GameDetails extends React.Component {
 
   render() {
     const { id } = this.state;
+    const { game } = this.state;
+    console.log(game);
 
     const { pincode, name, limit, isActive, questions } = this.state.game;
     return (
@@ -65,6 +74,8 @@ class GameDetails extends React.Component {
         <h3>
           {name} - {pincode}
         </h3>
+        {game.timer && <Timer endTime={game.timer.endTime} size="300px"/>}
+        <button onClick={this.startTimer}>start timer</button>
         <h4>players limit {limit}</h4>
         <h4>
           {isActive ? "Game is active" : "Game not active"}
