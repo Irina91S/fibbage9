@@ -34,7 +34,7 @@ class PickAnswerPage extends Component {
         return;
       }
 
-      if (Object.keys(data.votedBy).includes(playerId)) {
+      if (data.votedBy && Object.keys(data.votedBy).includes(playerId)) {
         lobbyRef
           .child("/fakeAnswers")
           .child(key)
@@ -77,6 +77,11 @@ class PickAnswerPage extends Component {
       const givenAnswers = snapshot.val().fakeAnswers;
       this.setFakeAnswers(getToupleFromSnapshot(givenAnswers));
     });
+  }
+
+  shuffleAnswers = (fakeAnswers, truth) => {
+    const allAnswers = [...fakeAnswers, truth];
+    
   }
 
   render() {

@@ -44,10 +44,8 @@ class GameDetails extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
-    const { id } = this.state;
-    console.log(id);
-    const { pincode, name, limit, isActive, questions } = this.state.game;
+    const { game } = this.state;
+    const { pincode, name, limit, isActive, questions } = game;
 
     return (
       <div>

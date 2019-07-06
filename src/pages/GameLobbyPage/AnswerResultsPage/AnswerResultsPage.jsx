@@ -2,22 +2,39 @@ import React, { Component } from 'react';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
-const { fakeAnswers } = databaseRefs;
+const { fakeAnswers, question } = databaseRefs;
 
 class AnswerResultsPage extends Component {
+  fakeAnswersRef = [];
+  questionRef = {};
+
   state = {
-    fakeAnswers: []
+    fakeAnswers: [],
+    questionScore: 0 
   }
 
   componentDidMount() {
-    const { gameId, questionId } = this.props.match.params;
-    this.fakeAnswersRef = fakeAnswers(gameId, questionId);
+    const { id, questionId } = this.props.match.params;
+    this.fakeAnswersRef = fakeAnswers(id, questionId);
+    this.questionRef = question(id, questionId);
 
     this.fakeAnswersRef.on('value', snapshot => {
-      this.setState({
-        fakeAnswers: getToupleFromSnapshot(snapshot.val())
-      });
+      console.log(snapshot.val())
+      // if(snapshot.val()) {
+        this.setState({
+          fakeAnswers: getToupleFromSnapshot(snapshot.val())
+        });
+      // }
     });
+    
+    this.questionRef.on('value', snapshot => {
+      this.setState({ questionScore: snapshot.val().score})
+    })
+  }
+
+  componentWillUnmount() {
+    this.fakeAnswersRef.off();
+    this.questionRef.off();
   }
 
   getVotes = (votedBy) => {
@@ -26,28 +43,40 @@ class AnswerResultsPage extends Component {
     ));
   }
 
+  getScoreForQuestion = (votesCount, correctAnswer = 0) => {
+    const { questionScore } = this.state;
+    return votesCount * (questionScore/2) + (correctAnswer * questionScore);
+  }
+
   render() {
     const { fakeAnswers } = this.state;
     return (
       <div>
         These are the answers:
-        {fakeAnswers.map((answer, key) => (
+        <hr/>
+        {fakeAnswers.map((answer) => {
+          const [key, data] = answer;
+          const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
+          return (
           <div key={key}>
             <div>
-              answer: {answer[1].value}
+              answer: {data.value}
             </div>
             <div>
-              autor team: {answer[1].authorTeam}
+              author team: {data.authorTeam}
             </div>
             <div>
-              vote count: {answer[1].voteCount}
+              vote count: {voteCount}
             </div>
-            {answer[1].votedBy && <div>
-              voted by: {this.getVotes(answer[1].votedBy)}
+            {data.votedBy && <div>
+              voted by: {this.getVotes(data.votedBy)}
             </div>}
+            <div>
+              Points for this question: {this.getScoreForQuestion(voteCount, data.correctAnswer)}
+            </div>
             <hr />
           </div>
-        ))}
+        )})}
       </div>
     )
   }

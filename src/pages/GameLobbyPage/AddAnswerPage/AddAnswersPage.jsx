@@ -36,9 +36,10 @@ class AddAnswerPage extends Component {
   }
 
   handleAnswerSubmit = async ({answer}, actions) => {
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     await this.questionRef.child('/fakeAnswers').push({
       value: answer,
-      authorTeam: localStorage.getItem('playerId'),
+      authorTeam: localStorage.getItem(playerInfo.playerId),
       voteCount: 0,
       votedBy: {}
     });
