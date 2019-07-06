@@ -35,7 +35,6 @@ class WaitPlayersPage extends Component {
       const { route } = snapshot.val();
       history.push(route);
     });
-
   }
 
   setPlayerNotReady = () => {
@@ -53,7 +52,7 @@ class WaitPlayersPage extends Component {
 
   componentWillUnmount() {
     this.gameRef.off();
-    // this.setPlayerNotReady();
+    this.setPlayerNotReady();
   }
 
   renderListOfPlayersReady = () => {
