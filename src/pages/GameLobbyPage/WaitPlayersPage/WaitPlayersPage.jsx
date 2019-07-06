@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
@@ -23,7 +21,6 @@ class WaitPlayersPage extends Component {
 
     this.gameRef.on("value", snapshot => {
       const { players } = snapshot.val();
-      console.log(getToupleFromSnapshot(players));
       this.setState({ players: getToupleFromSnapshot(players) });
     });
 

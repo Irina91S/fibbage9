@@ -33,7 +33,7 @@ class PickAnswerPage extends Component {
       if (fakeAnswerId === key) {
         return;
       }
-
+debugger
       if (Object.keys(data.votedBy).includes(playerId)) {
         lobbyRef
           .child("/fakeAnswers")
@@ -61,7 +61,7 @@ class PickAnswerPage extends Component {
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
 
     setTimeout(() => {
-      history.push(`/lobby/${gameId}/questions/${questionId}/results`);
+      history.push(`/lobby/${gameId}/wait-players`);
     }, 10000);
   };
 
@@ -71,13 +71,11 @@ class PickAnswerPage extends Component {
         params: { gameId, questionId }
       }
     } = this.props;
-    debugger;
     const lobbyRef = lobby(gameId, questionId);
     const currentGameRef = game(gameId);
 
     currentGameRef.on("value", snapshot => {
       const currentGame = snapshot.val();
-      console.log(currentGame);
       getToupleFromSnapshot(currentGame);
     });
 
