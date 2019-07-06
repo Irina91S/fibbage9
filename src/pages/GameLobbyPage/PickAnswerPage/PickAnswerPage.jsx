@@ -26,15 +26,14 @@ class PickAnswerPage extends Component {
   removeAnswer = (gameId, questionId, fakeAnswerId, playerId) => {
     const { fakeAnswers } = this.state;
     const lobbyRef = lobby(gameId, questionId);
-
     fakeAnswers.forEach(item => {
       const [key, data] = item;
 
       if (fakeAnswerId === key) {
         return;
       }
-debugger
-      if (Object.keys(data.votedBy).includes(playerId)) {
+
+      if (data.votedBy && Object.keys(data.votedBy).includes(playerId)) {
         lobbyRef
           .child("/fakeAnswers")
           .child(key)
@@ -49,7 +48,7 @@ debugger
   selectAnswer = fakeAnswerId => {
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
-
+    debugger;
     const {
       history,
       match: {
@@ -59,10 +58,7 @@ debugger
 
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
-
-    setTimeout(() => {
-      history.push(`/lobby/${gameId}/wait-players`);
-    }, 10000);
+    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   componentDidMount() {

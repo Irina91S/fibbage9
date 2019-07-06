@@ -10,6 +10,7 @@ class WaitPlayersPage extends Component {
   };
 
   gameRef;
+  playerRef;
 
   componentDidMount() {
     const {
@@ -17,7 +18,12 @@ class WaitPlayersPage extends Component {
         params: { gameId }
       }
     } = this.props;
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId } = playerInfo;
     this.gameRef = databaseRefs.game(gameId);
+    this.playerRef = databaseRefs.player(gameId, playerId);
+
+    this.playerRef.child("/isReady").set(true);
 
     this.gameRef.on("value", snapshot => {
       const { players } = snapshot.val();
@@ -29,10 +35,25 @@ class WaitPlayersPage extends Component {
       const { route } = snapshot.val();
       history.push(route);
     });
+
   }
+
+  setPlayerNotReady = () => {
+    const {
+      match: {
+        params: { gameId }
+      }
+    } = this.props;
+
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId } = playerInfo;
+    this.playerRef = databaseRefs.player(gameId, playerId);
+    this.playerRef.child("/isReady").set(false);
+  };
 
   componentWillUnmount() {
     this.gameRef.off();
+    // this.setPlayerNotReady();
   }
 
   renderListOfPlayersReady = () => {

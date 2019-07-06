@@ -44,7 +44,7 @@ class AddAnswerPage extends Component {
     const activeGameRef = game(gameId);
     activeGameRef.on("value", snapshot => {
       const currentGame = snapshot.val();
-      console.log()
+      console.log();
       getToupleFromSnapshot(currentGame);
     });
   }
@@ -60,10 +60,10 @@ class AddAnswerPage extends Component {
       },
       history
     } = this.props;
-
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     await this.questionRef.child("/fakeAnswers").push({
       value: answer,
-      authorTeam: localStorage.getItem("playerId"),
+      authorTeam: playerInfo.playerId,
       voteCount: 0,
       votedBy: {}
     });
@@ -71,7 +71,7 @@ class AddAnswerPage extends Component {
     this.setState({
       submittedAnswer: answer
     });
-console.log(gameId)
+
     // actions.resetForm();
     history.push(`/lobby/${gameId}/wait-players`);
   };
