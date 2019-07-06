@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
@@ -12,6 +10,7 @@ class WaitPlayersPage extends Component {
   };
 
   gameRef;
+  playerRef;
 
   componentDidMount() {
     const {
@@ -19,11 +18,15 @@ class WaitPlayersPage extends Component {
         params: { gameId }
       }
     } = this.props;
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId } = playerInfo;
     this.gameRef = databaseRefs.game(gameId);
+    this.playerRef = databaseRefs.player(gameId, playerId);
+
+    this.playerRef.child("/isReady").set(true);
 
     this.gameRef.on("value", snapshot => {
       const { players } = snapshot.val();
-      console.log(getToupleFromSnapshot(players));
       this.setState({ players: getToupleFromSnapshot(players) });
     });
 
@@ -34,8 +37,22 @@ class WaitPlayersPage extends Component {
     });
   }
 
+  setPlayerNotReady = () => {
+    const {
+      match: {
+        params: { gameId }
+      }
+    } = this.props;
+
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId } = playerInfo;
+    this.playerRef = databaseRefs.player(gameId, playerId);
+    this.playerRef.child("/isReady").set(false);
+  };
+
   componentWillUnmount() {
     this.gameRef.off();
+    this.setPlayerNotReady();
   }
 
   renderListOfPlayersReady = () => {

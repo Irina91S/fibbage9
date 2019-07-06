@@ -26,7 +26,6 @@ class PickAnswerPage extends Component {
   removeAnswer = (gameId, questionId, fakeAnswerId, playerId) => {
     const { fakeAnswers } = this.state;
     const lobbyRef = lobby(gameId, questionId);
-
     fakeAnswers.forEach(item => {
       const [key, data] = item;
 
@@ -34,7 +33,7 @@ class PickAnswerPage extends Component {
         return;
       }
 
-      if (Object.keys(data.votedBy).includes(playerId)) {
+      if (data.votedBy && Object.keys(data.votedBy).includes(playerId)) {
         lobbyRef
           .child("/fakeAnswers")
           .child(key)
@@ -49,7 +48,7 @@ class PickAnswerPage extends Component {
   selectAnswer = fakeAnswerId => {
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
-
+    debugger;
     const {
       history,
       match: {
@@ -59,10 +58,7 @@ class PickAnswerPage extends Component {
 
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
     this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
-
-    setTimeout(() => {
-      history.push(`/lobby/${gameId}/questions/${questionId}/results`);
-    }, 10000);
+    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   componentDidMount() {
@@ -71,13 +67,11 @@ class PickAnswerPage extends Component {
         params: { gameId, questionId }
       }
     } = this.props;
-    debugger;
     const lobbyRef = lobby(gameId, questionId);
     const currentGameRef = game(gameId);
 
     currentGameRef.on("value", snapshot => {
       const currentGame = snapshot.val();
-      console.log(currentGame);
       getToupleFromSnapshot(currentGame);
     });
 
