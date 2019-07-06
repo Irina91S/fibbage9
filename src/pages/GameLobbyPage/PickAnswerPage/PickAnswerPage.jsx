@@ -6,14 +6,12 @@ const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
   state = {
-    fakeAnswers: []
-  };
-
-  setFakeAnswers = fakeAnswers => {
-    this.setState({ fakeAnswers });
+    allAnswers: [],
+    disabled: false
   };
 
   setAnswer = (gameId, questionId, fakeAnswerId, playerId, playerName) => {
+    this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
       .child("/fakeAnswers")
@@ -23,32 +21,36 @@ class PickAnswerPage extends Component {
       .set(playerName);
   };
 
-  removeAnswer = (gameId, questionId, fakeAnswerId, playerId) => {
-    const { fakeAnswers } = this.state;
+  setCorrectAnswer = (gameId, questionId, playerId, playerName) => {
+    this.setState({ disabled: true })
     const lobbyRef = lobby(gameId, questionId);
-    fakeAnswers.forEach(item => {
-      const [key, data] = item;
+    lobbyRef
+      .child("/answer")
+      .child("/votedBy")
+      .child(playerId)
+      .set(playerName);
+  };
 
-      if (fakeAnswerId === key) {
-        return;
-      }
+  selectCorrectAnswer = () => {
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId, playerName } = playerInfo;
 
-      if (data.votedBy && Object.keys(data.votedBy).includes(playerId)) {
-        lobbyRef
-          .child("/fakeAnswers")
-          .child(key)
-          .child("/votedBy")
-          .child(playerId)
-          .remove()
-          .then(() => {});
+    const {
+      history,
+      match: {
+        params: { gameId, questionId }
       }
-    });
+    } = this.props;
+
+    this.setCorrectAnswer(gameId, questionId, playerId, playerName);
+
+    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   selectAnswer = fakeAnswerId => {
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
-    debugger;
+
     const {
       history,
       match: {
@@ -57,7 +59,7 @@ class PickAnswerPage extends Component {
     } = this.props;
 
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
-    this.removeAnswer(gameId, questionId, fakeAnswerId, playerId);
+
     history.push(`/lobby/${gameId}/wait-players`);
   };
 
@@ -68,33 +70,46 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
     const lobbyRef = lobby(gameId, questionId);
-    const currentGameRef = game(gameId);
-
-    currentGameRef.on("value", snapshot => {
-      const currentGame = snapshot.val();
-      getToupleFromSnapshot(currentGame);
-    });
 
     lobbyRef.on("value", snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
-      this.setFakeAnswers(getToupleFromSnapshot(givenAnswers));
+      const correctAnswer = snapshot.val().answer;
+      this.setState({ allAnswers: this.shuffleAnswers(getToupleFromSnapshot(givenAnswers), correctAnswer)});
     });
   }
 
   shuffleAnswers = (fakeAnswers, truth) => {
     const allAnswers = [...fakeAnswers, truth];
-    
+    const sorted = allAnswers.sort((a, b) => {
+      const firstValue = a.value ? a.value.toLowerCase() : a[1].value;
+      const secondValue = b.value ? b.value.toLowerCase() : b[1].value;
+      if(firstValue < secondValue) {
+        return -1;
+      } else if (firstValue > secondValue) {
+        return 1;
+      }
+      return 0;
+    });
+    return sorted;
   }
 
   render() {
-    const { fakeAnswers } = this.state;
+    const { allAnswers, disabled } = this.state;
+    console.log(allAnswers)
     return (
       <div>
-        {fakeAnswers.map(answer => {
+        {allAnswers.map(answer => {
+          if (answer.value) {
+            return (
+            <div key={answer.value}>
+              <button disabled={disabled} onClick={() => this.selectCorrectAnswer(answer)}>{answer.value}</button>
+            </div>
+            )
+          }
           const [key, data] = answer;
           return (
             <div key={key}>
-              <div onClick={() => this.selectAnswer(key)}>{data.value}</div>
+              <button disabled={disabled} onClick={() => this.selectAnswer(key)}>{data.value}</button>
             </div>
           );
         })}

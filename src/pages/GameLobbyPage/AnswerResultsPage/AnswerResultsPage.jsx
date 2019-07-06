@@ -10,7 +10,8 @@ class AnswerResultsPage extends Component {
 
   state = {
     fakeAnswers: [],
-    questionScore: 0 
+    questionScore: 0,
+    correctAnswer: {}
   }
 
   componentDidMount() {
@@ -19,16 +20,13 @@ class AnswerResultsPage extends Component {
     this.questionRef = question(id, questionId);
 
     this.fakeAnswersRef.on('value', snapshot => {
-      console.log(snapshot.val())
-      // if(snapshot.val()) {
-        this.setState({
-          fakeAnswers: getToupleFromSnapshot(snapshot.val())
-        });
-      // }
+      this.setState({
+        fakeAnswers: getToupleFromSnapshot(snapshot.val())
+      });
     });
     
     this.questionRef.on('value', snapshot => {
-      this.setState({ questionScore: snapshot.val().score})
+      this.setState({ questionScore: snapshot.val().score, correctAnswer: snapshot.val().answer})
     })
   }
 
@@ -43,16 +41,27 @@ class AnswerResultsPage extends Component {
     ));
   }
 
-  getScoreForQuestion = (votesCount, correctAnswer = 0) => {
+  getScoreForQuestion = (votesCount, correctAnswer) => {
     const { questionScore } = this.state;
-    return votesCount * (questionScore/2) + (correctAnswer * questionScore);
+
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const { playerId } = playerInfo;
+    const votedCorrectAnswer = correctAnswer.votedBy && Object.keys(correctAnswer.votedBy).includes(playerId) ? 1 : 0;
+
+    return votesCount * (questionScore/2) + (votedCorrectAnswer * questionScore);
   }
 
   render() {
-    const { fakeAnswers } = this.state;
+    const { fakeAnswers, correctAnswer } = this.state;
     return (
       <div>
         These are the answers:
+        <div>
+          The correct answer: 
+          {correctAnswer.value}
+          <br/>
+          voted by: {this.getVotes(correctAnswer.votedBy)}
+        </div>
         <hr/>
         {fakeAnswers.map((answer) => {
           const [key, data] = answer;
@@ -72,7 +81,7 @@ class AnswerResultsPage extends Component {
               voted by: {this.getVotes(data.votedBy)}
             </div>}
             <div>
-              Points for this question: {this.getScoreForQuestion(voteCount, data.correctAnswer)}
+              Points for this question: {this.getScoreForQuestion(voteCount, correctAnswer)}
             </div>
             <hr />
           </div>

@@ -23,7 +23,9 @@ class gameControls extends Component {
 
     activePlayer.on("value", snapshot => {
       const players = snapshot.val();
-      this.setState({ players: getToupleFromSnapshot(players) });
+      if (players) {
+        this.setState({ players: getToupleFromSnapshot(players) });
+      }
     });
 
     activeGameRef.on("value", snapshot => {
