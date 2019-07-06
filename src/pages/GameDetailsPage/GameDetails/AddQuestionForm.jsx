@@ -2,32 +2,42 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 
 //TODO validation
-const AddQuestionsForm = ({handleSubmit}) => {
-
+const AddQuestionsForm = ({ handleSubmit }) => {
   return (
     <Formik
       initialValues={{
         question: '',
-        answer: ''
+        answer: '',
+        score: 0
       }}
       onSubmit={handleSubmit}
-      render={() => ( 
+      render={({ values }) => ( 
         <Form>
           <Field 
             id="question"
             name="question"
             type="text"
-            placeholder="question" 
+            placeholder="Question"
+            value={values.question}
           />
           <br/>
           <Field 
             id="answer"
             name="answer"
             type="text"
-            placeholder="question answer"
+            placeholder="Question answer"
+            value={values.answer}
           />
           <br/>
-          <button type="submit">add question</button>
+          <Field 
+            id="score"
+            name="score"
+            type="number"
+            placeholder="Question score"
+            value={values.score}
+          />
+          <br/>
+          <button type="submit">Add question</button>
         </Form>
       )}
     />
