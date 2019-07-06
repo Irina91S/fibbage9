@@ -14,10 +14,14 @@ class GameDetails extends React.Component {
     game: {}
   };
 
-  handleQuestionSubmit = async ({ question, answer }, actions) => {
+  handleQuestionSubmit = async ({ question, answer, score }, actions) => {
+    const { game } = this.state;
+    const index = this.getQuestionsLength(game);
     await this.gameRef.child("/questions").push({
       question,
-      answer
+      answer,
+      score,
+      index
     });
     actions.resetForm();
   };
@@ -27,7 +31,7 @@ class GameDetails extends React.Component {
     this.gameRef.child("isActive").set(!isActive);
   };
 
-  hadleStartGame = () => {
+  handleStartGame = () => {
     const { id } = this.state;
     const { questions } = this.state.game;
 
@@ -56,10 +60,17 @@ class GameDetails extends React.Component {
     this.gameRef.off("value");
   }
 
-  render() {
-    const { id } = this.state;
+  getQuestionsLength = (game) => {
+    if (!game.questions) {
+      return 0;
+    }
+    return Object.values(game.questions).length;
+  }
 
-    const { pincode, name, limit, isActive, questions } = this.state.game;
+  render() {
+    const { id, game } = this.state;
+
+    const { pincode, name, limit, isActive, questions } = game;
     return (
       <div>
         <h3>
@@ -71,7 +82,7 @@ class GameDetails extends React.Component {
           <button onClick={() => this.handleGameActiveToggle()}>
             {isActive ? "Activate Game" : "Kill Game"}
           </button>
-          <button onClick={() => this.hadleStartGame()}>Start</button>
+          <button onClick={() => this.handleStartGame()}>Start</button>
         </h4>
         <AddQuestionsForm handleSubmit={this.handleQuestionSubmit} />
         {questions && (

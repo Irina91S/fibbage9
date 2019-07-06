@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import GameControls from "./GameControls";
 
 const QuestionsList = ({ questions, gameId }) => {
-  console.log(gameId)
+
   const renderListOfQuestions = () => {
     return questions.map(([key, questionData], index) => {
-      const { question, answer } = questionData;
+      const { question, answer, score } = questionData;
       return (
         <li key={key}>
           <h3>
@@ -13,9 +13,15 @@ const QuestionsList = ({ questions, gameId }) => {
               ({index + 1}) {question}
             </span>
           </h3>
-          <h4>{answer}</h4>
-          {index !== questions.length - 1 && <hr />}
+          <h4>
+            The truth: {answer}
+          </h4>
+          <h4>
+            Score: {score} 
+          </h4>
+          <h5>Question index: {questionData.index}</h5>
           <GameControls gameId={gameId} questionId={key}/>
+          {index !== questions.length - 1 && <hr />}
         </li>
       );
     });
@@ -23,7 +29,7 @@ const QuestionsList = ({ questions, gameId }) => {
 
   return (
     <Fragment>
-      <h2>list of questions ({questions.length})</h2>
+      <h2>List of questions ({questions.length})</h2>
       <ul>{renderListOfQuestions()}</ul>
     </Fragment>
   );
