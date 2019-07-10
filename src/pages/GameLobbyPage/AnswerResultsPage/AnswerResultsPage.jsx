@@ -2,37 +2,47 @@ import React, { Component } from 'react';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
-const { fakeAnswers, question } = databaseRefs;
+const { fakeAnswers, question, players } = databaseRefs;
 
 class AnswerResultsPage extends Component {
   fakeAnswersRef = [];
   questionRef = {};
+  playersRef = [];
 
   state = {
     fakeAnswers: [],
     questionScore: 0,
-    correctAnswer: {}
+    correctAnswer: {},
+    players: []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { id, questionId } = this.props.match.params;
     this.fakeAnswersRef = fakeAnswers(id, questionId);
     this.questionRef = question(id, questionId);
+    this.playersRef = players(id);
 
-    this.fakeAnswersRef.on('value', snapshot => {
+    await this.fakeAnswersRef.once('value', snapshot => {
       this.setState({
         fakeAnswers: getToupleFromSnapshot(snapshot.val())
       });
     });
     
-    this.questionRef.on('value', snapshot => {
+    await this.questionRef.once('value', snapshot => {
       this.setState({ questionScore: snapshot.val().score, correctAnswer: snapshot.val().answer})
+    })
+
+    await this.playersRef.once('value', snapshot => {
+      this.setState({
+        players: getToupleFromSnapshot(snapshot.val())
+      }, () =>  this.updatePlayersScores())
     })
   }
 
   componentWillUnmount() {
     this.fakeAnswersRef.off();
     this.questionRef.off();
+    this.playersRef.off();
   }
 
   getVotes = (votedBy) => {
@@ -41,14 +51,42 @@ class AnswerResultsPage extends Component {
     ));
   }
 
-  getScoreForQuestion = (votesCount, correctAnswer) => {
+  getScoreForQuestion = (votesCount, correctAnswer, authorTeam) => {
     const { questionScore } = this.state;
 
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
-    const { playerId } = playerInfo;
-    const votedCorrectAnswer = correctAnswer.votedBy && Object.keys(correctAnswer.votedBy).includes(playerId) ? 1 : 0;
+    const votedCorrectAnswer = correctAnswer.votedBy && Object.keys(correctAnswer.votedBy).includes(authorTeam) ? 1 : 0;
 
     return votesCount * (questionScore/2) + (votedCorrectAnswer * questionScore);
+  }
+
+  updatePlayersScores = () => {
+    const { players } = this.state;
+    const scores = this.getAllScoresForQuestion();
+
+    players.forEach(player => {
+      const [key, data] = player;
+      const { totalScore } = data;
+      const newScore = scores.key;
+      const updatedScore = totalScore + newScore;
+
+      this.playersRef
+        .child(key)
+        .child('/totalScore')
+        .set(updatedScore);
+    });
+  }
+
+  getAllScoresForQuestion = () => {
+    const { fakeAnswers, correctAnswer } = this.state;
+    let scores = {};
+    fakeAnswers.forEach(answer => {
+      const [key, data] = answer;
+      const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
+      const questionScore = this.getScoreForQuestion(voteCount, correctAnswer, key);
+      const teamScore = { [answer.authorTeam]: questionScore };
+      scores = {...scores, ...teamScore};
+    });
+    return scores;
   }
 
   render() {
@@ -81,7 +119,7 @@ class AnswerResultsPage extends Component {
               voted by: {this.getVotes(data.votedBy)}
             </div>}
             <div>
-              Points for this question: {this.getScoreForQuestion(voteCount, correctAnswer)}
+              Points for this question: {this.getScoreForQuestion(voteCount, correctAnswer, data.authorTeam)}
             </div>
             <hr />
           </div>
