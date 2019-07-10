@@ -10,6 +10,7 @@ import AddNicknamePage from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePa
 import WaitPlayersPage from './pages/GameLobbyPage/WaitPlayersPage/WaitPlayersPage';
 
 import PickAnswerPage from './pages/GameLobbyPage/PickAnswerPage/PickAnswerPage'
+import TotalScorePage from './pages/GameLobbyPage/TotalScoresPage/TotalScoresPage';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
           <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
           <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
-
+          <Route exact path="/lobby/:gameId/total-score" component={TotalScorePage} />
         </main>
       </div>
     </Router>
