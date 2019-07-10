@@ -7,6 +7,7 @@ export const databaseRefs = {
     database.ref(`/games/${gameId}/questions/${questionId}`),
   question: (id, questionId) =>
     database.ref(`/games/${id}/questions/${questionId}`),
+  questions: (gameId) => database.ref(`/games/${gameId}/questions`),
   fakeAnswers: (id, questionId) =>
     database.ref(`/games/${id}/questions/${questionId}/fakeAnswers`),
   player: (gameId, playerId) =>
