@@ -60,16 +60,12 @@ class AddAnswerPage extends Component {
       votedBy: {}
     });
 
-    this.setState({
-      submittedAnswer: answer
-    });
-
     // actions.resetForm();
     history.push(`/lobby/${gameId}/wait-players`);
   };
 
   render() {
-    const { question, submittedAnswer } = this.state;
+    const { question } = this.state;
     return (
       <div>
         <div>
@@ -95,12 +91,6 @@ class AddAnswerPage extends Component {
             </Form>
           )}
         />
-        {submittedAnswer && (
-          <div>
-            Your submitted answer:
-            {submittedAnswer}
-          </div>
-        )}
       </div>
     );
   }

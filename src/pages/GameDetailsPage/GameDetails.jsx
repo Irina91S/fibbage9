@@ -48,7 +48,7 @@ class GameDetails extends React.Component {
     const questionId = Object.keys(questions)[0];
 
     const currentScreen = {
-      route: `/games/${id}/questions/${questionId}/addAnswer`
+      route: `/lobby/${id}/questions/${questionId}/addAnswer`
     };
 
     gameRef.child("/currentScreen").set(currentScreen);

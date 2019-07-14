@@ -32,8 +32,10 @@ class WaitPlayersPage extends Component {
 
     this.gameRef.child("/currentScreen").on("value", snapshot => {
       const { history } = this.props;
-      const { route } = snapshot.val();
-      history.push(route);
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        history.push(route);
+      }
     });
   }
 

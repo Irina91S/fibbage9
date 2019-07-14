@@ -84,7 +84,7 @@ class gameControls extends Component {
 
     const activeGameRef = game(gameId);
     const currentScreen = {
-      route: `/games/${gameId}/questions/${questionId}/addAnswer`
+      route: `/lobby/${gameId}/questions/${questionId}/addAnswer`
     };
     this.checkIfPlayersAreReady(playersActive);
     if (ready) {
