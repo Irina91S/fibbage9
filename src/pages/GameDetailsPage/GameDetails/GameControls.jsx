@@ -7,6 +7,7 @@ const { game } = databaseRefs;
 const { players } = databaseRefs;
 class gameControls extends Component {
   state = {
+    questions: [],
     playersActive: [],
     ready: false
   };
@@ -30,8 +31,18 @@ class gameControls extends Component {
 
     activeGameRef.on("value", snapshot => {
       const currentGame = snapshot.val();
+      const questions = snapshot.val().questions;
+      this.setState({
+        questions: getToupleFromSnapshot(questions)
+      });
       getToupleFromSnapshot(currentGame);
     });
+  }
+
+  checkIfLastQuestion = (questionId) => {
+    const { questions } = this.state;
+    const currentQuestion = questions.find(question => question[0] === questionId);
+    return currentQuestion[1].index === questions.length - 1;
   }
 
   checkIfPlayersAreReady = playersActive => {
@@ -80,11 +91,13 @@ class gameControls extends Component {
 
   constructNextStepRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready,playersActive } = this.state;
+    const { ready, playersActive, questions } = this.state;
+
+    const isLastQuestion = this.checkIfLastQuestion(questionId);
 
     const activeGameRef = game(gameId);
     const currentScreen = {
-      route: `/lobby/${gameId}/questions/${questionId}/addAnswer`
+      route: isLastQuestion ? `/lobby/${gameId}/total-score` : `/games/${gameId}/questions/${questionId}/addAnswer`
     };
     this.checkIfPlayersAreReady(playersActive);
     if (ready) {
