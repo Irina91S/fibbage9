@@ -35,7 +35,7 @@ class AnswerResultsPage extends Component {
     await this.playersRef.once('value', snapshot => {
       this.setState({
         players: getToupleFromSnapshot(snapshot.val())
-      }, () =>  this.updatePlayersScores())
+      })
     })
   }
 
@@ -46,9 +46,9 @@ class AnswerResultsPage extends Component {
   }
 
   getVotes = (votedBy) => {
-    return getToupleFromSnapshot(votedBy).map((element, key) => (
+    return votedBy ? getToupleFromSnapshot(votedBy).map((element, key) => (
       <span key={key}>{`${element[1]}  `}</span>
-    ));
+    )) : ''
   }
 
   getScoreForQuestion = (votesCount, correctAnswer, authorTeam) => {

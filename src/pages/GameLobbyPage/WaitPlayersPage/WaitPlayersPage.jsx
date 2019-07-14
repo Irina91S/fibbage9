@@ -34,7 +34,9 @@ class WaitPlayersPage extends Component {
       const { history } = this.props;
       if (snapshot.val()) {
         const { route } = snapshot.val();
-        history.push(route);
+        // if (!route.endsWith('addAnswer')) {
+          history.push(route);
+        // }
       }
     });
   }
