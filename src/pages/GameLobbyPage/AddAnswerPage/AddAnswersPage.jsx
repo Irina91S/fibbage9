@@ -14,7 +14,9 @@ class AddAnswerPage extends Component {
     questionId: "",
     fakeAnswers: {},
     answer: "",
-    question: ""
+    question: "",
+    isCorrectAnswer: false,
+    correctAnswer: ''
   };
 
   componentDidMount() {
@@ -27,9 +29,10 @@ class AddAnswerPage extends Component {
     this.questionRef = question(gameId, questionId);
 
     this.questionRef.on("value", snapshot => {
-      const { question } = snapshot.val();
+      const { question, answer: { value } } = snapshot.val();
       this.setState({
-        question
+        question,
+        correctAnswer: value
       });
     });
   }
@@ -39,6 +42,11 @@ class AddAnswerPage extends Component {
   }
 
   handleAnswerSubmit = async ({ answer }, actions) => {
+    const { correctAnswer } = this.state;
+    if (answer.toLowerCase() === correctAnswer.toLowerCase()) {
+      this.setState({ isCorrectAnswer: true });
+      return;
+    }
     const {
       match: {
         params: { gameId }
@@ -63,8 +71,12 @@ class AddAnswerPage extends Component {
     history.push(`/lobby/${gameId}/wait-players`);
   };
 
+  resetIsCorrectAnswer = () => {
+    this.setState({ isCorrectAnswer: false });
+  }
+
   render() {
-    const { question } = this.state;
+    const { question, isCorrectAnswer } = this.state;
     return (
       <div>
         <div>
@@ -77,16 +89,19 @@ class AddAnswerPage extends Component {
             answer: ""
           }}
           onSubmit={this.handleAnswerSubmit}
-          render={() => (
+          render={({ values, handleChange }) => (
             <Form>
               <Field
                 id="answer"
                 name="answer"
                 type="text"
                 placeholder="question answer"
+                value={values.answer}
+                onChange={(e) => { handleChange(e); this.resetIsCorrectAnswer(); }}
               />
               <br />
-              <button type="submit">add answer</button>
+              {isCorrectAnswer ? (<div>You entered the correct answer. Please enter a fake one</div>) : ''}
+              <button type="submit">Submit your bullshit</button>
             </Form>
           )}
         />
