@@ -59,13 +59,6 @@ class AddAnswerPage extends Component {
 
     gameRef.child("/currentScreen").set(currentScreen);
 
-    const gameRef = game(gameId);
-    const currentScreen = {
-      route: `/lobby/${gameId}/wait-players`
-    };
-
-    gameRef.child("/currentScreen").set(currentScreen);
-
     // actions.resetForm();
     history.push(`/lobby/${gameId}/wait-players`);
   };
