@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { databaseRefs } from "./../../../lib/refs";
 import { Formik, Form, Field } from "formik";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
 const { question } = databaseRefs;
-const { game } = databaseRefs;
 
 class AddAnswerPage extends Component {
   questionRef = "";
@@ -62,9 +60,6 @@ class AddAnswerPage extends Component {
       voteCount: 0,
       votedBy: {}
     });
-
-    // actions.resetForm();
-    // history.push(`/lobby/${gameId}/wait-players`);
   };
 
   resetIsCorrectAnswer = () => {
