@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { databaseRefs } from "./../../../lib/refs";
 import { Formik, Form, Field } from "formik";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
 const { question } = databaseRefs;
 const { game } = databaseRefs;
@@ -16,7 +17,8 @@ class AddAnswerPage extends Component {
     answer: "",
     question: "",
     isCorrectAnswer: false,
-    correctAnswer: ''
+    correctAnswer: '',
+    isSubmitted: false
   };
 
   componentDidMount() {
@@ -47,11 +49,11 @@ class AddAnswerPage extends Component {
       this.setState({ isCorrectAnswer: true });
       return;
     }
+    this.setState({ isSubmitted: true });
     const {
       match: {
         params: { gameId }
-      },
-      history
+      }
     } = this.props;
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     await this.questionRef.child("/fakeAnswers").push({
@@ -62,7 +64,7 @@ class AddAnswerPage extends Component {
     });
 
     // actions.resetForm();
-    history.push(`/lobby/${gameId}/wait-players`);
+    // history.push(`/lobby/${gameId}/wait-players`);
   };
 
   resetIsCorrectAnswer = () => {
@@ -70,7 +72,7 @@ class AddAnswerPage extends Component {
   }
 
   render() {
-    const { question, isCorrectAnswer } = this.state;
+    const { question, isCorrectAnswer, isSubmitted } = this.state;
     return (
       <div>
         <div>
@@ -99,6 +101,7 @@ class AddAnswerPage extends Component {
             </Form>
           )}
         />
+        {isSubmitted && <WaitingScreen />}
       </div>
     );
   }
