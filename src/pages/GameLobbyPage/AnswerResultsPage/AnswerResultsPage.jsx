@@ -35,7 +35,7 @@ class AnswerResultsPage extends Component {
     await this.playersRef.once('value', snapshot => {
       this.setState({
         players: getToupleFromSnapshot(snapshot.val())
-      }, () =>  this.updatePlayersScores())
+      })
     })
   }
 

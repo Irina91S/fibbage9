@@ -8,6 +8,7 @@ const { game } = databaseRefs;
 
 class AddAnswerPage extends Component {
   questionRef = "";
+  gameRef = '';
   state = {
     id: "",
     questionId: "",
@@ -26,18 +27,10 @@ class AddAnswerPage extends Component {
     this.questionRef = question(gameId, questionId);
 
     this.questionRef.on("value", snapshot => {
-      if (!snapshot.val().fakeAnswers) {
-        const { question } = snapshot.val();
-        this.setState({
-          question
-        });
-      } else {
-        const { fakeAnswers, question } = snapshot.val();
-        this.setState({
-          question,
-          fakeAnswers
-        });
-      }
+      const { question } = snapshot.val();
+      this.setState({
+        question
+      });
     });
   }
 
@@ -59,6 +52,12 @@ class AddAnswerPage extends Component {
       voteCount: 0,
       votedBy: {}
     });
+    const gameRef = game(gameId);
+    const currentScreen = {
+      route: `/lobby/${gameId}/wait-players`
+    };
+
+    gameRef.child("/currentScreen").set(currentScreen);
 
     const gameRef = game(gameId);
     const currentScreen = {
