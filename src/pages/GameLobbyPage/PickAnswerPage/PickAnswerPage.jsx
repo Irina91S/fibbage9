@@ -3,13 +3,15 @@ import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
 import { useCurrentPlayer } from '../../../hooks';
+import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
-const { lobby, game } = databaseRefs;
+const { lobby } = databaseRefs;
 
 class PickAnswerPage extends Component {
   state = {
     allAnswers: [],
-    disabled: false
+    disabled: false,
+    isSubmitted: false
   };
 
   setAnswer = (gameId, questionId, fakeAnswerId, playerId, playerName) => {
@@ -34,35 +36,31 @@ class PickAnswerPage extends Component {
   };
 
   selectCorrectAnswer = () => {
+    this.setState({ isSubmitted: true });
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
 
     const {
-      history,
       match: {
         params: { gameId, questionId }
       }
     } = this.props;
 
     this.setCorrectAnswer(gameId, questionId, playerId, playerName);
-
-    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   selectAnswer = fakeAnswerId => {
+    this.setState({ isSubmitted: true });
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId, playerName } = playerInfo;
 
     const {
-      history,
       match: {
         params: { gameId, questionId }
       }
     } = this.props;
 
     this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
-
-    history.push(`/lobby/${gameId}/wait-players`);
   };
 
   componentDidMount() {
@@ -101,8 +99,8 @@ class PickAnswerPage extends Component {
   }
 
   render() {
-    const { allAnswers, disabled } = this.state;
-    console.log(allAnswers)
+    const { allAnswers, disabled, isSubmitted } = this.state;
+
     return (
       <div>
         {allAnswers.map(answer => {
@@ -120,6 +118,7 @@ class PickAnswerPage extends Component {
             </div>
           );
         })}
+        {isSubmitted && <WaitingScreen />}
       </div>
     );
   }
