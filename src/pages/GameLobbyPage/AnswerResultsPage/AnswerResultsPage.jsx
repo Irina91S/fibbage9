@@ -68,16 +68,16 @@ class AnswerResultsPage extends Component {
     const { players } = this.state;
     const scores = this.getAllScoresForQuestion();
 
-    // players.forEach(player => {
-    //   const [key, data] = player;
-    //   const { totalScore } = data;
-    //   const newScore = scores.key;
-    //   const updatedScore = totalScore + newScore;
-    //   this.playersRef
-    //     .child(key)
-    //     .child('/totalScore')
-    //     .set(updatedScore);
-    // });
+    players.forEach(player => {
+      const [key, data] = player;
+      const { totalScore } = data;
+      const newScore = scores.key;
+      const updatedScore = totalScore + newScore;
+      this.playersRef
+        .child(key)
+        .child('/totalScore')
+        .set(updatedScore);
+    });
   }
 
   getAllScoresForQuestion = () => {
@@ -91,6 +91,19 @@ class AnswerResultsPage extends Component {
       scores = {...scores, ...teamScore};
     });
     return scores;
+  }
+
+  getTeamNameById = (teamId) => {
+    const { players } = this.state;
+    let teamName = '';
+    players.forEach(player => {
+      const [key, data] = player;
+      if (key === teamId) {
+        teamName = data.nickname;
+        return;
+      }
+    })
+    return teamName;
   }
 
   render() {
@@ -114,7 +127,7 @@ class AnswerResultsPage extends Component {
               answer: {data.value}
             </div>
             <div>
-              author team: {data.authorTeam}
+              author team: {this.getTeamNameById(data.authorTeam)}
             </div>
             <div>
               vote count: {voteCount}
