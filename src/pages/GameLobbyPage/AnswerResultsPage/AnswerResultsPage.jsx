@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
+import { useCurrentPlayer } from '../../../hooks';
+
 const { fakeAnswers, question, players } = databaseRefs;
 
 class AnswerResultsPage extends Component {
@@ -22,10 +24,13 @@ class AnswerResultsPage extends Component {
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
 
+    const currentPlayer = useCurrentPlayer();
+
     await this.fakeAnswersRef.once('value', snapshot => {
-      this.setState({
-        fakeAnswers: getToupleFromSnapshot(snapshot.val())
-      });
+      const fakeAnswers = getToupleFromSnapshot(snapshot.val())
+        .filter(answer => answer[1].authorTeam !== currentPlayer.playerId)
+
+      this.setState({ fakeAnswers });
     });
     
     await this.questionRef.once('value', snapshot => {
