@@ -46,9 +46,9 @@ class AnswerResultsPage extends Component {
   }
 
   getVotes = (votedBy) => {
-    return getToupleFromSnapshot(votedBy).map((element, key) => (
+    return votedBy ? getToupleFromSnapshot(votedBy).map((element, key) => (
       <span key={key}>{`${element[1]}  `}</span>
-    ));
+    )) : '';
   }
 
   getScoreForQuestion = (votesCount, correctAnswer, authorTeam) => {
@@ -63,17 +63,16 @@ class AnswerResultsPage extends Component {
     const { players } = this.state;
     const scores = this.getAllScoresForQuestion();
 
-    players.forEach(player => {
-      const [key, data] = player;
-      const { totalScore } = data;
-      const newScore = scores.key;
-      const updatedScore = totalScore + newScore;
-
-      this.playersRef
-        .child(key)
-        .child('/totalScore')
-        .set(updatedScore);
-    });
+    // players.forEach(player => {
+    //   const [key, data] = player;
+    //   const { totalScore } = data;
+    //   const newScore = scores.key;
+    //   const updatedScore = totalScore + newScore;
+    //   this.playersRef
+    //     .child(key)
+    //     .child('/totalScore')
+    //     .set(updatedScore);
+    // });
   }
 
   getAllScoresForQuestion = () => {
