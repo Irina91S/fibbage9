@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
+import { useCurrentPlayer } from '../../../hooks';
+
 const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -79,10 +81,15 @@ class PickAnswerPage extends Component {
   }
 
   shuffleAnswers = (fakeAnswers, truth) => {
+    const currentPlayer = useCurrentPlayer();
+    fakeAnswers = fakeAnswers.filter(answer => answer[1].authorTeam !== currentPlayer.playerId)
+
     const allAnswers = [...fakeAnswers, truth];
+
     const sorted = allAnswers.sort((a, b) => {
       const firstValue = a.value ? a.value.toLowerCase() : a[1].value;
       const secondValue = b.value ? b.value.toLowerCase() : b[1].value;
+      
       if(firstValue < secondValue) {
         return -1;
       } else if (firstValue > secondValue) {
