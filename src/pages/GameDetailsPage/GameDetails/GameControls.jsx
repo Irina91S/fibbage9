@@ -61,48 +61,57 @@ class gameControls extends Component {
 
   constructAvailableAnswerRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready,playersActive } = this.state;
+    // const { ready, playersActive } = this.state;
 
     const activeGameRef = game(gameId);
     const currentScreen = {
-      route: `/lobby/${gameId}/${questionId}/pick-answer`
+      route: `/lobby/${gameId}/${questionId}/pick-answer`,
+      screenId: 'PICK_ANSWER'
     };
 
-    this.checkIfPlayersAreReady(playersActive);
-    if (ready) {
-
-      activeGameRef.child("/currentScreen").set(currentScreen);
-    }
+    // this.checkIfPlayersAreReady(playersActive);
+    // if (ready) {
+    activeGameRef.child("/currentScreen").set(currentScreen);
+    // }
   };
 
   constructAvailableResultsRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready,playersActive } = this.state;
+    // const { ready,playersActive } = this.state;
 
     const activeGameRef = game(gameId);
+
     const currentScreen = {
-      route: `/lobby/${gameId}/questions/${questionId}/results`
+      route: `/lobby/${gameId}/questions/${questionId}/results`,
+      screenId: 'RESULTS'
     };
-    this.checkIfPlayersAreReady(playersActive);
-    if (ready) {
+
+    // this.checkIfPlayersAreReady(playersActive);
+    // if (ready) {
       activeGameRef.child("/currentScreen").set(currentScreen);
-    }
+    // }
   };
 
   constructNextStepRoute = () => {
     const { gameId, questionId } = this.props;
-    const { ready, playersActive, questions } = this.state;
+    const { ready, playersActive } = this.state;
 
     const isLastQuestion = this.checkIfLastQuestion(questionId);
 
     const activeGameRef = game(gameId);
-    const currentScreen = {
-      route: isLastQuestion ? `/lobby/${gameId}/total-score` : `/lobby/${gameId}/questions/${questionId}/addAnswer`
-    };
-    this.checkIfPlayersAreReady(playersActive);
-    if (ready) {
-      activeGameRef.child("/currentScreen").set(currentScreen);
-    }
+    const currentScreen = isLastQuestion ? 
+      {
+        route: `/lobby/${gameId}/total-score`,
+        screenId: 'FINAL_SCORE'
+      } : 
+      { 
+        route: `/lobby/${gameId}/questions/${questionId}/score`,
+        screenId: 'SCORE'
+      };
+    // this.checkIfPlayersAreReady(playersActive);
+    // if (ready) {
+    activeGameRef.child("/currentScreen").set(currentScreen);
+    // }
   };
 
   render() {
