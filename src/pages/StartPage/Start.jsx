@@ -63,6 +63,10 @@ class Start extends React.Component {
     });
   };
 
+  componentWillUnmount() {
+    this.games.off();
+  }
+
   render() {
     return <InsertPincodeForm onSubmit={this.handleInsertPincode} />
   }
