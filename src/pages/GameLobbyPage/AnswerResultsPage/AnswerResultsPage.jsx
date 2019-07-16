@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
-
 import { useCurrentPlayer } from '../../../hooks';
 
 const { fakeAnswers, question, players } = databaseRefs;
@@ -97,6 +96,19 @@ class AnswerResultsPage extends Component {
     return scores;
   }
 
+  getTeamNameById = (teamId) => {
+    const { players } = this.state;
+    let teamName = '';
+    players.forEach(player => {
+      const [key, data] = player;
+      if (key === teamId) {
+        teamName = data.nickname;
+        return;
+      }
+    })
+    return teamName;
+  }
+
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
     return (
@@ -118,7 +130,7 @@ class AnswerResultsPage extends Component {
               answer: {data.value}
             </div>
             <div>
-              author team: {data.authorTeam}
+              author team: {this.getTeamNameById(data.authorTeam)}
             </div>
             <div>
               vote count: {voteCount}
