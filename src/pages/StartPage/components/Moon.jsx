@@ -3,7 +3,6 @@ import React from 'react';
 import './Moon.scss';
 
 const Moon = props => {
-  console.log(props);
   return (
     <div className="moon" style={{ ...props }}>
       <span className="crater big" style={{ top: 25, right: 50 }} />
