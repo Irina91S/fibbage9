@@ -1,15 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.scss';
-import Start from './pages/StartPage/Start';
-import AnswerResultsPage from './pages/GameLobbyPage/AnswerResultsPage/AnswerResultsPage';
-import AddAnswerPage from './pages/GameLobbyPage/AddAnswerPage/AddAnswersPage';
-import AddNicknamePage from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePage';
-import WaitPlayersPage from './pages/GameLobbyPage/WaitPlayersPage/WaitPlayersPage';
 
-import PickAnswerPage from './pages/GameLobbyPage/PickAnswerPage/PickAnswerPage';
-import ScorePage from './pages/GameLobbyPage/ScorePage/ScorePage';
-import TotalScorePage from './pages/GameLobbyPage/TotalScoresPage/TotalScoresPage';
+import Start from './pages/StartPage/Start';
+import {
+  AnswerResultsPage,
+  AddAnswerPage,
+  AddNicknamePage,
+  WaitPlayersPage,
+  PickAnswerPage,
+  ScorePage,
+  TotalScoresPage
+} from './pages/GameLobbyPage';
 
 import { Header } from './shared';
 
@@ -26,7 +28,7 @@ function App() {
           <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
           <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
           <Route exact path="/lobby/:gameId/questions/:questionId/score" component={ScorePage} />
-          <Route exact path="/lobby/:gameId/total-score" component={TotalScorePage} />
+          <Route exact path="/lobby/:gameId/total-score" component={TotalScoresPage} />
         </main>
       </div>
     </Router>
