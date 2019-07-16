@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import { useCurrentPlayer } from '../../../hooks';
 
 const { fakeAnswers, question, players } = databaseRefs;
 
@@ -16,31 +17,40 @@ class AnswerResultsPage extends Component {
     players: []
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { id, questionId } = this.props.match.params;
     this.fakeAnswersRef = fakeAnswers(id, questionId);
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
 
-    await this.fakeAnswersRef.once('value', snapshot => {
-      this.setState({ fakeAnswers: getToupleFromSnapshot(snapshot.val()) });
+    const currentPlayer = useCurrentPlayer();
+
+    this.fakeAnswersRef.on('value', snapshot => {
+      const fakeAnswers = getToupleFromSnapshot(snapshot.val())
+        .filter(answer => answer[1].authorTeam !== currentPlayer.playerId)
+
+      this.setState({ fakeAnswers });
     });
     
-    await this.questionRef.once('value', snapshot => {
+    this.questionRef.on('value', snapshot => {
       this.setState({ questionScore: snapshot.val().score, correctAnswer: snapshot.val().answer})
-    })
+    });
 
-    await this.playersRef.once('value', snapshot => {
+    this.playersRef.on('value', snapshot => {
       this.setState({
         players: getToupleFromSnapshot(snapshot.val())
       })
-    })
+    });
   }
 
   componentWillUnmount() {
     this.fakeAnswersRef.off();
     this.questionRef.off();
     this.playersRef.off();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.players.length) this.updatePlayersScores();
   }
 
   getVotes = (votedBy) => {
@@ -64,7 +74,7 @@ class AnswerResultsPage extends Component {
     players.forEach(player => {
       const [key, data] = player;
       const { totalScore } = data;
-      const newScore = scores.key;
+      const newScore = scores[key] || 0;
       const updatedScore = totalScore + newScore;
       this.playersRef
         .child(key)
@@ -80,7 +90,7 @@ class AnswerResultsPage extends Component {
       const [key, data] = answer;
       const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
       const questionScore = this.getScoreForQuestion(voteCount, correctAnswer, key);
-      const teamScore = { [answer.authorTeam]: questionScore };
+      const teamScore = { [data.authorTeam]: questionScore };
       scores = {...scores, ...teamScore};
     });
     return scores;
