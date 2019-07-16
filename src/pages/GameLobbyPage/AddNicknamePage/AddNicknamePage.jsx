@@ -106,14 +106,18 @@ class AddNickname extends Component {
         onSubmit={this.setNickname}
         render={({ values, handleSubmit }) => (
           <Form>
+            <label>Choose a nickname for your team</label>
             <Field
               id="nickname"
               name="nickname"
-              placeholder="nickname"
+              placeholder="NICKNAME"
               value={values.nickname}
             />
             <ErrorMessage name="nickname" />
-            <button onClick={handleSubmit}>Next</button>
+            <button onClick={handleSubmit}>YEP, IT'S CRINGE ENOUGH</button>
+
+            <footer>Add a nickname for your team so we know what to display on the scoreboard. 
+              You want that 1st place, don't you? We know you do.</footer>
           </Form>
         )}
       />

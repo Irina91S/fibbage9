@@ -66,7 +66,7 @@ class Start extends React.Component {
   }
 
   componentWillUnmount() {
-    this.games.off();
+    games.off();
   }
 
   render() {

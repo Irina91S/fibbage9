@@ -3,6 +3,8 @@ import { databaseRefs } from "./../../../lib/refs";
 import { Formik, Form, Field } from "formik";
 import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
+import { Question } from '../../../shared';
+
 const { question } = databaseRefs;
 
 class AddAnswerPage extends Component {
@@ -70,11 +72,8 @@ class AddAnswerPage extends Component {
     const { question, isCorrectAnswer, isSubmitted } = this.state;
     return (
       <div>
-        <div>
-          Question:
-          {JSON.stringify(question)}
-        </div>
-        Please add your answer:
+        <Question value={question} />
+        
         <Formik
           initialValues={{
             answer: ""
@@ -82,17 +81,21 @@ class AddAnswerPage extends Component {
           onSubmit={this.handleAnswerSubmit}
           render={({ values, handleChange }) => (
             <Form>
+              <label for="answer">Please add your answer:</label>
               <Field
                 id="answer"
                 name="answer"
                 type="text"
-                placeholder="question answer"
+                placeholder="ANSWER"
                 value={values.answer}
                 onChange={(e) => { handleChange(e); this.resetIsCorrectAnswer(); }}
               />
-              <br />
               {isCorrectAnswer ? (<div>You entered the correct answer. Please enter a fake one</div>) : ''}
-              <button type="submit">Submit your bullshit</button>
+              <button type="submit">I HOPE IT WORKS</button>
+
+              <footer>Answer your question, preferably with some bullshit answer to trick the other teams
+                into picking your bullshit and get points when they do it
+              </footer>
             </Form>
           )}
         />
