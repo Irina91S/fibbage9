@@ -21,7 +21,7 @@ function App() {
         <main>
           <Route exact path="/" component={Start} />
           <Route exact path="/lobby/:gameId/questions/:questionId/addAnswer" component={AddAnswerPage} />
-          <Route path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
+          <Route exact path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
           <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
           <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
           <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
