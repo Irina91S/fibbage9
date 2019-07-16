@@ -1,3 +1,5 @@
+@import '../../../styles/settings/settings.colors';
+
 @keyframes float {
   0% {
     transform: translatey(0px);
@@ -19,4 +21,31 @@
   z-index: -1;
   background-color: #dddbfa;
   animation: float 6s ease-in-out infinite;
+  position: reltive;
+
+  .crater {
+    background-color: $color-secondary;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    opacity: 0.1;
+
+    &.big {
+      $size: 25px;
+      width: $size;
+      height: $size;
+    }
+
+    &.medium {
+      $size: 15px;
+      width: $size;
+      height: $size;
+    }
+
+    &.small {
+      $size: 5px;
+      width: $size;
+      height: $size;
+    }
+  }
 }
