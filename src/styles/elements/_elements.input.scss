@@ -1,0 +1,11 @@
+input {
+  color: $color-main;
+
+  border: 1px solid $color-main;
+  border-radius: $global-radius;
+  padding: $global-spacing-unit-small;
+
+  &::placeholder {
+    color: $color-gray;
+  }
+}

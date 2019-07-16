@@ -1,0 +1,19 @@
+form {
+  input,
+  button,
+  label {
+    display: block;
+    width: 100%;
+    margin-bottom: $global-spacing-unit-small;
+  }
+
+  input + div {
+    position: relative;
+    top: -$global-spacing-unit-small;
+    color: $color-danger;
+  }
+
+  footer {
+    color: $color-gray;
+  }
+}

@@ -1,0 +1,10 @@
+@import './styles/settings/settings.colors';
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  color: $color-dark;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}

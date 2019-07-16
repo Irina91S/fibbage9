@@ -1,0 +1,18 @@
+@import './styles/settings/settings.core';
+@import './styles/settings/settings.colors';
+
+.App {
+  padding: $global-spacing-unit;
+
+  header {
+    margin-bottom: $global-spacing-unit-medium;
+  }
+
+  .header {
+    margin-bottom: 0;
+  }
+
+  .subheader {
+    color: $color-gray;
+  }
+}

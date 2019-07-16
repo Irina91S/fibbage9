@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { databaseRefs } from './../../lib/refs';
 import { getToupleFromSnapshot } from './../../lib/firebaseUtils';
-import InsertPincodeForm from './Start/InsertPincodeForm';
+
+import InsertPincodeForm from './components/InsertPincodeForm';
+import Moon from './components/Moon';
 
 const { games } = databaseRefs;
 
 class Start extends React.Component {
   state = {
     activeGames: []
-  }
+  };
 
-  getActiveGames = (games) => {
+  getActiveGames = games => {
     return games
       .map(game => {
         const [key, gameData] = game;
@@ -19,9 +21,9 @@ class Start extends React.Component {
         return game;
       })
       .filter(Boolean);
-  }
+  };
 
-  setActiveGames = (games) => {
+  setActiveGames = games => {
     const activeGames = this.getActiveGames(games);
     console.log(activeGames);
     this.setState({ activeGames });
@@ -36,10 +38,10 @@ class Start extends React.Component {
 
         if (data.pincode === pincode) {
           gameToJoin = key;
-          return key
+          return key;
         }
 
-        return null
+        return null;
       })
       .filter(Boolean);
 
@@ -47,28 +49,34 @@ class Start extends React.Component {
       console.log(gameToJoin);
       this.redirectToGameLobby(gameToJoin);
     } else {
-      actions.setFieldError('pincode', 'another one')
+      actions.setFieldError('pincode', 'another one');
     }
   };
 
-  redirectToGameLobby = (gameId) => {
+  redirectToGameLobby = gameId => {
     const { history } = this.props;
     history.push(`/lobby/${gameId}/nickname`);
   };
 
   componentDidMount() {
-    games.on('value', (snapshot) => {
+    games.on('value', snapshot => {
       console.log(getToupleFromSnapshot(snapshot.val()));
       this.setActiveGames(getToupleFromSnapshot(snapshot.val()));
     });
-  };
+  }
 
   componentWillUnmount() {
     this.games.off();
   }
 
   render() {
-    return <InsertPincodeForm onSubmit={this.handleInsertPincode} />
+    return (
+      <Fragment>
+        <Moon top="30px" right="10px" />
+        <Moon left="-50px" top="350px" />
+        <InsertPincodeForm onSubmit={this.handleInsertPincode} />
+      </Fragment>
+    );
   }
 }
 
