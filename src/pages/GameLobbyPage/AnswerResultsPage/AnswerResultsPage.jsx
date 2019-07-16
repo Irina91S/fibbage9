@@ -89,7 +89,7 @@ class AnswerResultsPage extends Component {
     fakeAnswers.forEach(answer => {
       const [key, data] = answer;
       const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
-      const questionScore = this.getScoreForQuestion(voteCount, correctAnswer, key);
+      const questionScore = this.getScoreForQuestion(voteCount, correctAnswer, data.authorTeam);
       const teamScore = { [data.authorTeam]: questionScore };
       scores = {...scores, ...teamScore};
     });
