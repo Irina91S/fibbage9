@@ -1,18 +1,13 @@
 @import './styles/settings/settings.core';
-@import './styles/settings/settings.colors';
+@import './styles/tools/tools.mq';
 
 .App {
   padding: $global-spacing-unit;
 
-  header {
-    margin-bottom: $global-spacing-unit-medium;
-  }
-
-  .header {
-    margin-bottom: 0;
-  }
-
-  .subheader {
-    color: $color-gray;
+  main {
+    @include mq($from: tablet) {
+      width: 500px;
+      margin: 0 auto;
+    }
   }
 }

@@ -1,10 +1,10 @@
 @import './styles/settings/settings.colors';
 
+html {
+  overflow: hidden;
+}
+
 body {
   font-family: 'Nunito Sans', sans-serif;
   color: $color-dark;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

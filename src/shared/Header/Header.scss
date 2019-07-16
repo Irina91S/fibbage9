@@ -1,0 +1,14 @@
+@import '../../styles/settings/settings.core';
+@import '../../styles/settings/settings.colors';
+
+.header {
+  margin-bottom: $global-spacing-unit-medium;
+
+  .title {
+    margin-bottom: 0;
+  }
+
+  .subtitle {
+    color: $color-gray;
+  }
+}

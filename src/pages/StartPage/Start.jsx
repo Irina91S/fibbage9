@@ -49,7 +49,7 @@ class Start extends React.Component {
       console.log(gameToJoin);
       this.redirectToGameLobby(gameToJoin);
     } else {
-      actions.setFieldError('pincode', 'another one');
+      actions.setFieldError('pincode', 'There is no active game with this pincode.');
     }
   };
 
