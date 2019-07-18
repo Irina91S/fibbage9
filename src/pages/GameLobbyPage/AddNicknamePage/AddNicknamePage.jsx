@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { databaseRefs } from '../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
+import { Input } from '../../../shared';
+
 class AddNickname extends Component {
   state = {
     error: false,
@@ -104,16 +106,17 @@ class AddNickname extends Component {
           totalScore: 0
         }}
         onSubmit={this.setNickname}
-        render={({ values, handleSubmit }) => (
+        render={({ values, handleSubmit, errors }) => (
           <Form>
             <label>Choose a nickname for your team</label>
-            <Field
+            <Input
               id="nickname"
               name="nickname"
               placeholder="NICKNAME"
               value={values.nickname}
+              errors={errors}
             />
-            <ErrorMessage component="error" name="nickname" />
+            {/* <ErrorMessage component="span" name="nickname" /> */}
             <button onClick={handleSubmit}>YEP, IT'S CRINGE ENOUGH</button>
 
             <footer>

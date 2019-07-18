@@ -1,0 +1,32 @@
+@import 'settings.colors.scss';
+@import 'settings.global.scss';
+@import 'settings.core.scss';
+
+.input {
+  position: relative;
+  margin-bottom: $global-spacing-unit-small;
+  border-radius: $global-radius;
+
+  input {
+    margin-bottom: 0;
+  }
+
+  &.invalid {
+    border: 1px solid $color-danger;
+
+    input {
+      padding-right: $global-spacing-unit-medium;
+      border: 0;
+      color: $color-danger;
+    }
+  }
+
+  .error {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import { Input } from '../../../shared';
+
 const InsertPincodeForm = ({ onSubmit }) => {
   return (
     <Formik
@@ -8,16 +10,17 @@ const InsertPincodeForm = ({ onSubmit }) => {
         pincode: ''
       }}
       onSubmit={onSubmit}
-      render={() => (
+      render={({ errors }) => (
         <Form>
           <label htmlFor="pincode">Enter a PINCODE</label>
-          <Field
+          <Input
             id="pincode"
             name="pincode"
             type="number"
             placeholder="PINCODE"
+            errors={errors}
           />
-          <ErrorMessage component="error" name="pincode" />
+          {/* <ErrorMessage component="span" name="pincode" /> */}
           <button type="submit">JOIN GAME</button>
 
           <footer>
