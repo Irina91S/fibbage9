@@ -1,5 +1,5 @@
-@import './styles/settings/settings.core';
-@import './styles/tools/tools.mq';
+@import 'settings.core';
+@import 'tools.mq';
 
 .App {
   padding: $global-spacing-unit;

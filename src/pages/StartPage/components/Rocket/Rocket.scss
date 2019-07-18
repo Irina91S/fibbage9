@@ -1,0 +1,15 @@
+.rocket-container {
+  width: 100%;
+  position: fixed;
+  bottom: -500px;
+  left: 0;
+  z-index: 1;
+}
+
+.rocket {
+  $width: 60px;
+  width: $width;
+  height: $width;
+  transform: translateX(-50%);
+  background-color: currentColor;
+}

@@ -1,4 +1,4 @@
-@import '../../../styles/settings/settings.colors';
+@import 'settings.colors';
 
 @keyframes float {
   0% {
@@ -21,7 +21,6 @@
   z-index: -1;
   background-color: #dddbfa;
   animation: float 6s ease-in-out infinite;
-  position: reltive;
 
   .crater {
     background-color: $color-secondary;

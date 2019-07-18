@@ -2,14 +2,14 @@ import React, { Fragment } from 'react';
 import { databaseRefs } from './../../lib/refs';
 import { getToupleFromSnapshot } from './../../lib/firebaseUtils';
 
-import InsertPincodeForm from './components/InsertPincodeForm';
-import Moon from './components/Moon';
+import { InsertPincodeForm, Rocket, Moon } from './components';
 
 const { games } = databaseRefs;
 
 class Start extends React.Component {
   state = {
-    activeGames: []
+    activeGames: [],
+    rocketActive: false
   };
 
   getActiveGames = games => {
@@ -46,10 +46,16 @@ class Start extends React.Component {
       .filter(Boolean);
 
     if (pincodeMatchGame.length === 1) {
-      console.log(gameToJoin);
-      this.redirectToGameLobby(gameToJoin);
+      this.setState({ rocketActive: true });
+
+      setTimeout(() => {
+        this.redirectToGameLobby(gameToJoin);
+      }, 1000);
     } else {
-      actions.setFieldError('pincode', 'There is no active game with this pincode.');
+      actions.setFieldError(
+        'pincode',
+        'There is no active game with this pincode.'
+      );
     }
   };
 
@@ -72,6 +78,7 @@ class Start extends React.Component {
   render() {
     return (
       <Fragment>
+        <Rocket active={this.state.rocketActive} />
         <Moon top="30px" right="10px" />
         <Moon left="-50px" top="350px" />
         <InsertPincodeForm onSubmit={this.handleInsertPincode} />

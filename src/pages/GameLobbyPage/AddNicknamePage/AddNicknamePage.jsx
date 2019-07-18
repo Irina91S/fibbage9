@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { databaseRefs } from "../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { databaseRefs } from '../../../lib/refs';
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
 class AddNickname extends Component {
   state = {
@@ -22,7 +22,7 @@ class AddNickname extends Component {
       }
     } = this.props;
     this.gameRef = databaseRefs.game(gameId);
-    this.gameRef.on("value", snapshot => {
+    this.gameRef.on('value', snapshot => {
       const { players, limit } = snapshot.val();
       this.setState({
         players: players ? getToupleFromSnapshot(players) : [],
@@ -50,8 +50,8 @@ class AddNickname extends Component {
 
     if (!newValues.nickname || newValues.nickname.trim().length === 0) {
       actions.setFieldError(
-        "nickname",
-        "Lol, we actually thought of this, add a legit name"
+        'nickname',
+        'Lol, we actually thought of this, add a legit name'
       );
       return;
     }
@@ -59,8 +59,8 @@ class AddNickname extends Component {
     if (playersLength < limit) {
       if (this.nicknameAlreadySet(newValues.nickname)) {
         actions.setFieldError(
-          "nickname",
-          "Someone already took your nickname, pick something else"
+          'nickname',
+          'Someone already took your nickname, pick something else'
         );
         return;
       }
@@ -69,14 +69,14 @@ class AddNickname extends Component {
       this.playersRef.push(newValues).then(snap => {
         const playerId = snap.key;
         localStorage.setItem(
-          "playerInfo",
+          'playerInfo',
           JSON.stringify({
             playerId,
             playerName: newValues.nickname
           })
         );
 
-        const waitScreen = `/lobby/${gameId}/wait-players`
+        const waitScreen = `/lobby/${gameId}/wait-players`;
         history.push(waitScreen);
       });
     } else {
@@ -100,7 +100,7 @@ class AddNickname extends Component {
     ) : (
       <Formik
         initialValues={{
-          nickname: "",
+          nickname: '',
           totalScore: 0
         }}
         onSubmit={this.setNickname}
@@ -113,11 +113,13 @@ class AddNickname extends Component {
               placeholder="NICKNAME"
               value={values.nickname}
             />
-            <ErrorMessage name="nickname" />
+            <ErrorMessage component="error" name="nickname" />
             <button onClick={handleSubmit}>YEP, IT'S CRINGE ENOUGH</button>
 
-            <footer>Add a nickname for your team so we know what to display on the scoreboard. 
-              You want that 1st place, don't you? We know you do.</footer>
+            <footer>
+              Add a nickname for your team so we know what to display on the
+              scoreboard. You want that 1st place, don't you? We know you do.
+            </footer>
           </Form>
         )}
       />

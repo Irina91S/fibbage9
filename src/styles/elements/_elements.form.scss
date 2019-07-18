@@ -7,7 +7,15 @@ form {
     margin-bottom: $global-spacing-unit-small;
   }
 
-  input + div {
+  input,
+  button {
+    &:not(.static) {
+      position: relative;
+      left: -400px;
+    }
+  }
+
+  input + error {
     position: relative;
     top: -$global-spacing-unit-small;
     color: $color-danger;

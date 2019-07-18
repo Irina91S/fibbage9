@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { Fragment, useEffect } from 'react';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import anime from 'animejs';
 import './App.scss';
 
 import Start from './pages/StartPage/Start';
@@ -15,9 +16,18 @@ import {
 
 import { Header } from './shared';
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    // Each time the route changes, run this animation on form elements
+    anime({
+      targets: ['input', 'button'],
+      translateX: 400,
+      delay: anime.stagger(100)
+    });
+  }, [props]);
+
   return (
-    <Router>
+    <Fragment>
       <div className="App">
         <Header title="Fibbage9" subtitle="Welcome to FIBBAGE, Levi9 version" />
         <main>
@@ -31,8 +41,8 @@ function App() {
           <Route exact path="/lobby/:gameId/total-score" component={TotalScoresPage} />
         </main>
       </div>
-    </Router>
+    </Fragment>
   );
 }
 
-export default App;
+export default withRouter(App);
