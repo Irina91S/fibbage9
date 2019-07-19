@@ -7,11 +7,14 @@ form {
     margin-bottom: $global-spacing-unit-small;
   }
 
+  label,
   input,
-  button {
+  button,
+  footer {
     &:not(.static) {
       position: relative;
-      left: -400px;
+      top: -15px;
+      opacity: 0;
     }
   }
 

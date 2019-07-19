@@ -4,6 +4,13 @@
 .header {
   margin-bottom: $global-spacing-unit-medium;
 
+  .title,
+  .subtitle {
+    position: relative;
+    top: -15px;
+    opacity: 0;
+  }
+
   .title {
     margin-bottom: 0;
   }
