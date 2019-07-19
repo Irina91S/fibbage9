@@ -22,6 +22,7 @@ const Input = props => {
               strokeDashoffset: [anime.setDashoffset, 0],
               easing: 'easeInOutCubic',
               duration: 500,
+              delay: anime.stagger(200),
               begin: function() {
                 const svg = document.querySelector('.cross');
                 for (const child of svg.children) {
