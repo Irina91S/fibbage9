@@ -22,7 +22,8 @@ function App(props) {
     anime({
       targets: ['input', 'button'],
       translateX: 400,
-      delay: anime.stagger(100)
+      delay: anime.stagger(100),
+      easing: 'easeInOutQuint'
     });
   }, [props]);
 
@@ -32,13 +33,41 @@ function App(props) {
         <Header title="Fibbage9" subtitle="Welcome to FIBBAGE, Levi9 version" />
         <main>
           <Route exact path="/" component={Start} />
-          <Route exact path="/lobby/:gameId/questions/:questionId/addAnswer" component={AddAnswerPage} />
-          <Route exact path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
-          <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
-          <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
-          <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
-          <Route exact path="/lobby/:gameId/questions/:questionId/score" component={ScorePage} />
-          <Route exact path="/lobby/:gameId/total-score" component={TotalScoresPage} />
+          <Route
+            exact
+            path="/lobby/:gameId/questions/:questionId/addAnswer"
+            component={AddAnswerPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/:questionId/pick-answer"
+            component={PickAnswerPage}
+          />
+          <Route
+            exact
+            path="/lobby/:id/questions/:questionId/results"
+            component={AnswerResultsPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/nickname"
+            component={AddNicknamePage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/wait-players"
+            component={WaitPlayersPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/questions/:questionId/score"
+            component={ScorePage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/total-score"
+            component={TotalScoresPage}
+          />
         </main>
       </div>
     </Fragment>

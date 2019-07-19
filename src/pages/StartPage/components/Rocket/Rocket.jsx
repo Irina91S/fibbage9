@@ -27,7 +27,7 @@ const entryAnimationConfig = {
   targets: '.rocket-container',
   translateY: -550,
   opacity: 1,
-  easing: 'easeInOutExpo'
+  easing: 'easeInOutQuint'
 };
 
 const leaveAnimationConfig = {

@@ -1,14 +1,12 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 
 import { Input } from '../../../shared';
 
 const InsertPincodeForm = ({ onSubmit }) => {
   return (
     <Formik
-      initialValues={{
-        pincode: ''
-      }}
+      initialValues={{ pincode: '' }}
       onSubmit={onSubmit}
       render={({ errors }) => (
         <Form>

@@ -1,6 +1,7 @@
 import React from 'react';
 import anime from 'animejs';
 import SVG from 'react-inlinesvg';
+import { Field } from 'formik';
 
 import xMark from './x-mark.svg';
 import './Input.scss';
@@ -10,7 +11,7 @@ const Input = props => {
 
   return (
     <div className={`input ${invalid && 'invalid'}`}>
-      <input {...props} />
+      <Field {...props} />
       {invalid && (
         <SVG
           className="error"
@@ -21,8 +22,8 @@ const Input = props => {
               targets: '.cross-path',
               strokeDashoffset: [anime.setDashoffset, 0],
               easing: 'easeInOutCubic',
-              duration: 500,
-              delay: anime.stagger(200),
+              duration: 300,
+              delay: anime.stagger(100),
               begin: function() {
                 const svg = document.querySelector('.cross');
                 for (const child of svg.children) {
