@@ -15,7 +15,7 @@ export const Timer = ({
   onTimerEnd = noop
 }) => {
   const { seconds } = useTimer({
-    expiryTimestamp: endTime.getTime(),
+    expiryTimestamp: endTime,
     onExpire: onTimerEnd
   });
 
