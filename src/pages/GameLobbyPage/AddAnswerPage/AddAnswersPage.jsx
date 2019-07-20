@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { databaseRefs } from "./../../../lib/refs";
-import { Formik, Form, Field } from "formik";
-import WaitingScreen from "../WaitingScreen/WaitingScreen";
+import React, { Component } from 'react';
+import { databaseRefs } from './../../../lib/refs';
+import { Formik, Form, Field } from 'formik';
+import WaitingScreen from '../WaitingScreen/WaitingScreen';
 
-import { Question } from '../../../shared';
+import { Question, Timer } from '../../../shared';
 
 const { question } = databaseRefs;
 
 class AddAnswerPage extends Component {
-  questionRef = "";
+  questionRef = '';
   gameRef = '';
   state = {
-    id: "",
-    questionId: "",
+    id: '',
+    questionId: '',
     fakeAnswers: {},
-    answer: "",
-    question: "",
+    answer: '',
+    question: '',
     isCorrectAnswer: false,
     correctAnswer: '',
     isSubmitted: false
@@ -23,24 +23,22 @@ class AddAnswerPage extends Component {
 
   componentDidMount() {
     const { gameId, questionId } = this.props.match.params;
-    this.setState({
-      gameId,
-      questionId
-    });
+    this.setState({ gameId, questionId });
 
     this.questionRef = question(gameId, questionId);
 
-    this.questionRef.on("value", snapshot => {
-      const { question, answer: { value } } = snapshot.val();
-      this.setState({
+    this.questionRef.on('value', snapshot => {
+      const {
         question,
-        correctAnswer: value
-      });
+        answer: { value }
+      } = snapshot.val();
+
+      this.setState({ question, correctAnswer: value });
     });
   }
 
   componentWillUnmount() {
-    this.questionRef.off("value");
+    this.questionRef.off('value');
   }
 
   handleAnswerSubmit = async ({ answer }, actions) => {
@@ -55,8 +53,8 @@ class AddAnswerPage extends Component {
         params: { gameId }
       }
     } = this.props;
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
-    await this.questionRef.child("/fakeAnswers").push({
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+    await this.questionRef.child('/fakeAnswers').push({
       value: answer,
       authorTeam: playerInfo.playerId,
       voteCount: 0,
@@ -66,35 +64,48 @@ class AddAnswerPage extends Component {
 
   resetIsCorrectAnswer = () => {
     this.setState({ isCorrectAnswer: false });
-  }
+  };
 
   render() {
     const { question, isCorrectAnswer, isSubmitted } = this.state;
+    const future = new Date(new Date().getTime() + 30000);
     return (
       <div>
+        <Timer endTime={future} />
         <Question value={question} />
-        
+
         <Formik
           initialValues={{
-            answer: ""
+            answer: ''
           }}
           onSubmit={this.handleAnswerSubmit}
           render={({ values, handleChange }) => (
             <Form>
-              <label for="answer">Please add your answer:</label>
+              <label htmlFor="answer">Please add your answer:</label>
               <Field
                 id="answer"
                 name="answer"
                 type="text"
                 placeholder="ANSWER"
                 value={values.answer}
-                onChange={(e) => { handleChange(e); this.resetIsCorrectAnswer(); }}
+                onChange={e => {
+                  handleChange(e);
+                  this.resetIsCorrectAnswer();
+                }}
               />
-              {isCorrectAnswer ? (<div>You entered the correct answer. Please enter a fake one</div>) : ''}
+              {isCorrectAnswer ? (
+                <div>
+                  You entered the correct answer. Please enter a fake one
+                </div>
+              ) : (
+                ''
+              )}
               <button type="submit">I HOPE IT WORKS</button>
 
-              <footer>Answer your question, preferably with some bullshit answer to trick the other teams
-                into picking your bullshit and get points when they do it
+              <footer>
+                Answer your question, preferably with some bullshit answer to
+                trick the other teams into picking your bullshit and get points
+                when they do it
               </footer>
             </Form>
           )}
