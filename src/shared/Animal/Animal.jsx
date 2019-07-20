@@ -1,15 +1,24 @@
-import React from 'react';
-import './Animal.scss';
+import React from "react";
+import "./Animal.scss";
+import { animalSvgs } from "../assets/AnimalsIllustrations/index";
 
-const Animal = ({ className, ...rest }) => {
+const Animal = ({ animal, className, ...rest }) => {
+
+    const filteredAnimals = animalSvgs.filter(animalSvg => {
+      const svgName = animalSvg
+        .type.name.toLowerCase()
+        .substring(3);
+      return svgName.includes(animal);
+    });
+
   return (
     <div
       {...rest}
-      className={`o-layout--stretch o-layout--center u-1/3 ${
-        className ? className : ''
+      className={`o-layout--stretch o-layout--center  ${
+        className ? className : ""
       }`}
     >
-      <div className="animal" />
+      <div >{filteredAnimals}</div>
     </div>
   );
 };

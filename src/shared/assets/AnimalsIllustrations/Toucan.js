@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgToucan = props => (
-  <svg height={512} width={512}  viewBox="0 0 512 512" {...props}>
+  <svg height={80} width={150}  viewBox="0 0 100 500" {...props}>
     <path
       d="M261.51 145.348c2.644-18.727 3.907-31.361 3.907-31.361s88.146-70.517 192.943 0 20.568 249.748 38.197 315.367H308.511L261.51 145.348z"
       fill="#3a484a"

@@ -1,3 +1,4 @@
+import React from "react";
 import Bear from "./Bear";
 import Bee from "./Bee";
 import Bird from "./Bird";
@@ -27,33 +28,33 @@ import Owl from "./Owl";
 import Panther from "./Panther";
 import Llama from "./Llama";
 
-export default {
-  Bear,
-  Bee,
-  Bird,
-  Butterfly,
-  Cat,
-  Chameleon,
-  Cow,
-  Crab,
-  Dog,
-  Duckling,
-  Fish,
-  Fox,
-  Frog,
-  Giraffe,
-  Hedgehog,
-  Jellyfish,
-  Lion,
-  Macaw,
-  Monkey,
-  PandaBear,
-  Sloth,
-  Turtle,
-  Pig,
-  Tiger,
-  Toucan,
-  Owl,
-  Panther,
-  Llama
-};
+export const animalSvgs = [
+ <Bear />,
+ <Bee />,
+ <Bird />,
+ <Butterfly />,
+ <Cat />,
+ <Chameleon />,
+ <Cow />,
+ <Crab />,
+ <Dog />,
+ <Duckling />,
+ <Fox />,
+ <Fish />,
+ <Frog />,
+ <Giraffe />,
+ <Hedgehog />,
+ <Jellyfish />,
+ <Lion />,
+ <Macaw />,
+ <Monkey />,
+ <PandaBear />,
+ <Sloth />,
+ <Turtle />,
+ <Pig />,
+ <Tiger />,
+ <Toucan />,
+ <Owl />,
+ <Panther />,
+ <Llama />
+];
