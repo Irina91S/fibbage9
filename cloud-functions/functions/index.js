@@ -26,8 +26,6 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
         isTaken: true
       });
 
-    delete availableAnimal.isTaken;
-
     snapshot.ref.set({
       ...data,
       animal: {
