@@ -74,32 +74,6 @@ class AddNickname extends Component {
         return;
       }
 
-      // const response = await this.playersRef.push(newValues);
-      // const { animals } = this.state;
-      // const availableAnimal = animals.find((animal) => {
-      //   const [id, animalObj] = animal;
-
-      //   if (!animalObj.isTaken) {
-      //     return animal;
-      //   }
-
-      //   return;
-      // });
-      // console.log(availableAnimal);
-      // this.gameRef
-      //   .child('/animals')
-      //   .child(`/${availableAnimal[0]}`)
-      //   .set({ 
-      //     ...availableAnimal[1],
-      //     isTaken: true
-      //    });
-
-      // this.playersRef.child(`/${response.key}/animal`)
-      //    .set({
-      //      animal: availableAnimal[1].animal,
-      //      color: availableAnimal[1].color
-      //    });
-
       this.playersRef.push(newValues).then(snap => {
         const playerId = snap.key;
         localStorage.setItem(
