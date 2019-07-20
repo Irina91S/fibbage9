@@ -10,7 +10,9 @@ const InsertPincodeForm = ({ onSubmit }) => {
       onSubmit={onSubmit}
       render={({ errors }) => (
         <Form>
-          <label htmlFor="pincode">Enter a PINCODE</label>
+          <label htmlFor="pincode" className="page-transition-elem">
+            Enter a PINCODE
+          </label>
           <Input
             id="pincode"
             name="pincode"
@@ -19,9 +21,11 @@ const InsertPincodeForm = ({ onSubmit }) => {
             errors={errors}
           />
           {/* <ErrorMessage component="span" name="pincode" /> */}
-          <button type="submit">JOIN GAME</button>
+          <button type="submit" className="page-transition-elem">
+            JOIN GAME
+          </button>
 
-          <footer>
+          <footer className="page-transition-elem">
             In order to be able to join a game room you need to obtain a PINCODE
             from the creators of that game room.
           </footer>

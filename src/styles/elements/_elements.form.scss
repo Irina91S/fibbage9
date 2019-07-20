@@ -7,17 +7,6 @@ form {
     margin-bottom: $global-spacing-unit-small;
   }
 
-  label,
-  input,
-  button,
-  footer {
-    &:not(.static) {
-      position: relative;
-      top: -15px;
-      opacity: 0;
-    }
-  }
-
   input + span {
     position: relative;
     top: -$global-spacing-unit-small;

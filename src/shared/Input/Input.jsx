@@ -10,7 +10,7 @@ const Input = props => {
   const invalid = Object.keys(props.errors).length > 0;
 
   return (
-    <div className={`input ${invalid && 'invalid'}`}>
+    <div className={`page-transition-elem input ${invalid && 'invalid'}`}>
       <Field {...props} />
       {invalid && (
         <SVG

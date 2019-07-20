@@ -108,7 +108,9 @@ class AddNickname extends Component {
         onSubmit={this.setNickname}
         render={({ values, handleSubmit, errors }) => (
           <Form>
-            <label>Choose a nickname for your team</label>
+            <label className="page-transition-elem">
+              Choose a nickname for your team
+            </label>
             <Input
               id="nickname"
               name="nickname"
@@ -117,9 +119,11 @@ class AddNickname extends Component {
               errors={errors}
             />
             {/* <ErrorMessage component="span" name="nickname" /> */}
-            <button onClick={handleSubmit}>YEP, IT'S CRINGE ENOUGH</button>
+            <button onClick={handleSubmit} className="page-transition-elem">
+              YEP, IT'S CRINGE ENOUGH
+            </button>
 
-            <footer>
+            <footer className="page-transition-elem">
               Add a nickname for your team so we know what to display on the
               scoreboard. You want that 1st place, don't you? We know you do.
             </footer>

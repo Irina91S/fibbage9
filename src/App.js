@@ -18,25 +18,14 @@ import { Header } from './shared';
 
 function App(props) {
   useEffect(() => {
-    var tl = anime.timeline({ easing: 'easeOutQuint' });
-
-    const opts = { translateY: 15, opacity: 1 };
-
-    tl.add({ targets: '.title', ...opts })
-      .add({ targets: '.subtitle', ...opts }, 100)
-      .add({ targets: 'label', ...opts }, 200)
-      .add({ targets: 'input', ...opts }, 300)
-      .add({ targets: 'button', ...opts }, 400)
-      .add({ targets: 'footer', ...opts }, 500);
-
-    // Each time the route changes, run this animation on form elements (OLD!!!)
-    // anime({
-    //   targets: ['title', 'input', 'button'],
-    //   translateX: 400,
-    //   opacity: 1,
-    //   delay: anime.stagger(100),
-    //   easing: 'easeInOutQuint'
-    // });
+    // Each time the route changes, run this staggering animation
+    anime({
+      targets: '.page-transition-elem',
+      translateY: 15,
+      opacity: 1,
+      delay: anime.stagger(100),
+      easing: 'easeOutQuint'
+    });
   }, [props]);
 
   return (
