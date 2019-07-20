@@ -1,0 +1,22 @@
+@import 'settings';
+
+.CircularProgressbar {
+  .CircularProgressbar {
+    &-trail {
+      stroke: white;
+    }
+
+    &-path {
+      stroke-linecap: butt;
+      stroke: $color-warning;
+    }
+
+    &-text {
+      font-weight: bold;
+      font-size: 40px;
+      vertical-align: bottom;
+      fill: $color-warning;
+      transform: translateY(4px);
+    }
+  }
+}

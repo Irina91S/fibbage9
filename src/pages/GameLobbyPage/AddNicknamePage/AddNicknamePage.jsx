@@ -17,6 +17,7 @@ class AddNickname extends Component {
 
   gameRef;
   playersRef;
+  playerRef;
 
   componentDidMount() {
     const {
@@ -43,6 +44,10 @@ class AddNickname extends Component {
 
     if (this.playersRef) {
       this.playersRef.off();
+    }
+
+    if (this.playerRef) {
+      this.playerRef.off()
     }
   }
 
@@ -83,9 +88,22 @@ class AddNickname extends Component {
             playerName: newValues.nickname
           })
         );
+        
+        const {
+          match: {
+            params: { gameId }
+          }
+        } = this.props;
 
-        const waitScreen = `/lobby/${gameId}/wait-players`;
-        history.push(waitScreen);
+        this.playerRef = databaseRefs.player(gameId, playerId);
+
+        this.playerRef.on('value', snapshot => {
+          console.log(snapshot);
+          if (snapshot.val().animal) {
+            const waitScreen = `/lobby/${gameId}/wait-players`;
+            history.push(waitScreen);
+          }
+        });
       });
     } else {
       this.setState({ error: true });

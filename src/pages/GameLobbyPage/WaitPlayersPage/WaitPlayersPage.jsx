@@ -58,7 +58,10 @@ class WaitPlayersPage extends Component {
   };
 
   componentWillUnmount() {
-    this.gameRef.off();
+    if (this.gameRef) {
+      this.gameRef.off();
+    }
+
     this.setPlayerNotReady();
   }
 
