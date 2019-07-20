@@ -81,7 +81,7 @@ class AddAnswerPage extends Component {
     const future = new Date(new Date().getTime() + 30000);
     return (
       <div>
-        <Timer endTime={future} />
+        {/* <Timer endTime={future} /> */}
         <Question value={question} />
 
         <Formik
