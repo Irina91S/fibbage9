@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgFrog = props => (
-  <svg height={512} width={512} viewBox="0 0 512 512" data-name="Layer 1" {...props}>
+  <svg height={80} width={150}  viewBox="0 0 100 500" data-name="Layer 1" {...props}>
     <path
       d="M316.07 427.11h-60.83v-1.07c50.11 0 92.7-50.57 108.18-120.98 0-.01 0-.01.01-.02 32.29-86.93 90.48-121.89 112.96-112.32s38.69 70.47-26.37 139.09-90.82 94.76-90.82 94.76v.54z"
       fill="#f4b844"

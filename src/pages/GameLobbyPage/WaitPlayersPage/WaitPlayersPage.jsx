@@ -75,7 +75,7 @@ class WaitPlayersPage extends Component {
           key={key}
           className="team o-layout--stretch u-padding-small u-margin-bottom-small"
         >
-          <Animal className="u-margin-right-small" />
+          <Animal className="u-margin-right-small" animal={data.animal.animal}/>
           <Card
             className="player u-margin-vertical-small u-weight-bold u-2/3"
             style={style}

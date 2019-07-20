@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import anime from 'animejs';
-import { databaseRefs } from './../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
-import { useCurrentPlayer } from '../../../hooks';
+import React, { Component } from "react";
+import anime from "animejs";
+import { databaseRefs } from "./../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import { useCurrentPlayer } from "../../../hooks";
 
-import './AnswerResultsPage.scss';
+import "./AnswerResultsPage.scss";
 
-import { Card, Animal } from '../../../shared';
+import { Card, Animal } from "../../../shared";
 
 const { fakeAnswers, question, players } = databaseRefs;
 
@@ -19,33 +19,34 @@ class AnswerResultsPage extends Component {
     fakeAnswers: [],
     questionScore: 0,
     correctAnswer: {},
-    players: []
+    players: [],
+    playerAnimal: []
   };
 
   componentDidMount() {
     const { id, questionId } = this.props.match.params;
+
     this.fakeAnswersRef = fakeAnswers(id, questionId);
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
 
     const currentPlayer = useCurrentPlayer();
 
-    this.fakeAnswersRef.on('value', snapshot => {
+    this.fakeAnswersRef.on("value", snapshot => {
       const fakeAnswers = getToupleFromSnapshot(snapshot.val()).filter(
         answer => answer[1].authorTeam !== currentPlayer.playerId
       );
-
       this.setState({ fakeAnswers });
     });
 
-    this.questionRef.on('value', snapshot => {
+    this.questionRef.on("value", snapshot => {
       this.setState({
         questionScore: snapshot.val().score,
         correctAnswer: snapshot.val().answer
       });
     });
 
-    this.playersRef.on('value', snapshot => {
+    this.playersRef.on("value", snapshot => {
       this.setState({
         players: getToupleFromSnapshot(snapshot.val())
       });
@@ -63,11 +64,11 @@ class AnswerResultsPage extends Component {
       this.updatePlayersScores();
 
     anime({
-      targets: '.card.anime',
+      targets: ".card.anime",
       translateX: [-1000, 0],
       opacity: [0, 1],
       delay: anime.stagger(100),
-      easing: 'easeInOutQuint',
+      easing: "easeInOutQuint",
       duration: 400
     });
   }
@@ -77,7 +78,7 @@ class AnswerResultsPage extends Component {
       ? getToupleFromSnapshot(votedBy).map((element, key) => (
           <span key={key}>{`${element[1]}  `}</span>
         ))
-      : '';
+      : "";
   };
 
   getScoreForQuestion = (votesCount, correctAnswer, authorTeam) => {
@@ -105,7 +106,7 @@ class AnswerResultsPage extends Component {
       const updatedScore = totalScore + newScore;
       this.playersRef
         .child(key)
-        .child('/totalScore')
+        .child("/totalScore")
         .set(updatedScore);
     });
   };
@@ -131,7 +132,7 @@ class AnswerResultsPage extends Component {
 
   getTeamNameById = teamId => {
     const { players } = this.state;
-    let teamName = '';
+    let teamName = "";
     players.forEach(player => {
       const [key, data] = player;
       if (key === teamId) {
@@ -142,9 +143,24 @@ class AnswerResultsPage extends Component {
     return teamName;
   };
 
+  getAnimalByTeam = teamId => {
+    const { players } = this.state;
+    let teamStyle = {};
+    players.forEach(player => {
+      const [key, data] = player;
+      if (key === teamId) {
+        teamStyle.animal = data.animal.animal;
+        teamStyle.color = data.animal.color;
+        return;
+      }
+    });
+    return teamStyle;
+  };
+
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
-
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    console.log(playerInfo);
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">
@@ -160,11 +176,12 @@ class AnswerResultsPage extends Component {
         </div>
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
-          console.log(data);
+          const teamStyle = this.getAnimalByTeam(data.authorTeam);
           return (
             <Card
               key={key}
-              className="anime o-layout--stretch u-margin-bottom-small"
+              className="anime o-layout--flex u-margin-bottom-small"
+              style={{ color: teamStyle.color }}
             >
               <div className="fake-answer u-2/3">
                 <div className="team-name u-weight-bold">
@@ -174,18 +191,15 @@ class AnswerResultsPage extends Component {
                 <div className="answer">{data.value}</div>
                 <div className="votes">Votes: {data.voteCount}</div>
                 <div className="voted-by ">
-                  {data.votedBy && Object.keys(data.votedBy).map(key => (
-                    <div
-                      key={key}
-                      className="animal"
-                      style={{ width: 'max-content' }}
-                    >
-                      {data.votedBy[key]}
-                    </div>
-                  ))}
+                  {data.votedBy &&
+                    Object.keys(data.votedBy).map(key => (
+                      <div key={key} style={{ width: "40px", height: "60px" }}>
+                        <Animal animal={data.votedBy[key].animal} />
+                      </div>
+                    ))}
                 </div>
               </div>
-              <Animal />
+              <Animal animal={teamStyle.animal} />
             </Card>
           );
         })}

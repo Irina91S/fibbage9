@@ -8,7 +8,6 @@ import './PickAnswerPage.scss';
 import { useCurrentPlayer } from '../../../hooks';
 import WaitingScreen from '../WaitingScreen/WaitingScreen';
 import { Card } from '../../../shared';
-
 const { lobby } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -18,7 +17,14 @@ class PickAnswerPage extends Component {
     isSubmitted: false
   };
 
-  setAnswer = (gameId, questionId, fakeAnswerId, playerId, playerName) => {
+  setAnswer = (
+    gameId,
+    questionId,
+    fakeAnswerId,
+    playerId,
+    playerName,
+    animal
+  ) => {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
@@ -27,9 +33,18 @@ class PickAnswerPage extends Component {
       .child('/votedBy')
       .child(playerId)
       .set(playerName);
+
+    lobbyRef
+      .child("/fakeAnswers")
+      .child(fakeAnswerId)
+      .child("/votedBy")
+      .child(playerId)
+      .child("/animal")
+      .set(animal);
   };
 
-  setCorrectAnswer = (gameId, questionId, playerId, playerName) => {
+
+  setCorrectAnswer = (gameId, questionId, playerId, playerName, animal) => {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
@@ -37,13 +52,26 @@ class PickAnswerPage extends Component {
       .child('/votedBy')
       .child(playerId)
       .set(playerName);
+
+    lobbyRef
+      .child("/answer")
+      .child("/votedBy")
+      .child(playerId)
+      .set(playerName)
+      .child("/animal")
+      .set(animal);
   };
 
   selectCorrectAnswer = () => {
-    console.log('-----------------------correct answer');
     this.setState({ isSubmitted: true });
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-    const { playerId, playerName } = playerInfo;
+
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const {
+      playerId,
+      playerName,
+      animal: { animal }
+    } = playerInfo;
+
 
     const {
       match: {
@@ -51,14 +79,19 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    this.setCorrectAnswer(gameId, questionId, playerId, playerName);
+    this.setCorrectAnswer(gameId, questionId, playerId, playerName, animal);
   };
 
   selectAnswer = fakeAnswerId => {
-    console.log('------------------------select answer');
     this.setState({ isSubmitted: true });
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-    const { playerId, playerName } = playerInfo;
+
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const {
+      playerId,
+      playerName,
+      animal: { animal }
+    } = playerInfo.playerInfo;
+
 
     const {
       match: {
@@ -66,7 +99,14 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    this.setAnswer(gameId, questionId, fakeAnswerId, playerId, playerName);
+    this.setAnswer(
+      gameId,
+      questionId,
+      fakeAnswerId,
+      playerId,
+      playerName,
+      animal
+    );
   };
 
   componentDidMount() {
@@ -79,7 +119,6 @@ class PickAnswerPage extends Component {
 
     lobbyRef.on('value', snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
-      console.log(snapshot.val());
 
       const correctAnswer = snapshot.val().answer;
       if (givenAnswers) {
@@ -138,6 +177,7 @@ class PickAnswerPage extends Component {
     allAnswers.forEach((answer, i) => (answer.selected = i == index));
     this.setState({ allAnswers });
   };
+
 
   render() {
     const { allAnswers, isSubmitted } = this.state;
