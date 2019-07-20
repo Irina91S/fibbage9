@@ -150,7 +150,7 @@ class AnswerResultsPage extends Component {
       const [key, data] = player;
       if (key === teamId) {
         teamStyle.animal = data.animal.animal;
-        teamStyle.color = data.animal.color
+        teamStyle.color = data.animal.color;
         return;
       }
     });
@@ -159,7 +159,8 @@ class AnswerResultsPage extends Component {
 
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
-
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    console.log(playerInfo);
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">
@@ -175,13 +176,12 @@ class AnswerResultsPage extends Component {
         </div>
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
-          const teamStyle = this.getAnimalByTeam(data.authorTeam)
-
+          const teamStyle = this.getAnimalByTeam(data.authorTeam);
           return (
             <Card
               key={key}
               className="anime o-layout--flex u-margin-bottom-small"
-              style={{color: teamStyle.color}}
+              style={{ color: teamStyle.color }}
             >
               <div className="fake-answer u-2/3">
                 <div className="team-name u-weight-bold">
@@ -193,12 +193,8 @@ class AnswerResultsPage extends Component {
                 <div className="voted-by ">
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <div
-                        key={key}
-                        className="animal"
-                        style={{ width: "max-content" }}
-                      >
-                        <Animal animal={data.votedBy[key]} />
+                      <div key={key} style={{ width: "40px", height: "60px" }}>
+                        <Animal animal={data.votedBy[key].animal} />
                       </div>
                     ))}
                 </div>
