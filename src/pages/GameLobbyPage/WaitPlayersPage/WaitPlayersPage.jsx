@@ -27,8 +27,6 @@ class WaitPlayersPage extends Component {
     this.gameRef = databaseRefs.game(gameId);
     this.playerRef = databaseRefs.player(gameId, playerId);
 
-    this.playerRef.child('/isReady').set(true);
-
     this.gameRef.on('value', snapshot => {
       const { players } = snapshot.val();
       this.setState({ players: getToupleFromSnapshot(players) });
@@ -57,7 +55,6 @@ class WaitPlayersPage extends Component {
     const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { playerId } = playerInfo;
     this.playerRef = databaseRefs.player(gameId, playerId);
-    this.playerRef.child('/isReady').set(false);
   };
 
   componentWillUnmount() {
