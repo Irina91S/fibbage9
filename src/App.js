@@ -19,12 +19,13 @@ import { Header } from './shared';
 function App(props) {
   useEffect(() => {
     // Each time the route changes, run this staggering animation
+
     anime({
       targets: '.page-transition-elem',
-      translateY: 15,
+      translateY: 30,
       opacity: 1,
       delay: anime.stagger(100),
-      easing: 'easeOutQuint'
+      easing: 'cubicBezier(0, 0.45, 0.74, 0.77)'
     });
   }, [props]);
 

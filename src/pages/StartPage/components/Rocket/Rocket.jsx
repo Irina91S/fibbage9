@@ -1,10 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Rocket.scss';
 
 import anime from 'animejs';
 
 const Rocket = ({ active = false }) => {
   useEffect(() => {
+    // When the page first loads, set the position of the rocket
+    // so that it will not be pushed up when opening keyboard on phone
+    // console.log(window.innerHeight);
+    const rocket = document.querySelector('.rocket-container');
+    // console.dir(rocket);
+    rocket.style.top = `calc(${window.innerHeight}px + 450px)`;
+
     anime(entryAnimationConfig);
   }, []);
 
