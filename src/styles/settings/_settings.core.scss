@@ -28,13 +28,14 @@ $global-spacing-unit-factor-huge: 16 !default; // 96px
 $global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny !default;
 $global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small !default;
 $global-spacing-unit: $global-baseline * $global-spacing-unit-factor !default;
-$global-spacing-unit-medium: $global-baseline * $global-spacing-unit-factor-medium !default;
+$global-spacing-unit-medium: $global-baseline *
+  $global-spacing-unit-factor-medium !default;
 $global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large !default;
 $global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge !default;
 
 // Base typographical styles.
 
-$global-font-size: 14px !default;
+$global-font-size: 16px !default;
 $global-line-height: $global-spacing-unit !default;
 
 // Check that the chosen font rules are pixel numbers.

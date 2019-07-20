@@ -1,0 +1,27 @@
+@import 'settings';
+
+.answer-results {
+  .score {
+    min-width: $global-spacing-unit-large;
+  }
+
+  .correct-answer {
+    flex: 1;
+  }
+
+  .fake-answer {
+    color: $color-main;
+
+    .team-name {
+      font-size: 16px;
+    }
+  }
+
+  .animal {
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    align-self: center;
+    justify-self: center;
+  }
+}

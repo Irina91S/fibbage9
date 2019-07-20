@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import anime from 'animejs';
 import { databaseRefs } from './../../../lib/refs';
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 import { useCurrentPlayer } from '../../../hooks';
+
+import './AnswerResultsPage.scss';
+
+import { Card } from '../../../shared';
 
 const { fakeAnswers, question, players } = databaseRefs;
 
@@ -56,6 +61,15 @@ class AnswerResultsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.players.length != this.state.players.length)
       this.updatePlayersScores();
+
+    anime({
+      targets: '.card.anime',
+      translateX: [-1000, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(100),
+      easing: 'easeInOutQuint',
+      duration: 400
+    });
   }
 
   getVotes = votedBy => {
@@ -102,6 +116,8 @@ class AnswerResultsPage extends Component {
     fakeAnswers.forEach(answer => {
       const [key, data] = answer;
       const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
+      data.voteCount = voteCount;
+
       const questionScore = this.getScoreForQuestion(
         voteCount,
         correctAnswer,
@@ -128,39 +144,47 @@ class AnswerResultsPage extends Component {
 
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
+
     return (
-      <div>
-        These are the answers:
-        <div>
-          The correct answer:
-          {correctAnswer.value}
-          <br />
-          voted by: {this.getVotes(correctAnswer.votedBy)}
+      <div className="answer-results">
+        <div className="o-layout--stretch u-margin-bottom-small">
+          <Card
+            type="success"
+            className="correct-answer u-weight-bold u-margin-right-tiny"
+          >
+            {correctAnswer.value}
+          </Card>
+          <Card type="success" className="score o-block u-weight-bold">
+            0
+          </Card>
         </div>
-        <hr />
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
-          const voteCount = data.votedBy
-            ? Object.values(data.votedBy).length
-            : 0;
+          console.log(data);
           return (
-            <div key={key}>
-              <div>answer: {data.value}</div>
-              <div>author team: {this.getTeamNameById(data.authorTeam)}</div>
-              <div>vote count: {voteCount}</div>
-              {data.votedBy && (
-                <div>voted by: {this.getVotes(data.votedBy)}</div>
-              )}
-              <div>
-                Points for this question:{' '}
-                {this.getScoreForQuestion(
-                  voteCount,
-                  correctAnswer,
-                  data.authorTeam
-                )}
+            <Card
+              key={key}
+              className="anime o-layout--stretch u-margin-bottom-small"
+            >
+              <div className="fake-answer u-2/3">
+                <div className="team-name u-weight-bold">
+                  {this.getTeamNameById(data.authorTeam)}
+                </div>
+
+                <div className="answer">{data.value}</div>
+                <div className="votes">Votes: {data.voteCount}</div>
+                <div className="voted-by ">
+                  {Object.keys(data.votedBy).map(key => (
+                    <div className="animal" style={{ width: 'max-content' }}>
+                      {data.votedBy[key]}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <hr />
-            </div>
+              <div className="o-layout--stretch o-layout--center u-1/3">
+                <div className="animal" />
+              </div>
+            </Card>
           );
         })}
       </div>

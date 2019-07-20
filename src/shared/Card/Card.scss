@@ -1,0 +1,14 @@
+@import 'settings';
+
+.card {
+  border-radius: $global-radius;
+
+  &.basic {
+    background-color: $color-white;
+  }
+
+  &.success {
+    background-color: $color-success;
+    color: $color-white;
+  }
+}

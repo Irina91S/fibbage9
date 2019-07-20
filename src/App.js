@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from 'react';
-import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Route, withRouter } from 'react-router-dom';
 import anime from 'animejs';
 import './App.scss';
 
@@ -17,7 +17,13 @@ import {
 import { Header } from './shared';
 
 function App(props) {
+  const [grayPage, setGrayPage] = useState(false);
+
   useEffect(() => {
+    // TODO: improve logic
+    // On certain pages, the background should be gray
+    setGrayPage(props.location.pathname.endsWith('results'));
+
     // Each time the route changes, run this staggering animation
     anime({
       targets: '.page-transition-elem',
@@ -30,7 +36,7 @@ function App(props) {
 
   return (
     <Fragment>
-      <div className="App">
+      <div className={`App ${grayPage ? 'bg-gray' : ''}`}>
         <Header title="Fibbage9" subtitle="Welcome to FIBBAGE, Levi9 version" />
         <main>
           <Route exact path="/" component={Start} />
