@@ -18,7 +18,8 @@ class AddAnswerPage extends Component {
     question: '',
     isCorrectAnswer: false,
     correctAnswer: '',
-    isSubmitted: false
+    isSubmitted: false,
+    timerEndDate: '',
   };
 
   componentDidMount() {
@@ -43,6 +44,10 @@ class AddAnswerPage extends Component {
         const { route } = snapshot.val();
         history.push(route);
       }
+    });
+
+    this.gameRef.child('/timer/endTime').on('value', snapshot => {
+      this.setState({timerEndDate: snapshot.val()})
     });
   }
 
@@ -78,11 +83,10 @@ class AddAnswerPage extends Component {
   };
 
   render() {
-    const { question, isCorrectAnswer, isSubmitted } = this.state;
-    const future = new Date(new Date().getTime() + 30000);
+    const { question, isCorrectAnswer, isSubmitted, timerEndDate } = this.state;
     return (
       <div>
-        <Timer endTime={future} />
+        <Timer endTime={timerEndDate} />
         <Question value={question} />
 
         <Formik
