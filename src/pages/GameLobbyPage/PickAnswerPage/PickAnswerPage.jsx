@@ -74,7 +74,9 @@ class PickAnswerPage extends Component {
     lobbyRef.on("value", snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
       const correctAnswer = snapshot.val().answer;
-      this.setState({ allAnswers: this.shuffleAnswers(getToupleFromSnapshot(givenAnswers), correctAnswer)});
+      if (givenAnswers) {
+        this.setState({ allAnswers: this.shuffleAnswers(getToupleFromSnapshot(givenAnswers), correctAnswer)});
+      }
     });
   }
 

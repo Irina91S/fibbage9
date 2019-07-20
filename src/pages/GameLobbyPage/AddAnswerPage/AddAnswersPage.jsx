@@ -5,7 +5,7 @@ import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
 import { Question } from '../../../shared';
 
-const { question } = databaseRefs;
+const { question, game } = databaseRefs;
 
 class AddAnswerPage extends Component {
   questionRef = "";
@@ -29,6 +29,7 @@ class AddAnswerPage extends Component {
     });
 
     this.questionRef = question(gameId, questionId);
+    this.gameRef = game(gameId);
 
     this.questionRef.on("value", snapshot => {
       const { question, answer: { value } } = snapshot.val();
@@ -37,10 +38,19 @@ class AddAnswerPage extends Component {
         correctAnswer: value
       });
     });
+
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        history.push(route);
+      }
+    });
   }
 
   componentWillUnmount() {
     this.questionRef.off("value");
+    this.gameRef.off("value");
   }
 
   handleAnswerSubmit = async ({ answer }, actions) => {
