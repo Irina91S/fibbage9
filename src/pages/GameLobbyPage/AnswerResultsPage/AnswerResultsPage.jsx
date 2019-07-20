@@ -6,7 +6,7 @@ import { useCurrentPlayer } from '../../../hooks';
 
 import './AnswerResultsPage.scss';
 
-import { Card } from '../../../shared';
+import { Card, Animal } from '../../../shared';
 
 const { fakeAnswers, question, players } = databaseRefs;
 
@@ -175,15 +175,17 @@ class AnswerResultsPage extends Component {
                 <div className="votes">Votes: {data.voteCount}</div>
                 <div className="voted-by ">
                   {Object.keys(data.votedBy).map(key => (
-                    <div className="animal" style={{ width: 'max-content' }}>
+                    <div
+                      key={key}
+                      className="animal"
+                      style={{ width: 'max-content' }}
+                    >
                       {data.votedBy[key]}
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="o-layout--stretch o-layout--center u-1/3">
-                <div className="animal" />
-              </div>
+              <Animal />
             </Card>
           );
         })}

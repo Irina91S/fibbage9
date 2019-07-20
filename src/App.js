@@ -22,7 +22,10 @@ function App(props) {
   useEffect(() => {
     // TODO: improve logic
     // On certain pages, the background should be gray
-    setGrayPage(props.location.pathname.endsWith('results'));
+    setGrayPage(
+      props.location.pathname.endsWith('results') ||
+        props.location.pathname.endsWith('wait-players')
+    );
 
     // Each time the route changes, run this staggering animation
     anime({
