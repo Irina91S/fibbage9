@@ -66,18 +66,18 @@ class WaitPlayersPage extends Component {
     const { players } = this.state;
     return players.map(player => {
       const [key, data] = player;
+      const style = { color: data.animal.color };
       return (
         <div
           key={key}
           className="team o-layout--stretch u-padding-small u-margin-bottom-small"
         >
           <Animal className="u-margin-right-small" />
-          <Card className="player u-margin-vertical-small u-weight-bold u-2/3">
-            {data.isReady ? (
-              data.nickname
-            ) : (
-              <span className="waiting">Loading...</span>
-            )}
+          <Card
+            className="player u-margin-vertical-small u-weight-bold u-2/3"
+            style={style}
+          >
+            {data.nickname}
           </Card>
         </div>
       );
