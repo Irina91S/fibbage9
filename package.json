@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@svgr/cli": "^4.3.2",
     "animejs": "^3.0.1",
     "firebase": "^6.1.0",
     "formik": "^1.5.7",
