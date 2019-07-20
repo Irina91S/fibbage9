@@ -86,7 +86,11 @@ class AddAnswerPage extends Component {
     const { question, isCorrectAnswer, isSubmitted, timerEndDate } = this.state;
     return (
       <div>
-        <Timer endTime={timerEndDate} />
+        <Timer 
+          endTime={timerEndDate}
+          onTimerEnd={() => this.setState({isSubmitted: false})}
+        />
+        
         <Question value={question} />
 
         <Formik
