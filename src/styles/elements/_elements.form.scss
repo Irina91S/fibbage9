@@ -5,6 +5,7 @@ form {
     display: block;
     width: 100%;
     margin-bottom: $global-spacing-unit-small;
+    position: relative;
   }
 
   input + span {
@@ -16,5 +17,7 @@ form {
 
   footer {
     color: $color-gray;
+    text-align: center;
+    font-size: 12px;
   }
 }

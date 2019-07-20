@@ -1,4 +1,5 @@
 import React from 'react';
+import Ink from 'react-ink';
 import { Formik, Form, ErrorMessage } from 'formik';
 
 import { Input } from '../../../shared';
@@ -23,6 +24,7 @@ const InsertPincodeForm = ({ onSubmit }) => {
           {/* <ErrorMessage component="span" name="pincode" /> */}
           <button type="submit" className="page-transition-elem">
             JOIN GAME
+            <Ink />
           </button>
 
           <footer className="page-transition-elem">

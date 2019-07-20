@@ -26,12 +26,14 @@ const Input = props => {
               delay: anime.stagger(100),
               begin: function() {
                 const svg = document.querySelector('.cross');
+                if (!svg) return;
                 for (const child of svg.children) {
                   child.setAttribute('stroke', '#ab0927');
                 }
               },
               complete: function() {
                 const svg = document.querySelector('.cross');
+                if (!svg) return;
                 for (const child of svg.children) {
                   child.setAttribute('fill', '#f7768e');
                 }
