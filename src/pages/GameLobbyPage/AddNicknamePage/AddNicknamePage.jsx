@@ -11,6 +11,7 @@ class AddNickname extends Component {
     error: false,
     playersLength: null,
     limit: 0,
+    animals: [],
     players: []
   };
 
@@ -25,8 +26,9 @@ class AddNickname extends Component {
     } = this.props;
     this.gameRef = databaseRefs.game(gameId);
     this.gameRef.on('value', snapshot => {
-      const { players, limit } = snapshot.val();
+      const { players, limit, animals } = snapshot.val();
       this.setState({
+        animals: animals ? getToupleFromSnapshot(animals) : [],
         players: players ? getToupleFromSnapshot(players) : [],
         playersLength: players ? Object.values(players).length : 0,
         limit
@@ -35,11 +37,16 @@ class AddNickname extends Component {
   }
 
   componentWillUnmount() {
-    this.gameRef.off();
-    this.playersRef.off();
+    if (this.gameRef) {
+      this.gameRef.off();
+    }
+
+    if (this.playersRef) {
+      this.playersRef.off();
+    }
   }
 
-  setNickname = (newValues, actions) => {
+  setNickname = async (newValues, actions) => {
     this.setState({ nickname: newValues.nickname });
     const {
       match: {
@@ -66,21 +73,46 @@ class AddNickname extends Component {
         );
         return;
       }
-      const gameRef = this.gameRef;
 
-      this.playersRef.push(newValues).then(snap => {
-        const playerId = snap.key;
-        localStorage.setItem(
-          'playerInfo',
-          JSON.stringify({
-            playerId,
-            playerName: newValues.nickname
-          })
-        );
+      const response = await this.playersRef.push(newValues);
+      const { animals } = this.state;
+      const availableAnimal = animals.find((animal) => {
+        const [id, animalObj] = animal;
 
-        const waitScreen = `/lobby/${gameId}/wait-players`;
-        history.push(waitScreen);
+        if (!animalObj.isTaken) {
+          return animal;
+        }
+
+        return;
       });
+      console.log(availableAnimal);
+      this.gameRef
+        .child('/animals')
+        .child(`/${availableAnimal[0]}`)
+        .set({ 
+          ...availableAnimal[1],
+          isTaken: true
+         });
+         
+      this.playersRef.child(`/${response.key}/animal`)
+         .set({
+           animal: availableAnimal[1].animal,
+           color: availableAnimal[1].color
+         });
+
+      //  this.playersRef.push(newValues).then(snap => {
+      //   const playerId = snap.key;
+      //   localStorage.setItem(
+      //     'playerInfo',
+      //     JSON.stringify({
+      //       playerId,
+      //       playerName: newValues.nickname
+      //     })
+      //   );
+
+      const waitScreen = `/lobby/${gameId}/wait-players`;
+      history.push(waitScreen);
+      // });
     } else {
       this.setState({ error: true });
     }
@@ -100,37 +132,37 @@ class AddNickname extends Component {
     return error ? (
       <div>S-a depasit limita de participanti pentru acest joc</div>
     ) : (
-      <Formik
-        initialValues={{
-          nickname: '',
-          totalScore: 0
-        }}
-        onSubmit={this.setNickname}
-        render={({ values, handleSubmit, errors }) => (
-          <Form>
-            <label className="page-transition-elem">
-              Choose a nickname for your team
+        <Formik
+          initialValues={{
+            nickname: '',
+            totalScore: 0
+          }}
+          onSubmit={this.setNickname}
+          render={({ values, handleSubmit, errors }) => (
+            <Form>
+              <label className="page-transition-elem">
+                Choose a nickname for your team
             </label>
-            <Input
-              id="nickname"
-              name="nickname"
-              placeholder="NICKNAME"
-              value={values.nickname}
-              errors={errors}
-            />
-            {/* <ErrorMessage component="span" name="nickname" /> */}
-            <button onClick={handleSubmit} className="page-transition-elem">
-              YEP, IT'S CRINGE ENOUGH
+              <Input
+                id="nickname"
+                name="nickname"
+                placeholder="NICKNAME"
+                value={values.nickname}
+                errors={errors}
+              />
+              {/* <ErrorMessage component="span" name="nickname" /> */}
+              <button onClick={handleSubmit} className="page-transition-elem">
+                YEP, IT'S CRINGE ENOUGH
             </button>
 
-            <footer className="page-transition-elem">
-              Add a nickname for your team so we know what to display on the
-              scoreboard. You want that 1st place, don't you? We know you do.
+              <footer className="page-transition-elem">
+                Add a nickname for your team so we know what to display on the
+                scoreboard. You want that 1st place, don't you? We know you do.
             </footer>
-          </Form>
-        )}
-      />
-    );
+            </Form>
+          )}
+        />
+      );
   }
 }
 
