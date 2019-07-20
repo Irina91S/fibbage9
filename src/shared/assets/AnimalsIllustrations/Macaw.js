@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgMacaw = props => (
-  <svg viewBox="0 0 512 512" {...props}>
+  <svg height={512} width={512}  viewBox="0 0 512 512" {...props}>
     <path
       d="M465.74 321.726s-14.308 40.345-68.601 51.404c-54.293 11.06-70.379-78.21-70.379-78.21l36.376-38.921 56.244 5.53 46.36 35.19v25.007z"
       fill="#3a484a"

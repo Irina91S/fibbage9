@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgHedgehog = props => (
-  <svg viewBox="0 0 121.566 121.566" {...props}>
+  <svg height={512} width={512} viewBox="0 0 512 512" {...props}>
     <circle cx={98.809} cy={20.075} r={9.647} fill="#945328" />
     <path
       d="M104.371 20.075a5.563 5.563 0 11-11.126.002 5.563 5.563 0 0111.126-.002z"
