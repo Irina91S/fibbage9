@@ -3,6 +3,8 @@ import { databaseRefs } from "./../../../lib/refs";
 import { Formik, Form, Field } from "formik";
 import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
+import { Question } from '../../../shared';
+
 const { question, game } = databaseRefs;
 
 class AddAnswerPage extends Component {

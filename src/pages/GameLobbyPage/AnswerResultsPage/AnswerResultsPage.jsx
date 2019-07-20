@@ -174,7 +174,7 @@ class AnswerResultsPage extends Component {
                 <div className="answer">{data.value}</div>
                 <div className="votes">Votes: {data.voteCount}</div>
                 <div className="voted-by ">
-                  {Object.keys(data.votedBy).map(key => (
+                  {data.votedBy && Object.keys(data.votedBy).map(key => (
                     <div
                       key={key}
                       className="animal"
