@@ -1,9 +1,13 @@
-import React, { Component } from "react";
-import { databaseRefs } from "../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import React, { Fragment, Component } from 'react';
+import anime from 'animejs';
+import { databaseRefs } from '../../../lib/refs';
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+
+import './PickAnswerPage.scss';
 
 import { useCurrentPlayer } from '../../../hooks';
-import WaitingScreen from "../WaitingScreen/WaitingScreen";
+import WaitingScreen from '../WaitingScreen/WaitingScreen';
+import { Card } from '../../../shared';
 
 const { lobby } = databaseRefs;
 
@@ -18,26 +22,27 @@ class PickAnswerPage extends Component {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
-      .child("/fakeAnswers")
+      .child('/fakeAnswers')
       .child(fakeAnswerId)
-      .child("/votedBy")
+      .child('/votedBy')
       .child(playerId)
       .set(playerName);
   };
 
   setCorrectAnswer = (gameId, questionId, playerId, playerName) => {
-    this.setState({ disabled: true })
+    this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
-      .child("/answer")
-      .child("/votedBy")
+      .child('/answer')
+      .child('/votedBy')
       .child(playerId)
       .set(playerName);
   };
 
   selectCorrectAnswer = () => {
+    console.log('-----------------------correct answer');
     this.setState({ isSubmitted: true });
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { playerId, playerName } = playerInfo;
 
     const {
@@ -50,8 +55,9 @@ class PickAnswerPage extends Component {
   };
 
   selectAnswer = fakeAnswerId => {
+    console.log('------------------------select answer');
     this.setState({ isSubmitted: true });
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { playerId, playerName } = playerInfo;
 
     const {
@@ -71,26 +77,47 @@ class PickAnswerPage extends Component {
     } = this.props;
     const lobbyRef = lobby(gameId, questionId);
 
-    lobbyRef.on("value", snapshot => {
+    lobbyRef.on('value', snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
+      console.log(snapshot.val());
+
       const correctAnswer = snapshot.val().answer;
       if (givenAnswers) {
-        this.setState({ allAnswers: this.shuffleAnswers(getToupleFromSnapshot(givenAnswers), correctAnswer)});
+        this.setState(
+          {
+            allAnswers: this.shuffleAnswers(
+              getToupleFromSnapshot(givenAnswers),
+              correctAnswer
+            )
+          },
+          () => {
+            anime({
+              targets: '.answer.anime',
+              translateX: [-1000, 0],
+              opacity: [0, 1],
+              delay: anime.stagger(100),
+              easing: 'easeInOutQuint',
+              duration: 400
+            });
+          }
+        );
       }
     });
   }
 
   shuffleAnswers = (fakeAnswers, truth) => {
     const currentPlayer = useCurrentPlayer();
-    fakeAnswers = fakeAnswers.filter(answer => answer[1].authorTeam !== currentPlayer.playerId)
+    fakeAnswers = fakeAnswers.filter(
+      answer => answer[1].authorTeam !== currentPlayer.playerId
+    );
 
     const allAnswers = [...fakeAnswers, truth];
 
     const sorted = allAnswers.sort((a, b) => {
       const firstValue = a.value ? a.value.toLowerCase() : a[1].value;
       const secondValue = b.value ? b.value.toLowerCase() : b[1].value;
-      
-      if(firstValue < secondValue) {
+
+      if (firstValue < secondValue) {
         return -1;
       } else if (firstValue > secondValue) {
         return 1;
@@ -98,26 +125,61 @@ class PickAnswerPage extends Component {
       return 0;
     });
     return sorted;
-  }
+  };
+
+  onAnswerClick = (index, callback) => {
+    const { allAnswers } = this.state;
+
+    if (allAnswers[index].selected) {
+      callback();
+      return;
+    }
+
+    allAnswers.forEach((answer, i) => (answer.selected = i == index));
+    this.setState({ allAnswers });
+  };
 
   render() {
-    const { allAnswers, disabled, isSubmitted } = this.state;
+    const { allAnswers, isSubmitted } = this.state;
 
     return (
-      <div>
-        {allAnswers.map(answer => {
-          if (answer.value) {
-            return (
-            <div key={answer.value}>
-              <button disabled={disabled} onClick={() => this.selectCorrectAnswer(answer)}>{answer.value}</button>
-            </div>
-            )
-          }
-          const [key, data] = answer;
+      <div className="pick-answer u-weight-bold">
+        {allAnswers.map((answer, i) => {
+          const correct = !!answer.value;
+          const value = correct ? answer.value : answer[1].value;
+
           return (
-            <div key={key}>
-              <button disabled={disabled} onClick={() => this.selectAnswer(key)}>{data.value}</button>
-            </div>
+            <Fragment key={i}>
+              {answer.selected && (
+                <div className="tooltip u-margin-left-large u-padding-left-small">
+                  Selected
+                </div>
+              )}
+              <div
+                className="answer anime o-layout--stretch u-margin-bottom-small"
+                key={answer}
+              >
+                <Card
+                  type={answer.selected ? 'success' : 'basic'}
+                  className="o-layout__item counter u-margin-right-small"
+                >
+                  {i + 1}.
+                </Card>
+                <Card
+                  type={answer.selected ? 'success' : 'basic'}
+                  className="o-layout__item value"
+                  onClick={() =>
+                    correct
+                      ? this.onAnswerClick(i, this.selectCorrectAnswer)
+                      : this.onAnswerClick(i, () =>
+                          this.selectAnswer(answer[0])
+                        )
+                  }
+                >
+                  {value}
+                </Card>
+              </div>
+            </Fragment>
           );
         })}
         {isSubmitted && <WaitingScreen />}
