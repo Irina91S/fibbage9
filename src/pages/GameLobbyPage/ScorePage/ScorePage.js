@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-const { players } = databaseRefs;
+const { players, game } = databaseRefs;
 
 class ScorePage extends Component {
   state = {
     players: [],
     sortedPlayers: []
   }; 
+
+  playersRef = '';
+  gameRef = '';
 
   getPlayersInfo = (players) => {
     return players.map(el => el[1]);
@@ -22,14 +25,28 @@ class ScorePage extends Component {
         params: { gameId }
       }
     } = this.props;
-    const playersRef = players(gameId);
 
-    playersRef.on("value", snapshot => {
+    this.playersRef = players(gameId);
+    this.gameRef = game(gameId);
+
+    this.playersRef.on("value", snapshot => {
       const playersSnapshot = snapshot.val();
       const playersInfo = this.getPlayersInfo(getToupleFromSnapshot(playersSnapshot));
       const sortedPlayers = this.sortPlayersByScore(playersInfo);
       this.setState({ players: playersInfo, sortedPlayers });
     });
+
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        history.push(route);
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.gameRef.off("value");
   }
 
   render() {

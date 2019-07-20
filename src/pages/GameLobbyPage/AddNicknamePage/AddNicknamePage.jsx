@@ -17,6 +17,7 @@ class AddNickname extends Component {
 
   gameRef;
   playersRef;
+  playerRef;
 
   componentDidMount() {
     const {
@@ -43,6 +44,10 @@ class AddNickname extends Component {
 
     if (this.playersRef) {
       this.playersRef.off();
+    }
+
+    if (this.playerRef) {
+      this.playerRef.off()
     }
   }
 
@@ -74,32 +79,6 @@ class AddNickname extends Component {
         return;
       }
 
-      // const response = await this.playersRef.push(newValues);
-      // const { animals } = this.state;
-      // const availableAnimal = animals.find((animal) => {
-      //   const [id, animalObj] = animal;
-
-      //   if (!animalObj.isTaken) {
-      //     return animal;
-      //   }
-
-      //   return;
-      // });
-      // console.log(availableAnimal);
-      // this.gameRef
-      //   .child('/animals')
-      //   .child(`/${availableAnimal[0]}`)
-      //   .set({ 
-      //     ...availableAnimal[1],
-      //     isTaken: true
-      //    });
-
-      // this.playersRef.child(`/${response.key}/animal`)
-      //    .set({
-      //      animal: availableAnimal[1].animal,
-      //      color: availableAnimal[1].color
-      //    });
-
       this.playersRef.push(newValues).then(snap => {
         const playerId = snap.key;
         localStorage.setItem(
@@ -109,9 +88,22 @@ class AddNickname extends Component {
             playerName: newValues.nickname
           })
         );
+        
+        const {
+          match: {
+            params: { gameId }
+          }
+        } = this.props;
 
-        const waitScreen = `/lobby/${gameId}/wait-players`;
-        history.push(waitScreen);
+        this.playerRef = databaseRefs.player(gameId, playerId);
+
+        this.playerRef.on('value', snapshot => {
+          console.log(snapshot);
+          if (snapshot.val().animal) {
+            const waitScreen = `/lobby/${gameId}/wait-players`;
+            history.push(waitScreen);
+          }
+        });
       });
     } else {
       this.setState({ error: true });
