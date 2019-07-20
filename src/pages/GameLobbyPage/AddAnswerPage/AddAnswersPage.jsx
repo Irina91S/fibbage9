@@ -49,8 +49,13 @@ class AddAnswerPage extends Component {
   }
 
   componentWillUnmount() {
-    this.questionRef.off("value");
-    this.gameRef.off("value");
+    if (this.questionRef) {
+      this.questionRef.off("value");
+    }
+
+    if (this.gameRef) {
+      this.gameRef.off("value");
+    }
   }
 
   handleAnswerSubmit = async ({ answer }, actions) => {
@@ -60,11 +65,7 @@ class AddAnswerPage extends Component {
       return;
     }
     this.setState({ isSubmitted: true });
-    const {
-      match: {
-        params: { gameId }
-      }
-    } = this.props;
+    
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     await this.questionRef.child("/fakeAnswers").push({
       value: answer,
