@@ -96,7 +96,6 @@ class AddNickname extends Component {
         } = this.props;
 
         this.playerRef = databaseRefs.player(gameId, playerId);
-        debugger;
         this.playerRef.on("value", snapshot => {
           console.log(snapshot);
           if (snapshot.val().animal) {

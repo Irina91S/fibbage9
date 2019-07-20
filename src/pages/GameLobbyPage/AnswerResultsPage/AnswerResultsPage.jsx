@@ -25,6 +25,7 @@ class AnswerResultsPage extends Component {
 
   componentDidMount() {
     const { id, questionId } = this.props.match.params;
+
     this.fakeAnswersRef = fakeAnswers(id, questionId);
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
@@ -35,7 +36,6 @@ class AnswerResultsPage extends Component {
       const fakeAnswers = getToupleFromSnapshot(snapshot.val()).filter(
         answer => answer[1].authorTeam !== currentPlayer.playerId
       );
-
       this.setState({ fakeAnswers });
     });
 
@@ -132,20 +132,33 @@ class AnswerResultsPage extends Component {
 
   getTeamNameById = teamId => {
     const { players } = this.state;
-    let teamName ='';
+    let teamName = "";
     players.forEach(player => {
       const [key, data] = player;
       if (key === teamId) {
         teamName = data.nickname;
-        this.setState({playerAnimal: data.animal.animal})
         return;
       }
     });
     return teamName;
   };
 
+  getAnimalByTeam = teamId => {
+    const { players } = this.state;
+    let teamStyle = {};
+    players.forEach(player => {
+      const [key, data] = player;
+      if (key === teamId) {
+        teamStyle.animal = data.animal.animal;
+        teamStyle.color = data.animal.color
+        return;
+      }
+    });
+    return teamStyle;
+  };
+
   render() {
-    const { fakeAnswers, correctAnswer, playerAnimal } = this.state;
+    const { fakeAnswers, correctAnswer } = this.state;
 
     return (
       <div className="answer-results">
@@ -162,11 +175,13 @@ class AnswerResultsPage extends Component {
         </div>
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
-          console.log(data);
+          const teamStyle = this.getAnimalByTeam(data.authorTeam)
+
           return (
             <Card
               key={key}
-              className="anime o-layout--stretch u-margin-bottom-small"
+              className="anime o-layout--flex u-margin-bottom-small"
+              style={{color: teamStyle.color}}
             >
               <div className="fake-answer u-2/3">
                 <div className="team-name u-weight-bold">
@@ -183,12 +198,12 @@ class AnswerResultsPage extends Component {
                         className="animal"
                         style={{ width: "max-content" }}
                       >
-                        {data.votedBy[key]}
+                        <Animal animal={data.votedBy[key]} />
                       </div>
                     ))}
                 </div>
               </div>
-              <Animal animal={playerAnimal}/>
+              <Animal animal={teamStyle.animal} />
             </Card>
           );
         })}
