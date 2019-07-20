@@ -1,40 +1,87 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import './App.css';
-import AdminDashboard from './pages/AdminDashboardPage/AdminDashboard';
-import GameDetails from './pages/GameDetailsPage/GameDetails'
+import React, { Fragment, useEffect, useState } from 'react';
+import { Route, withRouter } from 'react-router-dom';
+import anime from 'animejs';
+import './App.scss';
+
 import Start from './pages/StartPage/Start';
-import AnswerResultsPage from './pages/GameLobbyPage/AnswerResultsPage/AnswerResultsPage';
-import AddAnswerPage from './pages/GameLobbyPage/AddAnswerPage/AddAnswersPage';
-import AddNicknamePage from './pages/GameLobbyPage/AddNicknamePage/AddNicknamePage';
-import WaitPlayersPage from './pages/GameLobbyPage/WaitPlayersPage/WaitPlayersPage';
+import {
+  AnswerResultsPage,
+  AddAnswerPage,
+  AddNicknamePage,
+  WaitPlayersPage,
+  PickAnswerPage,
+  ScorePage,
+  TotalScoresPage
+} from './pages/GameLobbyPage';
 
-import PickAnswerPage from './pages/GameLobbyPage/PickAnswerPage/PickAnswerPage';
-import ScorePage from './pages/GameLobbyPage/ScorePage/ScorePage';
-import TotalScorePage from './pages/GameLobbyPage/TotalScoresPage/TotalScoresPage';
+import { Header } from './shared';
 
-function App() {
+function App(props) {
+  const [grayPage, setGrayPage] = useState(false);
+
+  useEffect(() => {
+    // TODO: improve logic
+    // On certain pages, the background should be gray
+    setGrayPage(
+      props.location.pathname.endsWith('results') ||
+        props.location.pathname.endsWith('wait-players')
+    );
+
+    // Each time the route changes, run this staggering animation
+    anime({
+      targets: '.page-transition-elem',
+      translateY: [-15, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(100),
+      easing: 'cubicBezier(0, 0.45, 0.74, 0.77)'
+    });
+  }, [props]);
+
   return (
-    <Router>
-      <div className="App">
-        <header className="header">
-          <h3>This is the header</h3>
-        </header>
+    <Fragment>
+      <div className={`App ${grayPage ? 'bg-gray' : ''}`}>
+        <Header title="Fibbage9" subtitle="Welcome to FIBBAGE, Levi9 version" />
         <main>
           <Route exact path="/" component={Start} />
-          <Route exact path="/games" component={AdminDashboard} />
-          <Route exact path="/games/:id" component={GameDetails} />
-          <Route exact path="/lobby/:gameId/questions/:questionId/addAnswer" component={AddAnswerPage} />
-          <Route path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
-          <Route exact path="/lobby/:id/questions/:questionId/results" component={AnswerResultsPage} />
-          <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
-          <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
-          <Route exact path="/lobby/:gameId/questions/:questionId/score" component={ScorePage} />
-          <Route exact path="/lobby/:gameId/total-score" component={TotalScorePage} />
+          <Route
+            exact
+            path="/lobby/:gameId/questions/:questionId/addAnswer"
+            component={AddAnswerPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/:questionId/pick-answer"
+            component={PickAnswerPage}
+          />
+          <Route
+            exact
+            path="/lobby/:id/questions/:questionId/results"
+            component={AnswerResultsPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/nickname"
+            component={AddNicknamePage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/wait-players"
+            component={WaitPlayersPage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/questions/:questionId/score"
+            component={ScorePage}
+          />
+          <Route
+            exact
+            path="/lobby/:gameId/total-score"
+            component={TotalScoresPage}
+          />
         </main>
       </div>
-    </Router>
+    </Fragment>
   );
 }
 
-export default App;
+export default withRouter(App);

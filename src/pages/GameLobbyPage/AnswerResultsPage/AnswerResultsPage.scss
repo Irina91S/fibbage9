@@ -1,0 +1,19 @@
+@import 'settings';
+
+.answer-results {
+  .score {
+    min-width: $global-spacing-unit-large;
+  }
+
+  .correct-answer {
+    flex: 1;
+  }
+
+  .fake-answer {
+    color: $color-main;
+
+    .team-name {
+      font-size: 16px;
+    }
+  }
+}

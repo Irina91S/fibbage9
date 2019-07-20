@@ -1,0 +1,50 @@
+@import 'settings.colors';
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-10px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+.moon {
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.3);
+  width: 85px;
+  height: 85px;
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  background-color: #dddbfa;
+  animation: float 6s ease-in-out infinite;
+
+  .crater {
+    background-color: $color-secondary;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    opacity: 0.1;
+
+    &.big {
+      $size: 25px;
+      width: $size;
+      height: $size;
+    }
+
+    &.medium {
+      $size: 15px;
+      width: $size;
+      height: $size;
+    }
+
+    &.small {
+      $size: 5px;
+      width: $size;
+      height: $size;
+    }
+  }
+}

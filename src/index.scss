@@ -1,0 +1,11 @@
+@import 'settings.colors';
+
+html {
+  overflow: hidden;
+  background-color: $color-white;
+}
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  color: $color-dark;
+}

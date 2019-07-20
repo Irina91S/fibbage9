@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { databaseRefs } from './../../lib/refs';
 import { getToupleFromSnapshot } from './../../lib/firebaseUtils';
-import InsertPincodeForm from './Start/InsertPincodeForm';
+
+import { InsertPincodeForm, Rocket, Moon } from './components';
 
 const { games } = databaseRefs;
 
 class Start extends React.Component {
   state = {
-    activeGames: []
-  }
+    activeGames: [],
+    rocketActive: false
+  };
 
-  getActiveGames = (games) => {
+  getActiveGames = games => {
     return games
       .map(game => {
         const [key, gameData] = game;
@@ -19,9 +21,9 @@ class Start extends React.Component {
         return game;
       })
       .filter(Boolean);
-  }
+  };
 
-  setActiveGames = (games) => {
+  setActiveGames = games => {
     const activeGames = this.getActiveGames(games);
     console.log(activeGames);
     this.setState({ activeGames });
@@ -36,39 +38,52 @@ class Start extends React.Component {
 
         if (data.pincode === pincode) {
           gameToJoin = key;
-          return key
+          return key;
         }
 
-        return null
+        return null;
       })
       .filter(Boolean);
 
     if (pincodeMatchGame.length === 1) {
-      console.log(gameToJoin);
-      this.redirectToGameLobby(gameToJoin);
+      this.setState({ rocketActive: true });
+
+      setTimeout(() => {
+        this.redirectToGameLobby(gameToJoin);
+      }, 1000);
     } else {
-      actions.setFieldError('pincode', 'another one')
+      actions.setFieldError(
+        'pincode',
+        'There is no active game with this pincode.'
+      );
     }
   };
 
-  redirectToGameLobby = (gameId) => {
+  redirectToGameLobby = gameId => {
     const { history } = this.props;
     history.push(`/lobby/${gameId}/nickname`);
   };
 
   componentDidMount() {
-    games.on('value', (snapshot) => {
+    games.on('value', snapshot => {
       console.log(getToupleFromSnapshot(snapshot.val()));
       this.setActiveGames(getToupleFromSnapshot(snapshot.val()));
     });
-  };
+  }
 
   componentWillUnmount() {
     games.off();
   }
 
   render() {
-    return <InsertPincodeForm onSubmit={this.handleInsertPincode} />
+    return (
+      <Fragment>
+        <Rocket active={this.state.rocketActive} />
+        <Moon top="30px" right="10px" />
+        <Moon left="-50px" top="350px" />
+        <InsertPincodeForm onSubmit={this.handleInsertPincode} />
+      </Fragment>
+    );
   }
 }
 

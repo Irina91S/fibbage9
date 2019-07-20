@@ -1,0 +1,9 @@
+button {
+  border: 1px solid $color-main;
+  border-radius: $global-radius;
+  padding: $global-spacing-unit-small;
+
+  background-color: $color-main;
+  color: $color-white;
+  cursor: pointer;
+}

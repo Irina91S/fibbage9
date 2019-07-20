@@ -1,0 +1,19 @@
+@import 'settings';
+@import 'tools.mq';
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  padding: $global-spacing-unit;
+
+  &.bg-gray {
+    background-color: $color-gray-2;
+  }
+
+  main {
+    @include mq($from: tablet) {
+      width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
