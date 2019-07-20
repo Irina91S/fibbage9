@@ -76,7 +76,7 @@ class AddNickname extends Component {
           })
         );
 
-        const waitScreen = `/lobby/${gameId}/wait-players`
+        const waitScreen = `/lobby/${gameId}/wait-players`;
         history.push(waitScreen);
       });
     } else {
