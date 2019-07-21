@@ -66,7 +66,7 @@ class WaitPlayersPage extends Component {
   }
 
   renderListOfPlayersReady = () => {
-    const { playerInfo } = JSON.parse(localStorage.getItem('playerInfo'));
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { players } = this.state;
     return players.map(player => {
 

@@ -159,8 +159,6 @@ class AnswerResultsPage extends Component {
 
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
-    console.log(playerInfo);
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">

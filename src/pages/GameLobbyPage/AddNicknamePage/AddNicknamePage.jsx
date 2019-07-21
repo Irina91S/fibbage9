@@ -102,7 +102,7 @@ class AddNickname extends Component {
             const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
 
             playerInfo.animal = { ...snapshot.val().animal };
-            localStorage.setItem("playerInfo", JSON.stringify({ playerInfo }));
+            localStorage.setItem("playerInfo", JSON.stringify(playerInfo));
             const waitScreen = `/lobby/${gameId}/wait-players`;
             history.push(waitScreen);
           }
