@@ -1,33 +1,48 @@
-@import "settings";
+@import 'settings';
 
-.team {
-  padding-left: 0 !important;
-  position: relative;
+.wait-players {
+  .animal-placeholders {
+    flex-wrap: wrap;
 
-  .bg {
-    position: absolute;
-    top: 0;
-    left: -24px;
-    width: 100vw;
-    height: 100px;
-    z-index: 0;
-  }
+    .animal {
+      margin-bottom: $global-spacing-unit-tiny;
+    }
 
-  .animal,
-  .player {
-    z-index: 1;
-  }
-
-  .player {
-    flex: 2;
-    text-align: center;
-  }
-}
-@media only screen and (min-width: 740px) {
-  .team {
-    .bg {
-      width: 100%;
-      left: -4px;
+    .placeholder {
+      background-color: currentColor;
+      opacity: 0.1;
     }
   }
 }
+
+ .team {
+    padding-left: 0 !important;
+    position: relative;
+
+    .bg {
+      position: absolute;
+      top: 0;
+      left: -24px;
+      width: 100vw;
+      height: 100px;
+      z-index: 0;
+    }
+
+    .animal,
+    .player {
+      z-index: 1;
+    }
+
+    .player {
+      flex: 2;
+      text-align: center;
+    }
+  }
+  @media only screen and (min-width: 740px) {
+    .team {
+      .bg {
+        width: 100%;
+        left: -4px;
+      }
+    }
+  }

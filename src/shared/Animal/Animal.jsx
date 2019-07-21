@@ -3,16 +3,21 @@ import "./Animal.scss";
 import { animalSvgs } from "../assets/AnimalsIllustrations/index";
 
 const Animal = ({ animal, className, ...rest }) => {
+  console.log(animalSvgs);
+
     const filteredAnimals = animalSvgs.filter(animalSvg => {
       const svgName = animalSvg
         .type.name.toLowerCase()
         .substring(3);
-      return svgName === animal;
+
+        console.log(svgName)
+      return svgName === animal.toLowerCase();
     });
 
+    console.log(animal, filteredAnimals);
   return (
     <div
-      {...rest}
+      {...rest} name={animal}
       className={`o-layout--stretch o-layout--center animal ${
         className ? className : ""
       }`}

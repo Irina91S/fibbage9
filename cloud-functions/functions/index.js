@@ -83,6 +83,5 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
 });
 
 exports.populateGameWithAnimals = functions.database.ref('/games/{gameId}').onCreate(snapshot => {
-  console.log(animalsList);
   return snapshot.ref.child('/animals').set(animalsList);
 });
