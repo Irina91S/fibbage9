@@ -15,14 +15,14 @@ export const Timer = ({
   onTimerEnd = noop
 }) => {
   const { seconds } = useTimer({
-    expiryTimestamp: endTime.getTime(),
+    expiryTimestamp: endTime,
     onExpire: onTimerEnd
   });
 
   useEffect(() => {
     const remainingTime = Math.max(0, endTime - Date.now());
     onTimerTick(remainingTime, endTime, Date.now());
-  }, [seconds]);
+  }, [seconds, endTime, onTimerTick]);
 
   return (
     <div style={{ width: size, height: size }}>
