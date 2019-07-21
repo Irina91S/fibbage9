@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import anime from 'animejs';
 import { databaseRefs } from './../../lib/refs';
 import { getToupleFromSnapshot } from './../../lib/firebaseUtils';
 
@@ -46,6 +47,12 @@ class Start extends React.Component {
 
     if (pincodeMatchGame.length === 1) {
       this.setState({ rocketActive: true });
+
+      anime({
+        targets: ['form', '.moon'],
+        opacity: [1, 0],
+        duration: 7000
+      });
 
       setTimeout(() => {
         this.redirectToGameLobby(gameToJoin);

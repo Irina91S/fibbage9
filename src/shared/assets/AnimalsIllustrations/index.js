@@ -12,7 +12,6 @@ import Duck from './Duck';
 import Fox from './Fox';
 import Fish from './Fish';
 import Frog from './Frog';
-import Hedgehog from './Hedgehog';
 import Jellyfish from './Jellyfish';
 import Lion from './Lion';
 import Macaw from './Macaw';
@@ -41,7 +40,6 @@ export const animalSvgs = [
   <Fox key={10} />,
   <Fish key={11} />,
   <Frog key={12} />,
-  <Hedgehog key={14} />,
   <Jellyfish key={15} />,
   <Lion key={16} />,
   <Macaw key={17} />,

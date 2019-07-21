@@ -65,11 +65,6 @@ const animalsList = [
     isTaken: false
   },
   {
-    animal: 'hedgehog',
-    color: '#945328',
-    isTaken: false
-  },
-  {
     animal: 'jellyFish',
     color: '#FF98C5',
     isTaken: false
