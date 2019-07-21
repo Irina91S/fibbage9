@@ -79,7 +79,8 @@ class WaitPlayersPage extends Component {
           key={key}
           className="team o-layout--stretch u-padding-small u-margin-bottom-small"
         >
-          {data.animal && <Animal className="u-margin-right-small" style={{height: 72, width: 72}} animal={data.animal.animal}/>}
+          {data.animal && <Animal className="u-margin-right-small" 
+            style={{height: 72, width: 72}} animal={data.animal.animal}/>}
           <Card
             className="player u-margin-vertical-small u-weight-bold u-2/3"
             style={style}
@@ -96,6 +97,9 @@ class WaitPlayersPage extends Component {
     const { players } = this.state;
     return players.map(player => {
       const [key, data] = player;
+
+      if(!data.animal) return null;
+
       return (
         <Animal
           key={key}
