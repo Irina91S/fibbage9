@@ -14,24 +14,24 @@ const Loader = () => {
     <div className="container">
       <div className="circle">
         <div className="trio first">
-          <div className="animal owl">
+          <div className="animalWaitingScreen owl">
             <Owl />
           </div>
-          <div className="animal panther">
+          <div className="animalWaitingScreen panther">
             <Panther />
           </div>
-          <div className="animal llama">
+          <div className="animalWaitingScreen llama">
             <Llama />
           </div>
         </div>
         <div className="trio second">
-          <div className="animal fish">
+          <div className="animalWaitingScreen fish">
             <Fish />
           </div>
-          <div className="animal sloth">
+          <div className="animalWaitingScreen sloth">
             <Sloth />
           </div>
-          <div className="animal tiger">
+          <div className="animalWaitingScreen tiger">
             <Tiger />
           </div>
         </div>
