@@ -47,6 +47,7 @@ class ScorePage extends Component {
 
   componentWillUnmount() {
     this.gameRef.off("value");
+    this.gameRef.child('/currentScreen').off();
   }
 
   render() {

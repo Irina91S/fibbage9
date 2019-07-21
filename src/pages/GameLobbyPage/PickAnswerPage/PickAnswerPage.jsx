@@ -3,7 +3,6 @@ import anime from "animejs";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 import { useCurrentPlayer } from '../../../hooks';
-import WaitingScreen from '../WaitingScreen/WaitingScreen';
 import { Card, Timer } from '../../../shared';
 import NumberCircle from '../../../shared/assets/svg/number-circle.svg';
 import "./PickAnswerPage.scss";
@@ -11,6 +10,7 @@ const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
   gameRef;
+  currentScreenRef;
   lobbyRef;
 
   state = {
@@ -45,7 +45,7 @@ class PickAnswerPage extends Component {
   };
 
 
-  setCorrectAnswer = async (gameId, questionId, playerId, playerName, animal) => {
+  setCorrectAnswer = async (playerId, playerName, animal) => {
     this.setState({ disabled: true });
 
     this.lobbyRef
@@ -92,12 +92,6 @@ class PickAnswerPage extends Component {
       playerName,
       animal: { animal }
     } = playerInfo;
-
-    const {
-      match: {
-        params: { gameId, questionId }
-      }
-    } = this.props;
 
     this.setAnswer(
       fakeAnswerId,
@@ -151,6 +145,14 @@ class PickAnswerPage extends Component {
 
     this.gameRef = game(gameId);
     this.lobbyRef = lobby(gameId, questionId);
+    this.currentScreenRef = this.gameRef.child('/currentScreen/route');
+
+    this.currentScreenRef.on('value', snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        history.push(snapshot.val());
+      }
+    });
 
     this.gameRef
       .child('/timer/endTime')
@@ -172,11 +174,11 @@ class PickAnswerPage extends Component {
           () => {
             anime({
               targets: ".answer.anime",
-              translateY: [-10, 0],
+              translateX: [-1000, 0],
               opacity: [0, 1],
               delay: anime.stagger(100),
               easing: "easeInOutCirc",
-              duration: 600,
+              duration: 400,
               complete: () => {
                 anime({
                   targets: '.float-from-bottom',
@@ -206,10 +208,15 @@ class PickAnswerPage extends Component {
   componentWillUnmount() {
     if (this.gameRef) {
       this.gameRef.off();
+      this.gameRef.child('/timer/endTime').off();
+      this.gameRef.child('/currentScreen').off();
     }
 
     if (this.lobbyRef) {
       this.lobbyRef.off();
+      this.lobbyRef.child('/fakeAnswers').off();
+      this.lobbyRef.child('/fakeAnswers/votedBy/name').off();
+      this.lobbyRef.child('/fakeAnswers/votedBy/animal').off();
     }
   }
 

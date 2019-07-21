@@ -60,6 +60,7 @@ class WaitPlayersPage extends Component {
   componentWillUnmount() {
     if (this.gameRef) {
       this.gameRef.off();
+      this.gameRef.child('/currentScreen').off();
     }
 
     this.setPlayerNotReady();
@@ -118,7 +119,7 @@ class WaitPlayersPage extends Component {
       <Fragment>
         <div>
           <h3>Waiting for all teams</h3>
-          <div className="o-layout--flex">
+          <div className="o-layout--flex u-margin-bottom-small">
             {`${players.length}/${limit} Teams are ready`}{" "}
             {this.renderListOfReadyAnimals()}
           </div>
