@@ -18,3 +18,31 @@
     }
   }
 }
+
+.decoration-wrapper {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  .decoration-wrapper__decoration {
+    position: absolute;
+    width: 50px;
+    max-width: none;
+  }
+}
+
+@keyframes revealTooltip {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.tooltip {
+  animation: revealTooltip .5s;
+}
