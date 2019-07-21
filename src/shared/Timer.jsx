@@ -11,7 +11,8 @@ export const Timer = ({
   onTimerTick = () => { },
   onTimerEnd = () => { }
 }) => {
-  const [secondsLeft, setLeftTime] = useState(29);
+  const isValidTime = endTime && (endTime - Date.now() > 0);
+  const [secondsLeft, setLeftTime] = useState(isValidTime ? 29 : 0);
 
   useInterval(() => {
     const remainingTime = Math.max(0, endTime - Date.now());
@@ -21,7 +22,7 @@ export const Timer = ({
     if (endTime <= Date.now()) {
       onTimerEnd();
     }
-  }, 1000);
+  }, isValidTime ? 1000 : null);
 
 return (
   <div className="timer-wrapper" style={{ width: size, height: size }}>

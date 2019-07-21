@@ -5,8 +5,8 @@ import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 import { useCurrentPlayer } from '../../../hooks';
 import WaitingScreen from '../WaitingScreen/WaitingScreen';
 import { Card, Timer } from '../../../shared';
+import NumberCircle from '../../../shared/assets/svg/number-circle.svg';
 import "./PickAnswerPage.scss";
-
 const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -142,6 +142,7 @@ class PickAnswerPage extends Component {
   };
 
   componentDidMount() {
+
     const {
       match: {
         params: { gameId, questionId }
@@ -171,18 +172,36 @@ class PickAnswerPage extends Component {
           () => {
             anime({
               targets: ".answer.anime",
-              translateX: [-1000, 0],
+              translateY: [-10, 0],
               opacity: [0, 1],
               delay: anime.stagger(100),
-              easing: "easeInOutQuint",
-              duration: 400
+              easing: "easeInOutCirc",
+              duration: 600,
+              complete: () => {
+                anime({
+                  targets: '.float-from-bottom',
+                  translateY: [-3, 3],
+                  direction: 'alternate',
+                  easing: 'easeInOutCirc',
+                  duration: 3000,
+                  loop: true
+                });
+
+                anime({
+                  targets: '.float-from-top',
+                  translateY: [3, -3],
+                  direction: 'alternate',
+                  easing: 'easeInOutCirc',
+                  duration: 3000,
+                  loop: true
+                })
+              }
             });
           }
         );
       }
     });
   }
-
 
   componentWillUnmount() {
     if (this.gameRef) {
@@ -200,12 +219,10 @@ class PickAnswerPage extends Component {
     return (
       <div className="pick-answer u-weight-bold">
         {timerEndDate &&
-          <div className="u-margin-bottom-small">
-            <Timer
-              endTime={timerEndDate}
-              onTimerEnd={() => this.setState({ isSubmitted: false })}
-            />
-          </div>
+          <Timer
+            endTime={timerEndDate}
+            onTimerEnd={() => this.setState({ isSubmitted: false })}
+          />
         }
         {allAnswers.map((answer, i) => {
           const correct = !!answer.value;
@@ -225,8 +242,12 @@ class PickAnswerPage extends Component {
                 <Card
                   type={answer.selected ? "success" : "basic"}
                   className="o-layout__item counter u-margin-right-small"
+                  disabled={isSubmitted && !answer.selected}
                 >
-                  {i + 1}.
+                  <div className="decoration-wrapper">
+                    {!answer.selected && <img className={`decoration-wrapper__decoration ${Math.floor(2 * Math.random()) === 1 ? 'float-from-bottom' : 'float-from-top'}`} src={NumberCircle} alt="cool circle" />}
+                    <span className="dcoration-wrapper__text">{i + 1}</span>
+                  </div>
                 </Card>
                 <Card
                   type={answer.selected ? "success" : "basic"}
@@ -238,6 +259,7 @@ class PickAnswerPage extends Component {
                         this.selectAnswer(answer[0])
                       )
                   }
+                  disabled={isSubmitted && !answer.selected}
                 >
                   {value}
                 </Card>
@@ -245,7 +267,6 @@ class PickAnswerPage extends Component {
             </Fragment>
           );
         })}
-        {isSubmitted && <WaitingScreen />}
       </div>
     );
   }
