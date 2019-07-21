@@ -1,0 +1,114 @@
+@import "settings";
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: $color-main;
+  z-index: 100;
+  position: fixed;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.circle {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.trio {
+  margin-bottom: 40px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.animal {
+  width: 72px;
+  height: 72px;
+}
+
+.owl {
+  margin: 0 auto;
+}
+
+.panther {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+}
+
+.llama {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+}
+
+.fish {
+  position: absolute;
+  top: 80px;
+}
+
+.sloth {
+  position: absolute;
+  top: 80px;
+  right: 0;
+}
+
+.tiger {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.first {
+  animation: animateFirstGroup 3s infinite;
+}
+
+.second {
+  animation: animateSecondGroup 3s infinite;
+}
+@keyframes animateFirstGroup {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes animateSecondGroup {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.info {
+  color: $color-white;
+  font-size: $global-font-size;
+  font-weight: $global-weight-bold;
+  text-align: center;
+  vertical-align: middle;
+  padding: 40px;
+}
