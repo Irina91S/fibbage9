@@ -18,6 +18,7 @@ class PickAnswerPage extends Component {
     disabled: false,
     isSubmitted: false,
     timerEndDate: '',
+    animated: false,
   };
 
   setAnswer = (
@@ -64,8 +65,6 @@ class PickAnswerPage extends Component {
   };
 
   selectCorrectAnswer = () => {
-    this.setState({ isSubmitted: true });
-
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
 
     const {
@@ -84,8 +83,6 @@ class PickAnswerPage extends Component {
   };
 
   selectAnswer = fakeAnswerId => {
-    this.setState({ isSubmitted: true });
-
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const {
       playerId,
@@ -124,12 +121,10 @@ class PickAnswerPage extends Component {
   };
 
   onAnswerClick = (index, callback) => {
+    this.setState({ isSubmitted: true });
     const { allAnswers } = this.state;
 
-    if (allAnswers[index].selected) {
-      callback();
-      return;
-    }
+    callback();
 
     allAnswers.forEach((answer, i) => (answer.selected = i == index));
     this.setState({ allAnswers });
@@ -172,6 +167,10 @@ class PickAnswerPage extends Component {
             )
           },
           () => {
+            if (this.state.animated) {
+              return;
+            }
+
             anime({
               targets: ".answer.anime",
               translateX: [-1000, 0],
@@ -180,6 +179,7 @@ class PickAnswerPage extends Component {
               easing: "easeInOutCirc",
               duration: 400,
               complete: () => {
+                this.setState({animated: true})
                 anime({
                   targets: '.float-from-bottom',
                   translateY: [-3, 3],
@@ -222,6 +222,7 @@ class PickAnswerPage extends Component {
 
   render() {
     const { allAnswers, isSubmitted, timerEndDate } = this.state;
+    console.log(isSubmitted);
 
     return (
       <div className="pick-answer u-weight-bold">
@@ -259,13 +260,19 @@ class PickAnswerPage extends Component {
                 <Card
                   type={answer.selected ? "success" : "basic"}
                   className="o-layout__item value"
-                  onClick={() =>
-                    correct
-                      ? this.onAnswerClick(i, this.selectCorrectAnswer)
-                      : this.onAnswerClick(i, () =>
+                  onClick={() => {
+                    if (isSubmitted) {
+                      return;
+                    }
+
+                    if (correct) {
+                      this.onAnswerClick(i, this.selectCorrectAnswer)
+                    } else {
+                      this.onAnswerClick(i, () =>
                         this.selectAnswer(answer[0])
                       )
-                  }
+                    }
+                  }}
                   disabled={isSubmitted && !answer.selected}
                 >
                   {value}
