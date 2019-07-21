@@ -136,17 +136,18 @@ class AnswerResultsPage extends Component {
 
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
+
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">
-          <Card type="success" className="score o-block u-weight-bold">
-            0
-          </Card>
           <Card
             type="success"
-            className="correct-answer u-weight-bold u-margin-left-tiny"
+            className="correct-answer u-weight-bold u-margin-right-tiny"
           >
             {correctAnswer.value}
+          </Card>
+          <Card type="success" className="score o-block u-weight-bold">
+            {correctAnswer.voteCount ? correctAnswer.voteCount : 0}
           </Card>
         </div>
         {fakeAnswers.map(answer => {
@@ -165,16 +166,13 @@ class AnswerResultsPage extends Component {
 
                 <div className="answer">{data.value}</div>
                 <div className="votes">
-                  Votes: {data.voteCount} { data.votedBy && ' ( '}
+                  Votes: {data.voteCount} {data.votedBy && ' ( '}
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
                       <Animal key={key} animal={data.votedBy[key].animal} />
                     ))}{' '}
-                  { data.votedBy && ' )'}
+                  {data.votedBy && ' )'}
                 </div>
-                {/* <div className="voted-by ">
-                
-                </div> */}
               </div>
               <Animal
                 animal={teamStyle.animal}
