@@ -34,7 +34,7 @@ class AddAnswerPage extends Component {
         question,
         answer: { value }
       } = snapshot.val();
-      console.log(snapshot.val());
+
       this.setState({ question, correctAnswer: value });
     });
 
