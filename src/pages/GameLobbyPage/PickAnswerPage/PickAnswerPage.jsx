@@ -44,20 +44,20 @@ class PickAnswerPage extends Component {
   };
 
 
-  setCorrectAnswer = (gameId, questionId, playerId, playerName, animal) => {
+  setCorrectAnswer = async (gameId, questionId, playerId, playerName, animal) => {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
       .child('/answer')
       .child('/votedBy')
       .child(playerId)
+      .child('/name')
       .set(playerName);
 
     lobbyRef
       .child("/answer")
       .child("/votedBy")
       .child(playerId)
-      .set(playerName)
       .child("/animal")
       .set(animal);
   };
@@ -66,13 +66,12 @@ class PickAnswerPage extends Component {
     this.setState({ isSubmitted: true });
 
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
-    console.log('player info', playerInfo)
+
     const {
       playerId,
       playerName,
       animal: { animal }
     } = playerInfo;
-
 
     const {
       match: {
@@ -80,7 +79,7 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    debugger;
+
     this.setCorrectAnswer(gameId, questionId, playerId, playerName, animal);
   };
 
@@ -170,8 +169,6 @@ class PickAnswerPage extends Component {
 
   onAnswerClick = (index, callback) => {
     const { allAnswers } = this.state;
-
-    debugger;
 
     if (allAnswers[index].selected) {
       callback();

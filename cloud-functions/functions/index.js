@@ -4,6 +4,19 @@ const animalsList = require('./animalsList');
 
 admin.initializeApp(functions.config().firebase);
 
+const updateVoteCount = snapshot => {
+  const length = Object.keys(snapshot.after.val()).length;
+  return snapshot.after.ref.parent.child('voteCount').set(length);
+}
+
+exports.incrementFakeAnswerVoteCount = functions.database
+  .ref('/games/{gameId}/questions/{questionId}/fakeAnswers/{fakeAnswerId}/votedBy')
+  .onWrite(updateVoteCount);
+
+exports.incrementCorrectAnswerVoteCount = functions.database
+  .ref('/games/{gameId}/questions/{questionId}/answer/votedBy')
+  .onWrite(updateVoteCount);
+
 exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{playerId}').onCreate(snapshot => {
   const data = snapshot.val();
 
