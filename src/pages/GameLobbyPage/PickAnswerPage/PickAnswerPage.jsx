@@ -45,6 +45,7 @@ class PickAnswerPage extends Component {
   };
 
   setCorrectAnswer = (gameId, questionId, playerId, playerName, animal) => {
+
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
@@ -66,7 +67,7 @@ class PickAnswerPage extends Component {
     this.setState({ isSubmitted: true });
 
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
-    console.log('player info', playerInfo)
+
     const {
       playerId,
       playerName,
@@ -79,7 +80,6 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    debugger;
     this.setCorrectAnswer(gameId, questionId, playerId, playerName, animal);
   };
 
@@ -168,8 +168,6 @@ class PickAnswerPage extends Component {
 
   onAnswerClick = (index, callback) => {
     const { allAnswers } = this.state;
-
-    debugger;
 
     if (allAnswers[index].selected) {
       callback();
