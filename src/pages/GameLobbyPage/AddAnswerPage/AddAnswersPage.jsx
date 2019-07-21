@@ -17,8 +17,9 @@ class AddAnswerPage extends Component {
     answer: "",
     question: "",
     isCorrectAnswer: false,
-    correctAnswer: "",
-    isSubmitted: false
+    correctAnswer: '',
+    isSubmitted: false,
+    timerEndDate: '',
   };
 
   componentDidMount() {
@@ -36,11 +37,28 @@ class AddAnswerPage extends Component {
       console.log(snapshot.val());
       this.setState({ question, correctAnswer: value });
     });
+
+    this.gameRef.child('/currentScreen').on('value', snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        history.push(route);
+      }
+    });
+
+    this.gameRef.child('/timer/endTime').on('value', snapshot => {
+      this.setState({timerEndDate: snapshot.val()})
+    });
   }
 
   componentWillUnmount() {
-    this.questionRef.off("value");
-    this.gameRef.off("value");
+    if (this.questionRef) {
+      this.questionRef.off("value");
+    }
+
+    if (this.gameRef) {
+      this.gameRef.off("value");
+    }
   }
 
   handleAnswerSubmit = ({ answer }) => {
@@ -76,11 +94,14 @@ class AddAnswerPage extends Component {
   };
 
   render() {
-    const { question, isCorrectAnswer, isSubmitted } = this.state;
-    const future = new Date(new Date().getTime() + 30000);
+    const { question, isCorrectAnswer, isSubmitted, timerEndDate } = this.state;
     return (
       <div>
-        {/* <Timer endTime={future} /> */}
+        <Timer 
+          endTime={timerEndDate}
+          onTimerEnd={() => this.setState({isSubmitted: false})}
+        />
+        
         <Question value={question} />
 
         <Formik
