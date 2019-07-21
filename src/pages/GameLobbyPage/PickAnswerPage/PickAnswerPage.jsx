@@ -100,8 +100,6 @@ class PickAnswerPage extends Component {
     } = this.props;
 
     this.setAnswer(
-      gameId,
-      questionId,
       fakeAnswerId,
       playerId,
       playerName,

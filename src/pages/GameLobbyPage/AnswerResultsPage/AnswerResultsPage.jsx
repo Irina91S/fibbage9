@@ -59,10 +59,7 @@ class AnswerResultsPage extends Component {
     this.playersRef.off();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.players.length !== this.state.players.length)
-      this.updatePlayersScores();
-
+  componentDidUpdate() {
     anime({
       targets: ".card.anime",
       translateX: [-1000, 0],
@@ -93,22 +90,6 @@ class AnswerResultsPage extends Component {
     return (
       votesCount * (questionScore / 2) + votedCorrectAnswer * questionScore
     );
-  };
-
-  updatePlayersScores = () => {
-    const { players } = this.state;
-    const scores = this.getAllScoresForQuestion();
-
-    players.forEach(player => {
-      const [key, data] = player;
-      const { totalScore } = data;
-      const newScore = scores[key] || 0;
-      const updatedScore = totalScore + newScore;
-      this.playersRef
-        .child(key)
-        .child("/totalScore")
-        .set(updatedScore);
-    });
   };
 
   getAllScoresForQuestion = () => {
