@@ -46,9 +46,6 @@ class AddNickname extends Component {
       this.playersRef.off();
     }
 
-    if (this.playerRef) {
-      this.playerRef.off();
-    }
   }
 
   setNickname = async (newValues, actions) => {
@@ -97,7 +94,7 @@ class AddNickname extends Component {
 
         this.playerRef = databaseRefs.player(gameId, playerId);
         this.playerRef.on("value", snapshot => {
-          console.log(snapshot);
+ 
           if (snapshot.val().animal) {
             const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
 
