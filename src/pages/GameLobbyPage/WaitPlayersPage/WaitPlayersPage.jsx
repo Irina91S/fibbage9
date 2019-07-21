@@ -60,6 +60,7 @@ class WaitPlayersPage extends Component {
   componentWillUnmount() {
     if (this.gameRef) {
       this.gameRef.off();
+      this.gameRef.child('/currentScreen').off();
     }
 
     this.setPlayerNotReady();

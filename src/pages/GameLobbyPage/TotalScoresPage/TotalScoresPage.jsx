@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
@@ -8,13 +8,14 @@ class TotalScorePage extends Component {
   state = {
     players: [],
     sortedPlayers: []
-  }; 
+  };
 
-  getPlayersInfo = (players) => {
+  getPlayersInfo = players => {
     return players.map(el => el[1]);
-  }
+  };
 
-  sortPlayersByScore = (players) => players.sort((player1, player2) => player2.totalScore - player1.totalScore);
+  sortPlayersByScore = players =>
+    players.sort((player1, player2) => player2.totalScore - player1.totalScore);
 
   componentDidMount() {
     const {
@@ -26,10 +27,18 @@ class TotalScorePage extends Component {
 
     playersRef.on("value", snapshot => {
       const playersSnapshot = snapshot.val();
-      const playersInfo = this.getPlayersInfo(getToupleFromSnapshot(playersSnapshot));
+      const playersInfo = this.getPlayersInfo(
+        getToupleFromSnapshot(playersSnapshot)
+      );
       const sortedPlayers = this.sortPlayersByScore(playersInfo);
       this.setState({ players: playersInfo, sortedPlayers });
     });
+  }
+
+  componentWillUnmount() {
+    if (this.playersRef) {
+      this.playersRef.off();
+    }
   }
 
   render() {
@@ -43,7 +52,7 @@ class TotalScorePage extends Component {
           </div>
         ))}
       </div>
-    )
+    );
   }
 }
 

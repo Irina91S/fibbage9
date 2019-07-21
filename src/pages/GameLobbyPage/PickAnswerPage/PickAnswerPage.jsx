@@ -93,12 +93,6 @@ class PickAnswerPage extends Component {
       animal: { animal }
     } = playerInfo;
 
-    const {
-      match: {
-        params: { gameId, questionId }
-      }
-    } = this.props;
-
     this.setAnswer(
       fakeAnswerId,
       playerId,
@@ -215,10 +209,14 @@ class PickAnswerPage extends Component {
     if (this.gameRef) {
       this.gameRef.off();
       this.gameRef.child('/timer/endTime').off();
+      this.gameRef.child('/currentScreen').off();
     }
 
     if (this.lobbyRef) {
       this.lobbyRef.off();
+      this.lobbyRef.child('/fakeAnswers').off();
+      this.lobbyRef.child('/fakeAnswers/votedBy/name').off();
+      this.lobbyRef.child('/fakeAnswers/votedBy/animal').off();
     }
   }
 
