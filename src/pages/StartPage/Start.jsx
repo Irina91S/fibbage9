@@ -32,6 +32,16 @@ class Start extends React.Component {
   handleInsertPincode = ({ pincode }, actions) => {
     let gameToJoin;
     const { activeGames } = this.state;
+
+    if(!pincode || pincode.toString().trim().length === 0) {
+      actions.setFieldError(
+        'pincode',
+        () => <span>Why are you gay?... &#x1F611;&#x1F611; </span>
+      );
+
+      return;
+    }
+
     const pincodeMatchGame = activeGames
       .filter(game => {
         const [key, data] = game;
@@ -60,7 +70,7 @@ class Start extends React.Component {
     } else {
       actions.setFieldError(
         'pincode',
-        'There is no active game with this pincode.'
+        () => <span>There is no active game with this pincode.</span>
       );
     }
   };

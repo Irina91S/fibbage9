@@ -1,3 +1,12 @@
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 form {
   input,
   button,
@@ -8,11 +17,13 @@ form {
     position: relative;
   }
 
-  input + span {
+  .input + span {
     position: relative;
-    top: -$global-spacing-unit-small;
+    top: -$global-spacing-unit-tiny;
     color: $color-danger;
-    padding-left: $global-spacing-unit-small;
+    font-size: 14px;
+
+    animation: 500ms fadein linear;
   }
 
   footer {

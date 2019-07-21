@@ -60,11 +60,14 @@ class AddNickname extends Component {
     const { playersLength, limit } = this.state;
     this.playersRef = databaseRefs.players(gameId);
 
+    console.log(newValues)
+
     if (!newValues.nickname || newValues.nickname.trim().length === 0) {
       actions.setFieldError(
         'nickname',
         'Lol, we actually thought of this, add a legit name'
       );
+
       return;
     }
 
@@ -72,7 +75,7 @@ class AddNickname extends Component {
       if (this.nicknameAlreadySet(newValues.nickname)) {
         actions.setFieldError(
           'nickname',
-          'Someone already took your nickname, pick something else'
+          'Someone already took this nickname'
         );
         return;
       }
@@ -106,7 +109,10 @@ class AddNickname extends Component {
         });
       });
     } else {
-      this.setState({ error: true });
+      actions.setFieldError(
+        'nickname',
+        'Sorry, this game cannot afford any more players'
+      );
     }
   };
 
@@ -121,9 +127,8 @@ class AddNickname extends Component {
 
   render() {
     const { error } = this.state;
-    return error ? (
-      <div>S-a depasit limita de participanti pentru acest joc</div>
-    ) : (
+
+    return (
       <Formik
         initialValues={{
           nickname: '',
@@ -142,7 +147,7 @@ class AddNickname extends Component {
               value={values.nickname}
               errors={errors}
             />
-            {/* <ErrorMessage component="span" name="nickname" /> */}
+            {errors && <ErrorMessage component="span" name="nickname" />}
             <button onClick={handleSubmit} className="page-transition-elem">
               YEP, IT'S CRINGE ENOUGH
             </button>

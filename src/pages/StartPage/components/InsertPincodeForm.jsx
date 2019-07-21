@@ -21,7 +21,7 @@ const InsertPincodeForm = ({ onSubmit }) => {
             placeholder="PINCODE"
             errors={errors}
           />
-          {/* <ErrorMessage component="span" name="pincode" /> */}
+          <ErrorMessage component="span" name="pincode" render={Data =>  <Data />} />
           <button type="submit" className="page-transition-elem">
             JOIN GAME
             <Ink />
