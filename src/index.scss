@@ -1,11 +1,15 @@
 @import 'settings.colors';
 
 html {
-  overflow: hidden;
   background-color: $color-white;
+  overflow: hidden;
 }
 
 body {
   font-family: 'Nunito Sans', sans-serif;
   color: $color-dark;
+}
+
+.page-transition-elem {
+  opacity: 0;
 }

@@ -24,7 +24,8 @@ function App(props) {
     // On certain pages, the background should be gray
     setGrayPage(
       props.location.pathname.endsWith('results') ||
-        props.location.pathname.endsWith('wait-players')
+        props.location.pathname.endsWith('wait-players') ||
+        props.location.pathname.endsWith('pick-answer')
     );
 
     // Each time the route changes, run this staggering animation

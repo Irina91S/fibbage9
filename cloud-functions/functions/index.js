@@ -6,9 +6,10 @@ admin.initializeApp(functions.config().firebase);
 
 exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{playerId}').onCreate(snapshot => {
   const data = snapshot.val();
-  const animals = snapshot.ref.parent.parent.child('/animals').once('value').then(snap => {
+
+  return snapshot.ref.parent.parent.child('/animals').once('value').then(snap => {
     const animalData = Object.entries(snap.val());
-    console.log(animalData, 'animal data');
+    console.log('[setting animal data]:', animalData);
 
     const availableAnimal = animalData.find((animal) => {
       const [id, animalObj] = animal;

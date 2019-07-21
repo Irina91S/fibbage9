@@ -25,7 +25,6 @@ class Start extends React.Component {
 
   setActiveGames = games => {
     const activeGames = this.getActiveGames(games);
-    console.log(activeGames);
     this.setState({ activeGames });
   };
 
@@ -66,7 +65,6 @@ class Start extends React.Component {
 
   componentDidMount() {
     games.on('value', snapshot => {
-      console.log(getToupleFromSnapshot(snapshot.val()));
       this.setActiveGames(getToupleFromSnapshot(snapshot.val()));
     });
   }
