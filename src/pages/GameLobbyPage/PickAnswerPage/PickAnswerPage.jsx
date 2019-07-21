@@ -1,13 +1,13 @@
-import React, { Fragment, Component } from 'react';
-import anime from 'animejs';
-import { databaseRefs } from '../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import React, { Fragment, Component } from "react";
+import anime from "animejs";
+import { databaseRefs } from "../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-import './PickAnswerPage.scss';
+import "./PickAnswerPage.scss";
 
-import { useCurrentPlayer } from '../../../hooks';
-import WaitingScreen from '../WaitingScreen/WaitingScreen';
-import { Card } from '../../../shared';
+import { useCurrentPlayer } from "../../../hooks";
+import WaitingScreen from "../WaitingScreen/WaitingScreen";
+import { Card } from "../../../shared";
 const { lobby } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -27,10 +27,11 @@ class PickAnswerPage extends Component {
   ) => {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
+
     lobbyRef
-      .child('/fakeAnswers')
+      .child("/fakeAnswers")
       .child(fakeAnswerId)
-      .child('/votedBy')
+      .child("/votedBy")
       .child(playerId)
       .set(playerName);
 
@@ -43,13 +44,12 @@ class PickAnswerPage extends Component {
       .set(animal);
   };
 
-
   setCorrectAnswer = (gameId, questionId, playerId, playerName, animal) => {
     this.setState({ disabled: true });
     const lobbyRef = lobby(gameId, questionId);
     lobbyRef
-      .child('/answer')
-      .child('/votedBy')
+      .child("/answer")
+      .child("/votedBy")
       .child(playerId)
       .set(playerName);
 
@@ -73,7 +73,6 @@ class PickAnswerPage extends Component {
       animal: { animal }
     } = playerInfo;
 
-
     const {
       match: {
         params: { gameId, questionId }
@@ -93,7 +92,6 @@ class PickAnswerPage extends Component {
       playerName,
       animal: { animal }
     } = playerInfo;
-
 
     const {
       match: {
@@ -119,7 +117,7 @@ class PickAnswerPage extends Component {
     } = this.props;
     const lobbyRef = lobby(gameId, questionId);
 
-    lobbyRef.on('value', snapshot => {
+    lobbyRef.on("value", snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
 
       const correctAnswer = snapshot.val().answer;
@@ -133,11 +131,11 @@ class PickAnswerPage extends Component {
           },
           () => {
             anime({
-              targets: '.answer.anime',
+              targets: ".answer.anime",
               translateX: [-1000, 0],
               opacity: [0, 1],
               delay: anime.stagger(100),
-              easing: 'easeInOutQuint',
+              easing: "easeInOutQuint",
               duration: 400
             });
           }
@@ -178,10 +176,9 @@ class PickAnswerPage extends Component {
       return;
     }
 
-    allAnswers.forEach((answer, i) => (answer.selected = i == index));
+    allAnswers.forEach((answer, i) => (answer.selected = i === index));
     this.setState({ allAnswers });
   };
-
 
   render() {
     const { allAnswers, isSubmitted } = this.state;
@@ -204,13 +201,13 @@ class PickAnswerPage extends Component {
                 key={answer}
               >
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item counter u-margin-right-small"
                 >
                   {i + 1}.
                 </Card>
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item value"
                   onClick={() =>
                     correct

@@ -60,7 +60,7 @@ class AnswerResultsPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.players.length != this.state.players.length)
+    if (prevState.players.length !== this.state.players.length)
       this.updatePlayersScores();
 
     anime({
@@ -191,13 +191,13 @@ class AnswerResultsPage extends Component {
                 <div className="voted-by ">
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <div key={key} style={{ width: "40px", height: "60px" }}>
+                      <div key={key} style={{ width: "30px", height: "30px" }}>
                         <Animal animal={data.votedBy[key].animal} />
                       </div>
                     ))}
                 </div>
               </div>
-              <Animal animal={teamStyle.animal} />
+              <Animal animal={teamStyle.animal}   style={{height: 72, width: 72}}/>
             </Card>
           );
         })}
