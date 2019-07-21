@@ -72,9 +72,10 @@ class WaitPlayersPage extends Component {
     return players.map(player => {
 
       const [key, data] = player;
+      const isCurrentPlayer = playerInfo.playerId === key;
       const color =  data.animal ? data.animal.color : '';
 
-      const style = { color: color, border: `2px solid ${color}` };
+      const style = { color: color, border: isCurrentPlayer ? `2px solid ${color}` : '' };
       return (
         <div
           key={key}
@@ -88,7 +89,7 @@ class WaitPlayersPage extends Component {
           >
             {data.nickname}
           </Card>
-          {playerInfo.playerId === key &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.7' }}></div>}
+          {isCurrentPlayer &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.5' }}></div>}
         </div>
       );
     });

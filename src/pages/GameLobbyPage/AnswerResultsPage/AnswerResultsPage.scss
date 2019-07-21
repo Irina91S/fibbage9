@@ -11,17 +11,26 @@
 
   .fake-answer {
     flex: 1;
+    border-right: 1px solid;
+    margin-right: $global-spacing-unit-small;
 
-    .team-name {
-      font-size: 16px;
+    .votes {
+      font-style: italic;
+      font-size: 14px;
+      height: 31px;
+      display: flex;
+      vertical-align: super;
+      align-items: flex-end;
     }
 
     .votes .animal {
       width: 25px;
       height: 25px;
       display: inline-block;
-      position: relative;
-      top: 5px;
+
+      &:first-child {
+        margin-left: $global-spacing-unit-tiny;
+      }
     }
   }
 }

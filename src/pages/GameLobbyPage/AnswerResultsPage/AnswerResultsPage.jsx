@@ -169,7 +169,7 @@ class AnswerResultsPage extends Component {
                   Votes: {data.voteCount} {data.votedBy && ' ( '}
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <Animal key={key} animal={data.votedBy[key].animal} />
+                      <Animal key={key} animal={data.votedBy[key].animal} className="u-margin-right-tiny" />
                     ))}{' '}
                   {data.votedBy && ' )'}
                 </div>
