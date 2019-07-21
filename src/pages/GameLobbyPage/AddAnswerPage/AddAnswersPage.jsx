@@ -47,17 +47,17 @@ class AddAnswerPage extends Component {
     });
 
     this.gameRef.child('/timer/endTime').on('value', snapshot => {
-      this.setState({timerEndDate: snapshot.val()})
+      this.setState({ timerEndDate: snapshot.val() })
     });
   }
 
   componentWillUnmount() {
     if (this.questionRef) {
-      this.questionRef.off("value");
+      this.questionRef.off();
     }
 
     if (this.gameRef) {
-      this.gameRef.off("value");
+      this.gameRef.off();
     }
   }
 
@@ -97,13 +97,15 @@ class AddAnswerPage extends Component {
     const { question, isCorrectAnswer, isSubmitted, timerEndDate } = this.state;
     return (
       <div>
-        <Timer 
-          endTime={timerEndDate}
-          onTimerEnd={() => this.setState({isSubmitted: false})}
-        />
-        
+        {timerEndDate &&
+          <React.Fragment>
+            {console.log(timerEndDate)}
+            <Timer
+              endTime={timerEndDate}
+            />
+          </React.Fragment>
+        }
         <Question value={question} />
-
         <Formik
           initialValues={{
             answer: ""
@@ -128,8 +130,8 @@ class AddAnswerPage extends Component {
                   You entered the correct answer. Please enter a fake one
                 </div>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               <button type="submit">I HOPE IT WORKS</button>
 
               <footer>

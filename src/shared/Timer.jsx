@@ -1,39 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import { useTimer } from 'react-timer-hook';
+import useInterval from '@use-it/interval';
 
 import 'react-circular-progressbar/dist/styles.css';
 import './Timer.scss';
 
-const MAX = 30;
-const noop = () => {};
-
 export const Timer = ({
   endTime,
   size = '70px',
-  onTimerTick = noop,
-  onTimerEnd = noop
+  onTimerTick = () => { },
+  onTimerEnd = () => { }
 }) => {
-  const { seconds } = useTimer({
-    expiryTimestamp: endTime,
-    onExpire: onTimerEnd
-  });
+  const [secondsLeft, setLeftTime] = useState(29);
 
-  useEffect(() => {
+  useInterval(() => {
     const remainingTime = Math.max(0, endTime - Date.now());
     onTimerTick(remainingTime, endTime, Date.now());
-  }, [seconds, endTime, onTimerTick]);
+    setLeftTime(new Date(remainingTime).getSeconds());
 
-  return (
-    <div style={{ width: size, height: size }}>
-      <CircularProgressbar
-        text={seconds}
-        value={(100 * seconds) / MAX}
-        strokeWidth={12}
-        counterClockwise
-      />
-    </div>
-  );
+    if (endTime <= Date.now()) {
+      onTimerEnd();
+    }
+  }, 1000);
+
+return (
+  <div className="timer-wrapper" style={{ width: size, height: size }}>
+    <CircularProgressbar
+      text={secondsLeft}
+      value={100 * secondsLeft / 30}
+      strokeWidth={12}
+      counterClockwise
+    />
+  </div>
+)
 };
 
 export default Timer;
