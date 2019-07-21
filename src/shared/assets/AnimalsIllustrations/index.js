@@ -8,7 +8,7 @@ import Chameleon from './Chameleon';
 import Cow from './Cow';
 import Crab from './Crab';
 import Dog from './Dog';
-import Duckling from './Duckling';
+import Duck from './Duck';
 import Fox from './Fox';
 import Fish from './Fish';
 import Frog from './Frog';
@@ -38,7 +38,7 @@ export const animalSvgs = [
   <Cow key={6} />,
   <Crab key={7} />,
   <Dog key={8} />,
-  <Duckling key={9} />,
+  <Duck key={9} />,
   <Fox key={10} />,
   <Fish key={11} />,
   <Frog key={12} />,
