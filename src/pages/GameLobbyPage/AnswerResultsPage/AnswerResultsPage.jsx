@@ -162,7 +162,7 @@ class AnswerResultsPage extends Component {
               className="anime o-layout--flex u-margin-bottom-small"
               style={{ color: teamStyle.color }}
             >
-              <div className="fake-answer u-2/3">
+              <div className="fake-answer">
                 <div className="team-name u-weight-bold">
                   {this.getTeamNameById(data.authorTeam)}
                 </div>
@@ -172,9 +172,7 @@ class AnswerResultsPage extends Component {
                 <div className="voted-by ">
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <div key={key} style={{ width: "30px", height: "30px" }}>
-                        <Animal animal={data.votedBy[key].animal} />
-                      </div>
+                      <Animal key={key} animal={data.votedBy[key].animal} style={{ width: "30px", height: "30px" }} />
                     ))}
                 </div>
               </div>
