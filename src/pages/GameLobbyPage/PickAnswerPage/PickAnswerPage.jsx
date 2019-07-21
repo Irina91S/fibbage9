@@ -1,40 +1,41 @@
-import React, { Fragment, Component } from 'react';
-import anime from 'animejs';
-import { databaseRefs } from '../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
-
-import './PickAnswerPage.scss';
-
+import React, { Fragment, Component } from "react";
+import anime from "animejs";
+import { databaseRefs } from "../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 import { useCurrentPlayer } from '../../../hooks';
 import WaitingScreen from '../WaitingScreen/WaitingScreen';
-import { Card } from '../../../shared';
-const { lobby } = databaseRefs;
+import { Card, Timer } from '../../../shared';
+import "./PickAnswerPage.scss";
+
+const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
+  gameRef;
+  lobbyRef;
+
   state = {
     allAnswers: [],
     disabled: false,
-    isSubmitted: false
+    isSubmitted: false,
+    timerEndDate: '',
   };
 
   setAnswer = (
-    gameId,
-    questionId,
     fakeAnswerId,
     playerId,
     playerName,
     animal
   ) => {
     this.setState({ disabled: true });
-    const lobbyRef = lobby(gameId, questionId);
-    lobbyRef
+
+    this.lobbyRef
       .child('/fakeAnswers')
       .child(fakeAnswerId)
-      .child('/votedBy')
+      .child("/votedBy")
       .child(playerId)
       .set(playerName);
 
-    lobbyRef
+    this.lobbyRef
       .child("/fakeAnswers")
       .child(fakeAnswerId)
       .child("/votedBy")
@@ -46,15 +47,15 @@ class PickAnswerPage extends Component {
 
   setCorrectAnswer = async (gameId, questionId, playerId, playerName, animal) => {
     this.setState({ disabled: true });
-    const lobbyRef = lobby(gameId, questionId);
-    lobbyRef
+
+    this.lobbyRef
       .child('/answer')
       .child('/votedBy')
       .child(playerId)
       .child('/name')
       .set(playerName);
 
-    lobbyRef
+    this.lobbyRef
       .child("/answer")
       .child("/votedBy")
       .child(playerId)
@@ -79,7 +80,6 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-
     this.setCorrectAnswer(gameId, questionId, playerId, playerName, animal);
   };
 
@@ -92,7 +92,6 @@ class PickAnswerPage extends Component {
       playerName,
       animal: { animal }
     } = playerInfo;
-
 
     const {
       match: {
@@ -109,41 +108,6 @@ class PickAnswerPage extends Component {
       animal
     );
   };
-
-  componentDidMount() {
-    const {
-      match: {
-        params: { gameId, questionId }
-      }
-    } = this.props;
-    const lobbyRef = lobby(gameId, questionId);
-
-    lobbyRef.on('value', snapshot => {
-      const givenAnswers = snapshot.val().fakeAnswers;
-
-      const correctAnswer = snapshot.val().answer;
-      if (givenAnswers) {
-        this.setState(
-          {
-            allAnswers: this.shuffleAnswers(
-              getToupleFromSnapshot(givenAnswers),
-              correctAnswer
-            )
-          },
-          () => {
-            anime({
-              targets: '.answer.anime',
-              translateX: [-1000, 0],
-              opacity: [0, 1],
-              delay: anime.stagger(100),
-              easing: 'easeInOutQuint',
-              duration: 400
-            });
-          }
-        );
-      }
-    });
-  }
 
   shuffleAnswers = (fakeAnswers, truth) => {
     const currentPlayer = useCurrentPlayer();
@@ -179,12 +143,72 @@ class PickAnswerPage extends Component {
     this.setState({ allAnswers });
   };
 
+  componentDidMount() {
+    const {
+      match: {
+        params: { gameId, questionId }
+      }
+    } = this.props;
+
+    this.gameRef = game(gameId);
+    this.lobbyRef = lobby(gameId, questionId);
+
+    this.gameRef
+      .child('/timer/endTime')
+      .on('value', snapshot => this.setState({ timerEndDate: snapshot.val() }))
+
+    this.lobbyRef.on('value', snapshot => {
+      const givenAnswers = snapshot.val().fakeAnswers;
+
+      const correctAnswer = snapshot.val().answer;
+
+      if (givenAnswers) {
+        this.setState(
+          {
+            allAnswers: this.shuffleAnswers(
+              getToupleFromSnapshot(givenAnswers),
+              correctAnswer
+            )
+          },
+          () => {
+            anime({
+              targets: ".answer.anime",
+              translateX: [-1000, 0],
+              opacity: [0, 1],
+              delay: anime.stagger(100),
+              easing: "easeInOutQuint",
+              duration: 400
+            });
+          }
+        );
+      }
+    });
+  }
+
+
+  componentWillUnmount() {
+    if (this.gameRef) {
+      this.gameRef.off();
+    }
+
+    if (this.lobbyRef) {
+      this.lobbyRef.off();
+    }
+  }
 
   render() {
-    const { allAnswers, isSubmitted } = this.state;
+    const { allAnswers, isSubmitted, timerEndDate } = this.state;
 
     return (
       <div className="pick-answer u-weight-bold">
+        {timerEndDate &&
+          <div className="u-margin-bottom-small">
+            <Timer
+              endTime={timerEndDate}
+              onTimerEnd={() => this.setState({ isSubmitted: false })}
+            />
+          </div>
+        }
         {allAnswers.map((answer, i) => {
           const correct = !!answer.value;
           const value = correct ? answer.value : answer[1].value;
@@ -201,20 +225,20 @@ class PickAnswerPage extends Component {
                 key={answer}
               >
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item counter u-margin-right-small"
                 >
                   {i + 1}.
                 </Card>
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item value"
                   onClick={() =>
                     correct
                       ? this.onAnswerClick(i, this.selectCorrectAnswer)
                       : this.onAnswerClick(i, () =>
-                          this.selectAnswer(answer[0])
-                        )
+                        this.selectAnswer(answer[0])
+                      )
                   }
                 >
                   {value}
