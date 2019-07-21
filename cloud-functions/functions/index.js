@@ -48,30 +48,35 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
     const animalData = Object.entries(snap.val());
     console.log('[setting animal data]:', animalData);
 
-    const availableAnimal = animalData.find((animal) => {
-      const [id, animalObj] = animal;
+    const tryToAssignAnimal = () => {
+      const animalToBeAssigned = Math.floor(Math.random() * animalData.length);
+      console.log('animalToBeAssigned', animalToBeAssigned);
 
-      if (!animalObj.isTaken) {
-        return animal;
+      if (animalData[animalToBeAssigned].isTaken) {
+        tryToAssignAnimal();
+      } else {
+        console.log('animalToBeAssignedID', animalData[animalToBeAssigned][0])
+        console.log('animalToBeAssignedData', animalData[animalToBeAssigned][1])
+        snapshot.ref.parent.parent
+          .child(`/animals/${animalData[animalToBeAssigned][0]}`)
+          .set({
+            ...animalData[animalToBeAssigned][1],
+            isTaken: true
+          });
+
+        snapshot.ref.set({
+          ...data,
+          animal: {
+            animal: animalData[animalToBeAssigned][1].animal,
+            color: animalData[animalToBeAssigned][1].color
+          }
+        })
+
+        return null;
       }
+    }
 
-      return;
-    });
-
-    snapshot.ref.parent.parent
-      .child(`/animals/${availableAnimal[0]}`)
-      .set({
-        ...availableAnimal[1],
-        isTaken: true
-      });
-
-    snapshot.ref.set({
-      ...data,
-      animal: {
-        animal: availableAnimal[1].animal,
-        color: availableAnimal[1].color
-      }
-    })
+    tryToAssignAnimal();
 
     return null;
   });
