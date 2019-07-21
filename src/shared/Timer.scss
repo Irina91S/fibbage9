@@ -4,6 +4,7 @@
   position: fixed;
   right: $global-spacing-unit;
   top: $global-spacing-unit;
+  z-index: 3;
 }
 
 .CircularProgressbar {
