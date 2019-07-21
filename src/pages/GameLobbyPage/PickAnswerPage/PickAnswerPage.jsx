@@ -1,13 +1,12 @@
-import React, { Fragment, Component } from 'react';
-import anime from 'animejs';
-import { databaseRefs } from '../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
-
-import './PickAnswerPage.scss';
-
+import React, { Fragment, Component } from "react";
+import anime from "animejs";
+import { databaseRefs } from "../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 import { useCurrentPlayer } from '../../../hooks';
 import WaitingScreen from '../WaitingScreen/WaitingScreen';
 import { Card, Timer } from '../../../shared';
+import "./PickAnswerPage.scss";
+
 const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -32,7 +31,7 @@ class PickAnswerPage extends Component {
     this.lobbyRef
       .child('/fakeAnswers')
       .child(fakeAnswerId)
-      .child('/votedBy')
+      .child("/votedBy")
       .child(playerId)
       .set(playerName);
 
@@ -68,12 +67,12 @@ class PickAnswerPage extends Component {
     this.setState({ isSubmitted: true });
 
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+
     const {
       playerId,
       playerName,
       animal: { animal }
     } = playerInfo;
-
 
     const {
       match: {
@@ -92,8 +91,7 @@ class PickAnswerPage extends Component {
       playerId,
       playerName,
       animal: { animal }
-    } = playerInfo.playerInfo;
-
+    } = playerInfo;
 
     const {
       match: {
@@ -174,11 +172,11 @@ class PickAnswerPage extends Component {
           },
           () => {
             anime({
-              targets: '.answer.anime',
+              targets: ".answer.anime",
               translateX: [-1000, 0],
               opacity: [0, 1],
               delay: anime.stagger(100),
-              easing: 'easeInOutQuint',
+              easing: "easeInOutQuint",
               duration: 400
             });
           }
@@ -227,13 +225,13 @@ class PickAnswerPage extends Component {
                 key={answer}
               >
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item counter u-margin-right-small"
                 >
                   {i + 1}.
                 </Card>
                 <Card
-                  type={answer.selected ? 'success' : 'basic'}
+                  type={answer.selected ? "success" : "basic"}
                   className="o-layout__item value"
                   onClick={() =>
                     correct

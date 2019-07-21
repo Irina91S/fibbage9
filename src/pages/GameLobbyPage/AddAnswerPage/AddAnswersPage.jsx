@@ -74,7 +74,7 @@ class AddAnswerPage extends Component {
     const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
 
     this.questionRef.child("/fakeAnswers").push({
-      authorTeam: playerInfo.playerInfo.playerId,
+      authorTeam: playerInfo.playerId,
       value: answer,
       voteCount: 0,
       votedBy: {}

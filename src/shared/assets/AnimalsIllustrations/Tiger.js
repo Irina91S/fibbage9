@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgTiger = props => (
-  <svg height="100%" width="100%"  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin" {...props}>
     <g fill="#ff8c46">
       <path d="M163.189 67.148C129.616 67.148 121.222 0 79.255 0 52.713 0 28.894 16.787 28.894 50.361s58.754 50.361 41.967 109.115l92.328-92.328zM347.845 67.148C381.419 67.148 389.812 0 431.78 0c26.542 0 50.361 16.787 50.361 50.361s-58.754 50.361-41.967 109.115l-92.329-92.328z" />
     </g>

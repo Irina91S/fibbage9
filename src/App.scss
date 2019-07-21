@@ -5,6 +5,7 @@
   width: 100vw;
   height: 100vh;
   padding: $global-spacing-unit;
+  overflow: auto;
 
   &.bg-gray {
     background-color: $color-gray-2;
