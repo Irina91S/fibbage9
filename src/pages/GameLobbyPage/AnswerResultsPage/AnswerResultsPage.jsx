@@ -76,8 +76,8 @@ class AnswerResultsPage extends Component {
   getVotes = votedBy => {
     return votedBy
       ? getToupleFromSnapshot(votedBy).map((element, key) => (
-          <span key={key}>{`${element[1]}  `}</span>
-        ))
+        <span key={key}>{`${element[1]}  `}</span>
+      ))
       : "";
   };
 
@@ -86,7 +86,7 @@ class AnswerResultsPage extends Component {
 
     const votedCorrectAnswer =
       correctAnswer.votedBy &&
-      Object.keys(correctAnswer.votedBy).includes(authorTeam)
+        Object.keys(correctAnswer.votedBy).includes(authorTeam)
         ? 1
         : 0;
 
@@ -162,14 +162,14 @@ class AnswerResultsPage extends Component {
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">
-          <Card
-            type="success"
-            className="correct-answer u-weight-bold u-margin-right-tiny"
-          >
-            {correctAnswer.value}
-          </Card>
           <Card type="success" className="score o-block u-weight-bold">
             0
+          </Card>
+          <Card
+            type="success"
+            className="correct-answer u-weight-bold u-margin-left-tiny"
+          >
+            {correctAnswer.value}
           </Card>
         </div>
         {fakeAnswers.map(answer => {
@@ -197,7 +197,7 @@ class AnswerResultsPage extends Component {
                     ))}
                 </div>
               </div>
-              <Animal animal={teamStyle.animal}   style={{height: 72, width: 72}}/>
+              <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
             </Card>
           );
         })}

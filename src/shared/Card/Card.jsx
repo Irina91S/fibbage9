@@ -5,7 +5,6 @@ import './Card.scss';
 const Card = ({ className, disabled, type = 'basic', children, ...rest }) => {
   return (
     <React.Fragment>
-      {console.log(disabled)}
       <div
         className={`card o-box--small ${type} ${disabled ? 'disabled' : ''}  ${className ? className : ''}`}
         {...rest}
