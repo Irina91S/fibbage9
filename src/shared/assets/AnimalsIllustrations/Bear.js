@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgBear = props => (
-  <svg height={80} width={150}  viewBox="0 0 100 500" {...props} name="bear">
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin"  {...props} name="bear">
     <path
       d="M106 0C64.645 0 31 33.645 31 75c0 35.853 25.21 65.922 58.969 73.28l90.994-70.917C182.275 34.922 148.342 0 106 0z"
       fill="#a44f3e"

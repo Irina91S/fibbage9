@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const animalsList = require('./animalsList');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -37,4 +38,9 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
 
     return null;
   });
+});
+
+exports.populateGameWithAnimals = functions.database.ref('/games/{gameId}').onCreate(snapshot => {
+  console.log(animalsList);
+  return snapshot.ref.child('/animals').set(animalsList);
 });

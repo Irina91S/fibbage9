@@ -45,10 +45,6 @@ class WaitPlayersPage extends Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log("update", this.state);
-  }
-
   setPlayerNotReady = () => {
     const {
       match: {
@@ -70,24 +66,27 @@ class WaitPlayersPage extends Component {
   }
 
   renderListOfPlayersReady = () => {
+    const { playerInfo } = JSON.parse(localStorage.getItem('playerInfo'));
     const { players } = this.state;
     return players.map(player => {
+
       const [key, data] = player;
-      const style = { color: data.animal.color };
+      const color =  data.animal ? data.animal.color : '';
+
+      const style = { color: color, border: `2px solid ${color}` };
       return (
-        <div key={key} className="team  u-padding-small u-margin-bottom-small">
-          <div className="o-layout--flex">
-            <Animal
-              className="u-margin-right-small"
-              animal={data.animal.animal}
-            />
-            <Card
-              className="player u-margin-vertical-small u-weight-bold u-2/3"
-              style={style}
-            >
-              {data.nickname}
-            </Card>
-          </div>
+        <div
+          key={key}
+          className="team o-layout--stretch u-padding-small u-margin-bottom-small"
+        >
+          {data.animal && <Animal className="u-margin-right-small" style={{height: 72, width: 72}} animal={data.animal.animal}/>}
+          <Card
+            className="player u-margin-vertical-small u-weight-bold u-2/3"
+            style={style}
+          >
+            {data.nickname}
+          </Card>
+          {playerInfo.playerId === key &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.7' }}></div>}
         </div>
       );
     });
@@ -100,8 +99,9 @@ class WaitPlayersPage extends Component {
       return (
         <Animal
           key={key}
-          className="u-margin-right-small"
+          className="u-margin-right-small u-margin-left-small"
           animal={data.animal.animal}
+          style={{height: 30, width: 30}}
         />
       );
     });

@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgOwl = props => (
-  <svg height={80} width={150}  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin" {...props}>
     <ellipse cx={256} cy={268.109} rx={255.781} ry={232} fill="#7e5c62" />
     <path
       d="M302.719 351.445l-40.219-56a8.007 8.007 0 00-6.5-3.336h-.023a8.007 8.007 0 00-6.5 3.367l-39.781 56a7.995 7.995 0 00-.469 8.516l40 72a7.995 7.995 0 0013.984 0l40-72a7.987 7.987 0 00-.492-8.547z"

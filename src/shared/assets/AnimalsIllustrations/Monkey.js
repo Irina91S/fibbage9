@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgMonkey = props => (
-  <svg height={80} width={150}  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin" {...props}>
     <circle cx={66.06} cy={222.97} r={66.06} fill="#965a50" />
     <circle cx={66.06} cy={222.97} r={41.29} fill="#ebc9a0" />
     <circle cx={445.94} cy={222.97} r={66.06} fill="#965a50" />

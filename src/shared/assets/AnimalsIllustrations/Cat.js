@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgCat = props => (
-  <svg height={80} width={150}  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin" {...props}>
     <g fill="#e67332">
       <path d="M37.77 235.016V11.87C37.77 5.314 43.085 0 49.641 0c3.149 0 6.167 1.251 8.393 3.477l101.441 101.441L37.77 235.016zM474.229 235.016V11.87c0-6.556-5.315-11.87-11.87-11.87a11.868 11.868 0 00-8.393 3.477L352.525 104.918l121.704 130.098z" />
     </g>

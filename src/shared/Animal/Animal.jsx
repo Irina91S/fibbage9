@@ -7,7 +7,7 @@ const Animal = ({ animal, className, ...rest }) => {
       const svgName = animalSvg
         .type.name.toLowerCase()
         .substring(3);
-      return svgName.includes(animal);
+      return svgName === animal;
     });
 
   return (

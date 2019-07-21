@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgFox = props => (
-  <svg height={80} width={150}  viewBox="0 0 512 512" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 512 512" viewBox="0 0 100 500" {...props}>
     <path
       d="M439.893 4.169c11.115-4.246 23.06 4.141 22.543 16.028-4.168 95.801-37.145 178.387-37.145 178.387l-124.559-87.398C350.393 51.372 410.485 15.404 439.893 4.169z"
       fill="#d26437"
