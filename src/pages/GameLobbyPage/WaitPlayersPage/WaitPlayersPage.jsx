@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { databaseRefs } from '../../../lib/refs';
-import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import React, { Component, Fragment } from "react";
+import { databaseRefs } from "../../../lib/refs";
+import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
 
-import './WaitPlayersPage.scss';
+import "./WaitPlayersPage.scss";
 
-import { Card, Animal } from '../../../shared';
+import { Card, Animal } from "../../../shared";
 
 class WaitPlayersPage extends Component {
   state = {
     limit: 0,
     players: [],
-    currentScreen: ''
+    currentScreen: ""
   };
 
   gameRef;
@@ -22,17 +22,21 @@ class WaitPlayersPage extends Component {
         params: { gameId }
       }
     } = this.props;
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId } = playerInfo;
     this.gameRef = databaseRefs.game(gameId);
     this.playerRef = databaseRefs.player(gameId, playerId);
 
-    this.gameRef.on('value', snapshot => {
-      const { players } = snapshot.val();
-      this.setState({ players: getToupleFromSnapshot(players) });
+    this.gameRef.on("value", snapshot => {
+      const { players, limit } = snapshot.val();
+
+      this.setState({
+        players: getToupleFromSnapshot(players),
+        limit
+      });
     });
 
-    this.gameRef.child('/currentScreen').on('value', snapshot => {
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
       const { history } = this.props;
       if (snapshot.val()) {
         const { route } = snapshot.val();
@@ -48,7 +52,7 @@ class WaitPlayersPage extends Component {
       }
     } = this.props;
 
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerId } = playerInfo;
     this.playerRef = databaseRefs.player(gameId, playerId);
   };
@@ -82,14 +86,42 @@ class WaitPlayersPage extends Component {
           >
             {data.nickname}
           </Card>
-          {playerInfo.playerId == key &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.7' }}></div>}
+          {playerInfo.playerId === key &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.7' }}></div>}
         </div>
       );
     });
   };
 
+  renderListOfReadyAnimals = () => {
+    const { players } = this.state;
+    return players.map(player => {
+      const [key, data] = player;
+      return (
+        <Animal
+          key={key}
+          className="u-margin-right-small u-margin-left-small"
+          animal={data.animal.animal}
+          style={{height: 30, width: 30}}
+        />
+      );
+    });
+  };
+
   render() {
-    return this.renderListOfPlayersReady();
+    const { limit, players } = this.state;
+
+    return (
+      <Fragment>
+        <div>
+          <h3>Waiting for all teams</h3>
+          <div className="o-layout--flex">
+            {`${players.length}/${limit} Teams are ready`}{" "}
+            {this.renderListOfReadyAnimals()}
+          </div>
+        </div>
+        {this.renderListOfPlayersReady()}
+      </Fragment>
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-@import 'settings';
+@import "settings";
 
 .team {
   padding-left: 0 !important;
@@ -21,5 +21,13 @@
   .player {
     flex: 2;
     text-align: center;
+  }
+}
+@media only screen and (min-width: 740px) {
+  .team {
+    .bg {
+      width: 100%;
+      left: -4px;
+    }
   }
 }
