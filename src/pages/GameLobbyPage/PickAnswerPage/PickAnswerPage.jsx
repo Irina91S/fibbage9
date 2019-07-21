@@ -79,7 +79,7 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    this.setCorrectAnswer(gameId, questionId, playerId, playerName, animal);
+    this.setCorrectAnswer(playerId, playerName, animal);
   };
 
   selectAnswer = fakeAnswerId => {
@@ -153,18 +153,38 @@ class PickAnswerPage extends Component {
       .child('/timer/endTime')
       .on('value', snapshot => this.setState({ timerEndDate: snapshot.val() }))
 
-    this.lobbyRef.on('value', snapshot => {
+    this.lobbyRef.once('value', snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
 
       const correctAnswer = snapshot.val().answer;
 
       if (givenAnswers) {
+        const answers = getToupleFromSnapshot(givenAnswers);
+
+        // Check to see if this user already picked a answer from fake answers
+        const currentPlayer = useCurrentPlayer();
+        let isSubmitted = false;
+
+        for (const givenAnswer of answers) {
+          if(givenAnswer[1].votedBy && givenAnswer[1].votedBy[currentPlayer.playerId]) {
+            givenAnswer.selected = true;
+            isSubmitted = true;
+            break;
+          }
+        }
+
+        if(!isSubmitted) {
+          // check in the correct answer
+          if(correctAnswer.votedBy && correctAnswer.votedBy[currentPlayer.playerId]) {
+            correctAnswer.selected = true;
+            isSubmitted = true;
+          }
+        }
+
         this.setState(
           {
-            allAnswers: this.shuffleAnswers(
-              getToupleFromSnapshot(givenAnswers),
-              correctAnswer
-            )
+            allAnswers: this.shuffleAnswers(answers, correctAnswer),
+            isSubmitted
           },
           () => {
             if (this.state.animated) {
@@ -222,7 +242,6 @@ class PickAnswerPage extends Component {
 
   render() {
     const { allAnswers, isSubmitted, timerEndDate } = this.state;
-    console.log(isSubmitted);
 
     return (
       <div className="pick-answer u-weight-bold">
