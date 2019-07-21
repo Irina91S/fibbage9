@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgLlama = props => (
-  <svg height="100%" width="100%"  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin" {...props}>
     <g fill="#beaf9b">
       <path d="M194.442 123.933C169.672 49.622 111.874 0 95.966 0c-12.385 0-33.632 115.676 32.422 165.217l66.054-41.284zM317.557 123.933C342.327 49.622 400.125 0 416.033 0c12.385 0 33.632 115.676-32.422 165.217l-66.054-41.284z" />
     </g>

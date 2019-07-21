@@ -41,10 +41,6 @@ class WaitPlayersPage extends Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log('update', this.state);
-  }
-
   setPlayerNotReady = () => {
     const {
       match: {
@@ -68,14 +64,15 @@ class WaitPlayersPage extends Component {
   renderListOfPlayersReady = () => {
     const { players } = this.state;
     return players.map(player => {
+      console.log(player);
       const [key, data] = player;
-      const style = { color: data.animal.color };
+      const style = { color: data.animal ? data.animal.color : '' };
       return (
         <div
           key={key}
           className="team o-layout--stretch u-padding-small u-margin-bottom-small"
         >
-          <Animal className="u-margin-right-small" style={{height: 72, width: 72}} animal={data.animal.animal}/>
+          {data.animal && <Animal className="u-margin-right-small" style={{height: 72, width: 72}} animal={data.animal.animal}/>}
           <Card
             className="player u-margin-vertical-small u-weight-bold u-2/3"
             style={style}
