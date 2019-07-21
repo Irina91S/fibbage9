@@ -62,11 +62,14 @@ class WaitPlayersPage extends Component {
   }
 
   renderListOfPlayersReady = () => {
+    const { playerInfo } = JSON.parse(localStorage.getItem('playerInfo'));
     const { players } = this.state;
     return players.map(player => {
-      console.log(player);
+
       const [key, data] = player;
-      const style = { color: data.animal ? data.animal.color : '' };
+      const color =  data.animal ? data.animal.color : '';
+
+      const style = { color: color, border: `2px solid ${color}` };
       return (
         <div
           key={key}
@@ -79,6 +82,7 @@ class WaitPlayersPage extends Component {
           >
             {data.nickname}
           </Card>
+          {playerInfo.playerId == key &&  <div className="bg" style={{ backgroundColor: color, opacity: '0.7' }}></div>}
         </div>
       );
     });

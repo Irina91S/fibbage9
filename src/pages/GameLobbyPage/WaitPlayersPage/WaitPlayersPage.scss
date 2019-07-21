@@ -2,9 +2,24 @@
 
 .team {
   padding-left: 0 !important;
-}
+  position: relative;
 
-.player {
-  flex: 2;
-  text-align: center;
+  .bg {
+    position: absolute;
+    top: 0;
+    left: -$global-spacing-unit-medium;
+    width: 100vw;
+    height: 100px;
+    z-index: 0;
+  }
+
+  .animal,
+  .player {
+    z-index: 1;
+  }
+
+  .player {
+    flex: 2;
+    text-align: center;
+  }
 }
