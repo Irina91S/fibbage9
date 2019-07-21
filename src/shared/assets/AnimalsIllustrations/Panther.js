@@ -1,7 +1,7 @@
 import React from "react";
 
 const SvgPanther = props => (
-  <svg height={80} width={150}  viewBox="0 0 100 500" {...props}>
+  <svg height="100%" width="100%"  viewBox="0 0 100 500" {...props}>
     <path
       fill="#575f64"
       d="M17.314 391.836L3.896 365l81.113-40.284 13.418 26.836zM21.211 479.023L0 457.813l105.077-102.101 21.211 21.211z"
