@@ -58,6 +58,9 @@ class AddAnswerPage extends Component {
 
     if (this.gameRef) {
       this.gameRef.off();
+      this.gameRef.child('/fakeAnswers').off();
+      this.gameRef.child('/currentScreen').off();
+      this.gameRef.child('/timer/endTime').off();
     }
   }
 
