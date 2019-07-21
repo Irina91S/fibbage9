@@ -1,10 +1,12 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { databaseRefs } from "../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { databaseRefs } from '../../../lib/refs';
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 
-import { Input } from "../../../shared";
+import svgImage from '../../../shared/assets/svg/good-team.svg';
+
+import { Input, Footer } from '../../../shared';
 
 class AddNickname extends Component {
   state = {
@@ -26,7 +28,7 @@ class AddNickname extends Component {
       }
     } = this.props;
     this.gameRef = databaseRefs.game(gameId);
-    this.gameRef.on("value", snapshot => {
+    this.gameRef.on('value', snapshot => {
       const { players, limit, animals } = snapshot.val();
       this.setState({
         animals: animals ? getToupleFromSnapshot(animals) : [],
@@ -45,7 +47,6 @@ class AddNickname extends Component {
     if (this.playersRef) {
       this.playersRef.off();
     }
-
   }
 
   setNickname = async (newValues, actions) => {
@@ -61,8 +62,8 @@ class AddNickname extends Component {
 
     if (!newValues.nickname || newValues.nickname.trim().length === 0) {
       actions.setFieldError(
-        "nickname",
-        "Lol, we actually thought of this, add a legit name"
+        'nickname',
+        'Lol, we actually thought of this, add a legit name'
       );
       return;
     }
@@ -70,8 +71,8 @@ class AddNickname extends Component {
     if (playersLength < limit) {
       if (this.nicknameAlreadySet(newValues.nickname)) {
         actions.setFieldError(
-          "nickname",
-          "Someone already took your nickname, pick something else"
+          'nickname',
+          'Someone already took your nickname, pick something else'
         );
         return;
       }
@@ -79,7 +80,7 @@ class AddNickname extends Component {
       this.playersRef.push(newValues).then(snap => {
         const playerId = snap.key;
         localStorage.setItem(
-          "playerInfo",
+          'playerInfo',
           JSON.stringify({
             playerId,
             playerName: newValues.nickname
@@ -93,13 +94,12 @@ class AddNickname extends Component {
         } = this.props;
 
         this.playerRef = databaseRefs.player(gameId, playerId);
-        this.playerRef.on("value", snapshot => {
- 
+        this.playerRef.on('value', snapshot => {
           if (snapshot.val().animal) {
-            const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+            const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
 
             playerInfo.animal = { ...snapshot.val().animal };
-            localStorage.setItem("playerInfo", JSON.stringify(playerInfo));
+            localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
             const waitScreen = `/lobby/${gameId}/wait-players`;
             history.push(waitScreen);
           }
@@ -126,7 +126,7 @@ class AddNickname extends Component {
     ) : (
       <Formik
         initialValues={{
-          nickname: "",
+          nickname: '',
           totalScore: 0
         }}
         onSubmit={this.setNickname}
@@ -151,6 +151,10 @@ class AddNickname extends Component {
               Add a nickname for your team so we know what to display on the
               scoreboard. You want that 1st place, don't you? We know you do.
             </footer>
+
+            <Footer>
+              <img src={svgImage} className="footer-image" />
+            </Footer>
           </Form>
         )}
       />
