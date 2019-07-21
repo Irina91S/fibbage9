@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import anime from "animejs";
-import { databaseRefs } from "./../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
-import { useCurrentPlayer } from "../../../hooks";
+import React, { Component } from 'react';
+import anime from 'animejs';
+import { databaseRefs } from './../../../lib/refs';
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import { useCurrentPlayer } from '../../../hooks';
 
-import "./AnswerResultsPage.scss";
+import './AnswerResultsPage.scss';
 
-import { Card, Animal } from "../../../shared";
+import { Card, Animal } from '../../../shared';
 
 const { fakeAnswers, question, players } = databaseRefs;
 
@@ -30,23 +30,19 @@ class AnswerResultsPage extends Component {
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
 
-    const currentPlayer = useCurrentPlayer();
-
-    this.fakeAnswersRef.on("value", snapshot => {
-      const fakeAnswers = getToupleFromSnapshot(snapshot.val()).filter(
-        answer => answer[1].authorTeam !== currentPlayer.playerId
-      );
+    this.fakeAnswersRef.on('value', snapshot => {
+      const fakeAnswers = getToupleFromSnapshot(snapshot.val());
       this.setState({ fakeAnswers });
     });
 
-    this.questionRef.on("value", snapshot => {
+    this.questionRef.on('value', snapshot => {
       this.setState({
         questionScore: snapshot.val().score,
         correctAnswer: snapshot.val().answer
       });
     });
 
-    this.playersRef.on("value", snapshot => {
+    this.playersRef.on('value', snapshot => {
       this.setState({
         players: getToupleFromSnapshot(snapshot.val())
       });
@@ -61,11 +57,11 @@ class AnswerResultsPage extends Component {
 
   componentDidUpdate() {
     anime({
-      targets: ".card.anime",
+      targets: '.card.anime',
       translateX: [-1000, 0],
       opacity: [0, 1],
       delay: anime.stagger(100),
-      easing: "easeInOutQuint",
+      easing: 'easeInOutQuint',
       duration: 400
     });
   }
@@ -73,9 +69,9 @@ class AnswerResultsPage extends Component {
   getVotes = votedBy => {
     return votedBy
       ? getToupleFromSnapshot(votedBy).map((element, key) => (
-        <span key={key}>{`${element[1]}  `}</span>
-      ))
-      : "";
+          <span key={key}>{`${element[1]}  `}</span>
+        ))
+      : '';
   };
 
   getScoreForQuestion = (votesCount, correctAnswer, authorTeam) => {
@@ -83,7 +79,7 @@ class AnswerResultsPage extends Component {
 
     const votedCorrectAnswer =
       correctAnswer.votedBy &&
-        Object.keys(correctAnswer.votedBy).includes(authorTeam)
+      Object.keys(correctAnswer.votedBy).includes(authorTeam)
         ? 1
         : 0;
 
@@ -113,7 +109,7 @@ class AnswerResultsPage extends Component {
 
   getTeamNameById = teamId => {
     const { players } = this.state;
-    let teamName = "";
+    let teamName = '';
     players.forEach(player => {
       const [key, data] = player;
       if (key === teamId) {
@@ -168,15 +164,22 @@ class AnswerResultsPage extends Component {
                 </div>
 
                 <div className="answer">{data.value}</div>
-                <div className="votes">Votes: {data.voteCount}</div>
-                <div className="voted-by ">
+                <div className="votes">
+                  Votes: {data.voteCount} { data.votedBy && ' ( '}
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <Animal key={key} animal={data.votedBy[key].animal} style={{ width: "30px", height: "30px" }} />
-                    ))}
+                      <Animal key={key} animal={data.votedBy[key].animal} />
+                    ))}{' '}
+                  { data.votedBy && ' )'}
                 </div>
+                {/* <div className="voted-by ">
+                
+                </div> */}
               </div>
-              <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
+              <Animal
+                animal={teamStyle.animal}
+                style={{ height: 72, width: 72 }}
+              />
             </Card>
           );
         })}
