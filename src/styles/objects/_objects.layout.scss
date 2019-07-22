@@ -97,6 +97,7 @@ $use-markup-fix: false !default;
   .o-layout__item {
     box-sizing: border-box; /* [1] */
     display: inline-block; /* [2] */
+    margin-left: -4px;
     vertical-align: top; /* [3] */
     width: 100%; /* [4] */
     padding-left: $global-spacing-unit; /* [5] */
@@ -223,6 +224,10 @@ $use-markup-fix: false !default;
     justify-content: flex-start;
   }
 
+}
+
+.o-layout--vertical {
+  flex-direction: column;
 }
 
 .o-layout--flex {
