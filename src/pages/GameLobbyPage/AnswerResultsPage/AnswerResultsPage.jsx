@@ -8,6 +8,8 @@ import './AnswerResultsPage.scss';
 
 import { Card, Animal } from '../../../shared';
 
+import beerSvg from '../../../shared/assets/svg/beer.svg';
+
 const { fakeAnswers, question, players } = databaseRefs;
 
 class AnswerResultsPage extends Component {
@@ -20,7 +22,8 @@ class AnswerResultsPage extends Component {
     questionScore: 0,
     correctAnswer: {},
     players: [],
-    playerAnimal: []
+    playerAnimal: [],
+    beerAnimated: false
   };
 
   componentDidMount() {
@@ -47,6 +50,11 @@ class AnswerResultsPage extends Component {
         players: getToupleFromSnapshot(snapshot.val())
       });
     });
+
+    if (!this.state.beerAnimated) {
+      this.setState({ beerAnimated: true });
+      anime({ targets: 'img.beer', opacity: [0, 1], duration: 1000, easing: 'linear' });
+    }
   }
 
   componentWillUnmount() {
@@ -132,6 +140,7 @@ class AnswerResultsPage extends Component {
 
     return (
       <div className="answer-results">
+        <img src={beerSvg} className="beer" />
         <div className="o-layout--stretch u-margin-bottom-small" style={{ minHeight: 50 }}>
           <Card type="success" className="correct-answer u-weight-bold u-margin-right-tiny">
             {correctAnswer.value}
