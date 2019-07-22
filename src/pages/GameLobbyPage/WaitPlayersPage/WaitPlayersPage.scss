@@ -1,6 +1,38 @@
 @import 'settings';
 
 .wait-players {
+  .animal.mini {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    &:first-child {
+      margin-left: $global-spacing-unit-small;
+    }
+
+    svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    &:after {
+      content: '';
+      background-color: white;
+      border: 1px solid;
+      border-radius: 50%;
+      position: absolute;
+      width: calc(100% + 12px);
+      height: calc(100% + 12px);
+      left: -6px;
+      top: -7px;
+      z-index: 0;
+    }
+  }
+
   .animal-placeholders {
     flex-wrap: wrap;
 
@@ -15,34 +47,34 @@
   }
 }
 
- .team {
-    padding-left: 0 !important;
-    position: relative;
+.team {
+  padding-left: 0 !important;
+  position: relative;
 
+  .bg {
+    position: absolute;
+    top: 0;
+    left: -24px;
+    width: 100vw;
+    height: 100px;
+    z-index: 0;
+  }
+
+  .animal,
+  .player {
+    z-index: 1;
+  }
+
+  .player {
+    flex: 2;
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 740px) {
+  .team {
     .bg {
-      position: absolute;
-      top: 0;
-      left: -24px;
-      width: 100vw;
-      height: 100px;
-      z-index: 0;
-    }
-
-    .animal,
-    .player {
-      z-index: 1;
-    }
-
-    .player {
-      flex: 2;
-      text-align: center;
+      width: 100%;
+      left: -4px;
     }
   }
-  @media only screen and (min-width: 740px) {
-    .team {
-      .bg {
-        width: 100%;
-        left: -4px;
-      }
-    }
-  }
+}

@@ -34,24 +34,26 @@ class WaitPlayersPage extends Component {
     this.gameRef.on('value', snapshot => {
       const { players, limit } = snapshot.val();
 
-      this.setState({
-        players: getToupleFromSnapshot(players),
-        limit
-      }, () => {
+      this.setState(
+        {
+          players: getToupleFromSnapshot(players),
+          limit
+        },
+        () => {
+          if (!this.state.animated) {
+            anime({
+              targets: '.team',
+              translateX: [-1000, 0],
+              opacity: [0, 1],
+              delay: anime.stagger(100),
+              easing: 'easeInOutQuint',
+              duration: 400
+            });
 
-        if(!this.state.animated) {
-          anime({
-            targets: '.team',
-            translateX: [-1000, 0],
-            opacity: [0, 1],
-            delay: anime.stagger(100),
-            easing: 'easeInOutQuint',
-            duration: 400
-          });
-
-          this.setState({ animated: true });
+            this.setState({ animated: true });
+          }
         }
-      });
+      );
     });
 
     this.gameRef.child('/currentScreen').on('value', snapshot => {
@@ -84,6 +86,21 @@ class WaitPlayersPage extends Component {
     this.setPlayerNotReady();
   }
 
+  renderMiniAnimals = () => {
+    const { players, limit } = this.state;
+
+    return players.map((player, i) => {
+      const [key, data] = player;
+      const color = data.animal ? data.animal.color : '';
+
+      if (!data.animal) return null;
+
+      return (
+        <Animal className="mini" style={{ width: 15, height: 15, color: data.animal.color, zIndex: limit - i  }} animal={data.animal.animal} />
+      );
+    });
+  };
+
   renderListOfPlayersReady = () => {
     const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { players } = this.state;
@@ -92,17 +109,12 @@ class WaitPlayersPage extends Component {
       const isCurrentPlayer = playerInfo.playerId === key;
       const color = data.animal ? data.animal.color : '';
 
-      console.log(isCurrentPlayer);
-
       const style = {
         color: color,
         border: isCurrentPlayer ? `2px solid ${color}` : ''
       };
       return (
-        <div
-          key={key}
-          className="team o-layout--stretch u-padding-small u-margin-bottom-small"
-        >
+        <div key={key} className="team o-layout--stretch u-padding-small u-margin-bottom-small">
           {data.animal && (
             <Animal
               className="u-margin-right-small"
@@ -110,17 +122,11 @@ class WaitPlayersPage extends Component {
               animal={data.animal.animal}
             />
           )}
-          <Card
-            className="player u-margin-vertical-small u-weight-bold u-2/3"
-            style={style}
-          >
+          <Card className="player u-margin-vertical-small u-weight-bold u-2/3" style={style}>
             {data.nickname}
           </Card>
           {isCurrentPlayer && (
-            <div
-              className="bg"
-              style={{ backgroundColor: color, opacity: '0.5' }}
-            />
+            <div className="bg" style={{ backgroundColor: color, opacity: '0.5' }} />
           )}
         </div>
       );
@@ -130,16 +136,16 @@ class WaitPlayersPage extends Component {
   renderRemainingPlayers = amount => {
     return Array.from('0'.repeat(amount)).map((_, i) => {
       return (
-        <div
-          key={i}
-          className="team o-layout--stretch u-padding-small u-margin-bottom-small"
-        >
+        <div key={i} className="team o-layout--stretch u-padding-small u-margin-bottom-small">
           <div
             className="u-margin-right-small"
             style={{ ...dimensions, opacity: 0.2, background: 'gray', border: '1px solid #335079' }}
           />
 
-          <Card className="player u-margin-vertical-small u-weight-bold u-2/3" style={{ opacity: 0.4 }}>
+          <Card
+            className="player u-margin-vertical-small u-weight-bold u-2/3"
+            style={{ opacity: 0.4 }}
+          >
             Not yet... &#128542;&#128542;
           </Card>
         </div>
@@ -153,7 +159,9 @@ class WaitPlayersPage extends Component {
     return (
       <Fragment>
         <div className="wait-players">
-          <h5>Waiting for all teams... ({players.length}/{limit})</h5>
+          <h5>
+            Waiting for all teams... ({players.length}/{limit}) {this.renderMiniAnimals()}
+          </h5>
         </div>
         {this.renderListOfPlayersReady(limit)}
         {this.renderRemainingPlayers(limit - players.length)}
