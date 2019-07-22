@@ -33,11 +33,8 @@ class Start extends React.Component {
     let gameToJoin;
     const { activeGames } = this.state;
 
-    if(!pincode || pincode.toString().trim().length === 0) {
-      actions.setFieldError(
-        'pincode',
-        () => <span>Why are you gay?... &#x1F611;&#x1F611; </span>
-      );
+    if (!pincode || pincode.toString().trim().length === 0) {
+      actions.setFieldError('pincode', () => <span>Really?... &#x1F611;&#x1F611; </span>);
 
       return;
     }
@@ -68,10 +65,9 @@ class Start extends React.Component {
         this.redirectToGameLobby(gameToJoin);
       }, 1000);
     } else {
-      actions.setFieldError(
-        'pincode',
-        () => <span>There is no active game with this pincode.</span>
-      );
+      actions.setFieldError('pincode', () => (
+        <span>There is no active game with this pincode.</span>
+      ));
     }
   };
 
