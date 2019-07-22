@@ -52,8 +52,10 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
       const animalToBeAssigned = Math.floor(Math.random() * animalData.length);
       console.log('animalToBeAssigned', animalToBeAssigned);
 
-      if (animalData[animalToBeAssigned].isTaken) {
+      if (animalData[animalToBeAssigned][1].isTaken) {
+        console.log(animalData[animalToBeAssigned][1].isTaken === true ? 'is taken' : 'not taken');
         tryToAssignAnimal();
+        return null;
       } else {
         console.log('animalToBeAssignedID', animalData[animalToBeAssigned][0])
         console.log('animalToBeAssignedData', animalData[animalToBeAssigned][1])
