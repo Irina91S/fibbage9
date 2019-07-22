@@ -174,7 +174,7 @@ class WaitPlayersPage extends Component {
       <Fragment>
         <div className="wait-players">
           <h5>
-            Waiting for all teams... ({players.length}/{limit}) {this.renderMiniAnimals()}
+            {players.length}/{limit} teams ready {this.renderMiniAnimals()}
           </h5>
         </div>
         {this.renderListOfPlayersReady(limit)}
