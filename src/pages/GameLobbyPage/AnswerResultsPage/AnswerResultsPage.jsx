@@ -53,7 +53,13 @@ class AnswerResultsPage extends Component {
 
     if (!this.state.beerAnimated) {
       this.setState({ beerAnimated: true });
-      anime({ targets: 'img.beer', opacity: [0, 1], duration: 1000, easing: 'linear' });
+      anime({
+        targets: 'img.beer',
+        opacity: [0, 1],
+        translateY: [-15, 0],
+        duration: 1000,
+        easing: 'cubicBezier(0, 0.45, 0.74, 0.77)'
+      });
     }
   }
 
