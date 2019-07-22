@@ -141,6 +141,7 @@ class AnswerResultsPage extends Component {
 
   render() {
     const { fakeAnswers, correctAnswer } = this.state;
+    const { playerId } = useCurrentPlayer();
 
     const correctAnswerVotes = Object.values(correctAnswer.votedBy ? correctAnswer.votedBy : {});
 
@@ -168,14 +169,15 @@ class AnswerResultsPage extends Component {
                 />
               );
             })}
-            {/* {correctAnswer.voteCount ? correctAnswer.voteCount : 0} */}
           </Card>
         </div>
         {fakeAnswers.map(answer => {
           const [key, data] = answer;
           const teamStyle = this.getAnimalByTeam(data.authorTeam);
+
           return (
             <Card
+              hasBg={answer[1].authorTeam == playerId}
               key={key}
               className="anime o-layout--flex u-margin-bottom-small"
               style={{ color: teamStyle.color }}
@@ -200,6 +202,7 @@ class AnswerResultsPage extends Component {
                 </div>
               </div>
               <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
+              <div className="bg"></div>
             </Card>
           );
         })}

@@ -1,0 +1,30 @@
+$spacing-unit: 6px;
+
+.card.cancer {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+
+  .card--left {
+    text-align: left;
+  }
+}
+
+.cancer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid-item {
+  display: inline-flex;
+  width: calc(50% - #{$spacing-unit});
+  
+  &:nth-child(odd) {
+    margin-right: $spacing-unit;
+  }
+
+  &:nth-child(even) {
+    margin-left: $spacing-unit;
+  }
+}

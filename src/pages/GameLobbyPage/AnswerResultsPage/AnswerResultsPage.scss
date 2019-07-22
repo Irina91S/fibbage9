@@ -23,6 +23,7 @@
     flex: 1;
     border-right: 1px solid;
     margin-right: $global-spacing-unit-small;
+    position: relative;
 
     .votes {
       font-style: italic;

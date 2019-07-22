@@ -8,13 +8,13 @@ import Card from '../../../shared/Card/Card';
 import FirstPlaceCrown from '../../../shared/assets/svg/first-place.svg';
 import SecondPlaceCrown from '../../../shared/assets/svg/second-place.svg';
 
-import './TotalScoresPage.scss';
+import './ScorePage.scss';
 
 const { players } = databaseRefs;
 
 const dimensions = { height: 72, width: 72 };
 
-class TotalScorePage extends Component {
+class ScorePage extends Component {
   state = {
     players: [],
     sortedPlayers: []
@@ -118,11 +118,11 @@ class TotalScorePage extends Component {
       this.setState({ players: playersInfo, sortedPlayers }, () => {
         anime({
           targets: '.winner',
-          translateX: [-100, 0],
+          translateX: [-1000, 0],
           opacity: [0, 1],
           delay: anime.stagger(100),
           easing: 'easeInOutQuint',
-          duration: 800,
+          duration: 400,
         });
 
         anime({
@@ -154,4 +154,4 @@ class TotalScorePage extends Component {
   }
 }
 
-export default TotalScorePage;
+export default ScorePage;
