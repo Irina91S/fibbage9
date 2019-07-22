@@ -138,11 +138,11 @@ class TotalScorePage extends Component {
       this.setState({ players: playersInfo, sortedPlayers }, () => {
         anime({
           targets: '.winner',
-          translateX: [-1000, 0],
+          translateX: [-100, 0],
           opacity: [0, 1],
           delay: anime.stagger(100),
           easing: 'easeInOutQuint',
-          duration: 400,
+          duration: 800,
         });
 
         anime({

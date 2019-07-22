@@ -3,11 +3,13 @@
 html {
   background-color: $color-white;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   font-family: 'Nunito Sans', sans-serif;
   color: $color-dark;
+  -webkit-font-smoothing: antialiased;
 }
 
 .page-transition-elem {
