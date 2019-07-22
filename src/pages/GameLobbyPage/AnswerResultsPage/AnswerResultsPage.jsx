@@ -78,14 +78,9 @@ class AnswerResultsPage extends Component {
     const { questionScore } = this.state;
 
     const votedCorrectAnswer =
-      correctAnswer.votedBy &&
-      Object.keys(correctAnswer.votedBy).includes(authorTeam)
-        ? 1
-        : 0;
+      correctAnswer.votedBy && Object.keys(correctAnswer.votedBy).includes(authorTeam) ? 1 : 0;
 
-    return (
-      votesCount * (questionScore / 2) + votedCorrectAnswer * questionScore
-    );
+    return votesCount * (questionScore / 2) + votedCorrectAnswer * questionScore;
   };
 
   getAllScoresForQuestion = () => {
@@ -96,11 +91,7 @@ class AnswerResultsPage extends Component {
       const voteCount = data.votedBy ? Object.values(data.votedBy).length : 0;
       data.voteCount = voteCount;
 
-      const questionScore = this.getScoreForQuestion(
-        voteCount,
-        correctAnswer,
-        key
-      );
+      const questionScore = this.getScoreForQuestion(voteCount, correctAnswer, key);
       const teamScore = { [data.authorTeam]: questionScore };
       scores = { ...scores, ...teamScore };
     });
@@ -140,10 +131,7 @@ class AnswerResultsPage extends Component {
     return (
       <div className="answer-results">
         <div className="o-layout--stretch u-margin-bottom-small">
-          <Card
-            type="success"
-            className="correct-answer u-weight-bold u-margin-right-tiny"
-          >
+          <Card type="success" className="correct-answer u-weight-bold u-margin-right-tiny">
             {correctAnswer.value}
           </Card>
           <Card type="success" className="score o-block u-weight-bold">
@@ -167,17 +155,19 @@ class AnswerResultsPage extends Component {
                 <div className="answer">{data.value}</div>
                 <div className="votes">
                   Votes: {data.voteCount} {data.votedBy && ' ( '}
+                  {console.log('data', data)}
                   {data.votedBy &&
                     Object.keys(data.votedBy).map(key => (
-                      <Animal key={key} animal={data.votedBy[key].animal} className="u-margin-right-tiny" />
+                      <Animal
+                        key={key}
+                        animal={data.votedBy[key].animal}
+                        className="u-margin-right-tiny"
+                      />
                     ))}{' '}
                   {data.votedBy && ' )'}
                 </div>
               </div>
-              <Animal
-                animal={teamStyle.animal}
-                style={{ height: 72, width: 72 }}
-              />
+              <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
             </Card>
           );
         })}

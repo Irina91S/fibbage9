@@ -1,26 +1,23 @@
-import React from "react";
-import "./Animal.scss";
-import { animalSvgs } from "../assets/AnimalsIllustrations/index";
+import React from 'react';
+import './Animal.scss';
+import { animalSvgs } from '../assets/AnimalsIllustrations/index';
 
 const Animal = ({ animal, className, ...rest }) => {
-  console.log(animalSvgs);
+  const filteredAnimals = animalSvgs.filter(animalSvg => {
+    const svgName = animalSvg.type.name.toLowerCase().substring(3);
 
-    const filteredAnimals = animalSvgs.filter(animalSvg => {
-      const svgName = animalSvg
-        .type.name.toLowerCase()
-        .substring(3);
+    if (!animal) {
+      console.log("found a faulty animal (don't know which) - please fix");
+      return false;
+    }
 
-        console.log(svgName)
-      return svgName === animal.toLowerCase();
-    });
-
-    console.log(animal, filteredAnimals);
+    return svgName === animal.toLowerCase();
+  });
   return (
     <div
-      {...rest} name={animal}
-      className={`o-layout--stretch o-layout--center animal ${
-        className ? className : ""
-      }`}
+      {...rest}
+      name={animal}
+      className={`o-layout--stretch o-layout--center animal ${className ? className : ''}`}
     >
       {filteredAnimals}
     </div>
