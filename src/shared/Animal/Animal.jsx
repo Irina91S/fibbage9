@@ -7,7 +7,6 @@ const Animal = ({ animal, className, ...rest }) => {
     const svgName = animalSvg.type.name.toLowerCase().substring(3);
 
     if (!animal) {
-      console.log("found a faulty animal (don't know which) - please fix");
       return false;
     }
 

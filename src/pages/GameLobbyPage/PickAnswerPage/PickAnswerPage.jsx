@@ -1,11 +1,11 @@
-import React, { Fragment, Component } from "react";
-import anime from "animejs";
-import { databaseRefs } from "../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
+import React, { Fragment, Component } from 'react';
+import anime from 'animejs';
+import { databaseRefs } from '../../../lib/refs';
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 import { useCurrentPlayer } from '../../../hooks';
 import { Card, Timer } from '../../../shared';
 import NumberCircle from '../../../shared/assets/svg/number-circle.svg';
-import "./PickAnswerPage.scss";
+import './PickAnswerPage.scss';
 const { lobby, game } = databaseRefs;
 
 class PickAnswerPage extends Component {
@@ -18,35 +18,37 @@ class PickAnswerPage extends Component {
     disabled: false,
     isSubmitted: false,
     timerEndDate: '',
-    animated: false,
+    animated: false
   };
 
-  setAnswer = (
-    fakeAnswerId,
-    playerId,
-    playerName,
-    animal
-  ) => {
+  setAnswer = (fakeAnswerId, playerId, playerName, animal, color) => {
     this.setState({ disabled: true });
 
     this.lobbyRef
       .child('/fakeAnswers')
       .child(fakeAnswerId)
-      .child("/votedBy")
+      .child('/votedBy')
       .child(playerId)
       .set(playerName);
 
     this.lobbyRef
-      .child("/fakeAnswers")
+      .child('/fakeAnswers')
       .child(fakeAnswerId)
-      .child("/votedBy")
+      .child('/votedBy')
       .child(playerId)
-      .child("/animal")
+      .child('/animal')
       .set(animal);
+
+    this.lobbyRef
+      .child('/fakeAnswers')
+      .child(fakeAnswerId)
+      .child('/votedBy')
+      .child(playerId)
+      .child('/color')
+      .set(color);
   };
 
-
-  setCorrectAnswer = async (playerId, playerName, animal) => {
+  setCorrectAnswer = async (playerId, playerName, animal, color) => {
     this.setState({ disabled: true });
 
     this.lobbyRef
@@ -57,20 +59,27 @@ class PickAnswerPage extends Component {
       .set(playerName);
 
     this.lobbyRef
-      .child("/answer")
-      .child("/votedBy")
+      .child('/answer')
+      .child('/votedBy')
       .child(playerId)
-      .child("/animal")
+      .child('/animal')
       .set(animal);
+
+    this.lobbyRef
+      .child('/answer')
+      .child('/votedBy')
+      .child(playerId)
+      .child('/color')
+      .set(color);
   };
 
   selectCorrectAnswer = () => {
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
 
     const {
       playerId,
       playerName,
-      animal: { animal }
+      animal: { animal, color }
     } = playerInfo;
 
     const {
@@ -79,30 +88,23 @@ class PickAnswerPage extends Component {
       }
     } = this.props;
 
-    this.setCorrectAnswer(playerId, playerName, animal);
+    this.setCorrectAnswer(playerId, playerName, animal, color);
   };
 
   selectAnswer = fakeAnswerId => {
-    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
+    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const {
       playerId,
       playerName,
-      animal: { animal }
+      animal: { animal, color }
     } = playerInfo;
 
-    this.setAnswer(
-      fakeAnswerId,
-      playerId,
-      playerName,
-      animal
-    );
+    this.setAnswer(fakeAnswerId, playerId, playerName, animal, color);
   };
 
   shuffleAnswers = (fakeAnswers, truth) => {
     const currentPlayer = useCurrentPlayer();
-    fakeAnswers = fakeAnswers.filter(
-      answer => answer[1].authorTeam !== currentPlayer.playerId
-    );
+    fakeAnswers = fakeAnswers.filter(answer => answer[1].authorTeam !== currentPlayer.playerId);
 
     const allAnswers = [...fakeAnswers, truth];
 
@@ -131,7 +133,6 @@ class PickAnswerPage extends Component {
   };
 
   componentDidMount() {
-
     const {
       match: {
         params: { gameId, questionId }
@@ -151,7 +152,7 @@ class PickAnswerPage extends Component {
 
     this.gameRef
       .child('/timer/endTime')
-      .on('value', snapshot => this.setState({ timerEndDate: snapshot.val() }))
+      .on('value', snapshot => this.setState({ timerEndDate: snapshot.val() }));
 
     this.lobbyRef.once('value', snapshot => {
       const givenAnswers = snapshot.val().fakeAnswers;
@@ -166,16 +167,16 @@ class PickAnswerPage extends Component {
         let isSubmitted = false;
 
         for (const givenAnswer of answers) {
-          if(givenAnswer[1].votedBy && givenAnswer[1].votedBy[currentPlayer.playerId]) {
+          if (givenAnswer[1].votedBy && givenAnswer[1].votedBy[currentPlayer.playerId]) {
             givenAnswer.selected = true;
             isSubmitted = true;
             break;
           }
         }
 
-        if(!isSubmitted) {
+        if (!isSubmitted) {
           // check in the correct answer
-          if(correctAnswer.votedBy && correctAnswer.votedBy[currentPlayer.playerId]) {
+          if (correctAnswer.votedBy && correctAnswer.votedBy[currentPlayer.playerId]) {
             correctAnswer.selected = true;
             isSubmitted = true;
           }
@@ -192,14 +193,14 @@ class PickAnswerPage extends Component {
             }
 
             anime({
-              targets: ".answer.anime",
+              targets: '.answer.anime',
               translateX: [-1000, 0],
               opacity: [0, 1],
               delay: anime.stagger(100),
-              easing: "easeInOutCirc",
+              easing: 'easeInOutCirc',
               duration: 400,
               complete: () => {
-                this.setState({animated: true})
+                this.setState({ animated: true });
                 anime({
                   targets: '.float-from-bottom',
                   translateY: [-3, 3],
@@ -216,7 +217,7 @@ class PickAnswerPage extends Component {
                   easing: 'easeInOutCirc',
                   duration: 3000,
                   loop: true
-                })
+                });
               }
             });
           }
@@ -245,12 +246,9 @@ class PickAnswerPage extends Component {
 
     return (
       <div className="pick-answer u-weight-bold">
-        {timerEndDate &&
-          <Timer
-            endTime={timerEndDate}
-            onTimerEnd={() => this.setState({ isSubmitted: false })}
-          />
-        }
+        {timerEndDate && (
+          <Timer endTime={timerEndDate} onTimerEnd={() => this.setState({ isSubmitted: false })} />
+        )}
         {allAnswers.map((answer, i) => {
           const correct = !!answer.value;
           const value = correct ? answer.value : answer[1].value;
@@ -258,26 +256,31 @@ class PickAnswerPage extends Component {
           return (
             <Fragment key={i}>
               {answer.selected && (
-                <div className="tooltip u-margin-left-large u-padding-left-small">
-                  Selected
-                </div>
+                <div className="tooltip u-margin-left-large u-padding-left-small">Selected</div>
               )}
-              <div
-                className="answer anime o-layout--stretch u-margin-bottom-small"
-                key={answer}
-              >
+              <div className="answer anime o-layout--stretch u-margin-bottom-small" key={answer}>
                 <Card
-                  type={answer.selected ? "success" : "basic"}
+                  type={answer.selected ? 'success' : 'basic'}
                   className="o-layout__item counter u-margin-right-small"
                   disabled={isSubmitted && !answer.selected}
                 >
                   <div className="decoration-wrapper">
-                    {!answer.selected && <img className={`decoration-wrapper__decoration ${Math.floor(2 * Math.random()) === 1 ? 'float-from-bottom' : 'float-from-top'}`} src={NumberCircle} alt="cool circle" />}
+                    {!answer.selected && (
+                      <img
+                        className={`decoration-wrapper__decoration ${
+                          Math.floor(2 * Math.random()) === 1
+                            ? 'float-from-bottom'
+                            : 'float-from-top'
+                        }`}
+                        src={NumberCircle}
+                        alt="cool circle"
+                      />
+                    )}
                     <span className="dcoration-wrapper__text">{i + 1}</span>
                   </div>
                 </Card>
                 <Card
-                  type={answer.selected ? "success" : "basic"}
+                  type={answer.selected ? 'success' : 'basic'}
                   className="o-layout__item value"
                   onClick={() => {
                     if (isSubmitted) {
@@ -285,11 +288,9 @@ class PickAnswerPage extends Component {
                     }
 
                     if (correct) {
-                      this.onAnswerClick(i, this.selectCorrectAnswer)
+                      this.onAnswerClick(i, this.selectCorrectAnswer);
                     } else {
-                      this.onAnswerClick(i, () =>
-                        this.selectAnswer(answer[0])
-                      )
+                      this.onAnswerClick(i, () => this.selectAnswer(answer[0]));
                     }
                   }}
                   disabled={isSubmitted && !answer.selected}

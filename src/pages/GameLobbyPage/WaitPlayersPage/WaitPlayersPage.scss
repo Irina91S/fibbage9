@@ -1,38 +1,6 @@
 @import 'settings';
 
 .wait-players {
-  .animal.mini {
-    display: inline-block;
-    position: relative;
-    top: 2px;
-    position: relative;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    &:first-child {
-      margin-left: $global-spacing-unit-small;
-    }
-
-    svg {
-      position: relative;
-      z-index: 1;
-    }
-
-    &:after {
-      content: '';
-      background-color: white;
-      border: 1px solid;
-      border-radius: 50%;
-      position: absolute;
-      width: calc(100% + 12px);
-      height: calc(100% + 12px);
-      left: -6px;
-      top: -7px;
-      z-index: 0;
-    }
-  }
-
   .animal-placeholders {
     flex-wrap: wrap;
 

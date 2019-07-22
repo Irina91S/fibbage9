@@ -96,7 +96,11 @@ class WaitPlayersPage extends Component {
       if (!data.animal) return null;
 
       return (
-        <Animal className="mini" style={{ width: 15, height: 15, color: data.animal.color, zIndex: limit - i  }} animal={data.animal.animal} />
+        <Animal
+          className="mini"
+          style={{ width: 15, height: 15, color: data.animal.color, zIndex: limit - i }}
+          animal={data.animal.animal}
+        />
       );
     });
   };
@@ -104,6 +108,16 @@ class WaitPlayersPage extends Component {
   renderListOfPlayersReady = () => {
     const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
     const { players } = this.state;
+
+    if (!players || players.length === 0) {
+      return [];
+    }
+    const playerIndex = players.findIndex(player => player[0] === playerInfo.playerId);
+    const playerDetails = [...players[playerIndex]];
+
+    players.splice(playerIndex, 1);
+    players.unshift(playerDetails);
+
     return players.map(player => {
       const [key, data] = player;
       const isCurrentPlayer = playerInfo.playerId === key;
@@ -126,7 +140,7 @@ class WaitPlayersPage extends Component {
             {data.nickname}
           </Card>
           {isCurrentPlayer && (
-            <div className="bg" style={{ backgroundColor: color, opacity: '0.5' }} />
+            <div className="bg" style={{ backgroundColor: color, opacity: 0.5 }} />
           )}
         </div>
       );
