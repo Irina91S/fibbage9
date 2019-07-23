@@ -94,6 +94,19 @@ exports.populateGameWithAnimals = functions.database.ref('/games/{gameId}').onCr
   return snapshot.ref.child('/animals').set(animalsList);
 });
 
-exports.populateGameWithQuestions = functions.database.ref('/games/{gameId}').onCreate(snapshot => {
-  return snapshot.ref.child('/questions').set(questionsList);
+exports.populateGameWithQuestions = functions.database.ref('/games/{gameId}').onCreate(gameSnapshot => {
+  return gameSnapshot.ref
+    .child('/addQuestionsToGame')
+    .once('value')
+    .then(snapshot => {
+      const shouldAddQuestionsToGame = snapshot.val();
+
+      if (!shouldAddQuestionsToGame) {
+        return null;
+      }
+
+      gameSnapshot.ref.child('/questions').set(questionsList);
+
+      return null;
+    })
 });
