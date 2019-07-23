@@ -10,7 +10,7 @@ import Crab from './Crab';
 import Dog from './Dog';
 import Duck from './Duck';
 import Fox from './Fox';
-import Fish from './Fish';
+import SvgDeadFish from './Fish';
 import Frog from './Frog';
 import Jellyfish from './Jellyfish';
 import Lion from './Lion';
@@ -38,7 +38,7 @@ export const animalSvgs = [
   <Dog key={8} />,
   <Duck key={9} />,
   <Fox key={10} />,
-  <Fish key={11} />,
+  <SvgDeadFish key={11} />,
   <Frog key={12} />,
   <Jellyfish key={15} />,
   <Lion key={16} />,
