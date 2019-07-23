@@ -3,7 +3,7 @@ import React from "react";
 import Owl from "../../../shared/assets/AnimalsIllustrations/Owl";
 import Panther from "../../../shared/assets/AnimalsIllustrations/Panther";
 import Llama from "../../../shared/assets/AnimalsIllustrations/Llama";
-import Tiger from "../../../shared/assets/AnimalsIllustrations/Tiger";
+import Lion from "../../../shared/assets/AnimalsIllustrations/Lion";
 import Fish from "../../../shared/assets/AnimalsIllustrations/Fish";
 import Sloth from "../../../shared/assets/AnimalsIllustrations/Sloth";
 
@@ -31,8 +31,8 @@ const Loader = () => {
           <div className="animalWaitingScreen sloth">
             <Sloth />
           </div>
-          <div className="animalWaitingScreen tiger">
-            <Tiger />
+          <div className="animalWaitingScreen lion">
+            <Lion />
           </div>
         </div>
       </div>
