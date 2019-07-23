@@ -19,7 +19,10 @@ import {
 import { Header } from './shared';
 
 function App(props) {
-  const [splashScreenLoaded, setSplashScreenLoaded] = useState(false);
+  const [splashScreenLoaded, setSplashScreenLoaded] = useState(
+    props.location.pathname.length !== 1
+  );
+
   const [grayPage, setGrayPage] = useState(false);
 
   useEffect(() => {
@@ -53,10 +56,7 @@ function App(props) {
       )}
       {splashScreenLoaded && (
         <div className={`App ${grayPage ? 'bg-gray' : ''}`}>
-          <Header
-            title="Fibbage9"
-            subtitle="Welcome to FIBBAGE, Levi9 version"
-          />
+          <Header title="Fibbage9" subtitle="Welcome to FIBBAGE, Levi9 version" />
           <main>
             <Route exact path="/" component={Start} />
             <Route
@@ -64,36 +64,16 @@ function App(props) {
               path="/lobby/:gameId/questions/:questionId/addAnswer"
               component={AddAnswerPage}
             />
-            <Route
-              exact
-              path="/lobby/:gameId/:questionId/pick-answer"
-              component={PickAnswerPage}
-            />
+            <Route exact path="/lobby/:gameId/:questionId/pick-answer" component={PickAnswerPage} />
             <Route
               exact
               path="/lobby/:id/questions/:questionId/results"
               component={AnswerResultsPage}
             />
-            <Route
-              exact
-              path="/lobby/:gameId/nickname"
-              component={AddNicknamePage}
-            />
-            <Route
-              exact
-              path="/lobby/:gameId/wait-players"
-              component={WaitPlayersPage}
-            />
-            <Route
-              exact
-              path="/lobby/:gameId/questions/:questionId/score"
-              component={ScorePage}
-            />
-            <Route
-              exact
-              path="/lobby/:gameId/total-score"
-              component={TotalScoresPage}
-            />
+            <Route exact path="/lobby/:gameId/nickname" component={AddNicknamePage} />
+            <Route exact path="/lobby/:gameId/wait-players" component={WaitPlayersPage} />
+            <Route exact path="/lobby/:gameId/questions/:questionId/score" component={ScorePage} />
+            <Route exact path="/lobby/:gameId/total-score" component={TotalScoresPage} />
           </main>
         </div>
       )}
