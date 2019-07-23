@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const animalsList = require('./animalsList');
+const questionsList = require('./questionsList');
 const SCREENS = require('./screensEnum');
 
 admin.initializeApp(functions.config().firebase);
@@ -10,6 +11,7 @@ const updateVoteCount = snapshot => {
   return snapshot.after.ref.parent.child('voteCount').set(length);
 }
 
+// [Update Players Score]
 exports.updatePlayersScore = functions.database.ref('/games/{gameId}/currentScreen').onUpdate(async (snapshot) => {
   const game = (await snapshot.after.ref.parent.once('value')).val();
 
@@ -33,14 +35,17 @@ exports.updatePlayersScore = functions.database.ref('/games/{gameId}/currentScre
   return snapshot.after.ref.parent.child('players').update(game.players);
 });
 
+// [Increment Fake Answer Vote Count]
 exports.incrementFakeAnswerVoteCount = functions.database
   .ref('/games/{gameId}/questions/{questionId}/fakeAnswers/{fakeAnswerId}/votedBy')
   .onWrite(updateVoteCount);
 
+// [Increment Correct Answer Vote Count]
 exports.incrementCorrectAnswerVoteCount = functions.database
   .ref('/games/{gameId}/questions/{questionId}/answer/votedBy')
   .onWrite(updateVoteCount);
 
+// [Assigns random animal to players]
 exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{playerId}').onCreate(snapshot => {
   const data = snapshot.val();
 
@@ -84,6 +89,11 @@ exports.addAnimalToPlayer = functions.database.ref('/games/{gameId}/players/{pla
   });
 });
 
+// [Adds array of animals to a new created game]
 exports.populateGameWithAnimals = functions.database.ref('/games/{gameId}').onCreate(snapshot => {
   return snapshot.ref.child('/animals').set(animalsList);
+});
+
+exports.populateGameWithQuestions = functions.database.ref('/games/{gameId}').onCreate(snapshot => {
+  return snapshot.ref.child('/questions').set(questionsList);
 });
