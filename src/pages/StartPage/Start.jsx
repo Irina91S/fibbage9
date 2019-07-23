@@ -3,7 +3,6 @@ import anime from 'animejs';
 import { databaseRefs } from './../../lib/refs';
 import { getToupleFromSnapshot } from './../../lib/firebaseUtils';
 import { InsertPincodeForm, Rocket, Moon } from './components';
-
 const { games } = databaseRefs;
 
 class Start extends React.Component {
