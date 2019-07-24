@@ -11,3 +11,4 @@ lib/iconstats.json
 yalc.lock
 .vscode
 .env
+build
