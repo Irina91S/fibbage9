@@ -9,7 +9,9 @@ const Card = ({ className, disabled, type = 'basic', hasBg, children, ...rest })
   useEffect(() => {
     if (hasBg && ref.current) {
       setTimeout(() => {
-        setBgColor(ref.current.style.color);
+        if (ref.current) {
+          setBgColor(ref.current.style.color);
+        }
       }, 200);
     }
   }, []);
