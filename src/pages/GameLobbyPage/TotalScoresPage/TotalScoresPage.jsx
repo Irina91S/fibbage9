@@ -43,8 +43,7 @@ class TotalScorePage extends Component {
         const color = player.animal ? player.animal.color : '';
 
         const style = {
-          color: color,
-          border: `2px solid ${color}`
+          color: color
         };
 
         return (

@@ -124,8 +124,7 @@ class WaitPlayersPage extends Component {
       const color = data.animal ? data.animal.color : '';
 
       const style = {
-        color: color,
-        border: isCurrentPlayer ? `2px solid ${color}` : ''
+        color: color
       };
       return (
         <div key={key} className="team o-layout--stretch u-padding-small u-margin-bottom-small">
