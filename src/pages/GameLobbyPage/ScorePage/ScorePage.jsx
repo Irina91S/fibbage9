@@ -30,10 +30,10 @@ class ScorePage extends Component {
     this.gameRef.child('/currentScreen').on('value', snapshot => {
       const { history } = this.props;
       if (snapshot.val()) {
-        const { screenId, route } = snapshot.val();
-        if (screenId === screensEnum.ANSWER) {
+        const { route } = snapshot.val();
+        // if (screenId === screensEnum.ANSWER) {
           history.push(route);
-        }
+        // }
       }
     });
 
