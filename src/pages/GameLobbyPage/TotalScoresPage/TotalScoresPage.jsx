@@ -182,7 +182,7 @@ class TotalScorePage extends Component {
     const { sortedPlayers } = this.state;
     return (
       <div>
-        <button onClick={this.redirectToHomePage}>Back Home</button>
+        <div className="start-new-game" onClick={this.redirectToHomePage}>Start new game</div>
         {this.renderListOfPlayers()}
       </div>
     );

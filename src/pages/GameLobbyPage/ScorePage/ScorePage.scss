@@ -29,7 +29,7 @@
   }
 
   .title {
-    font-size: 1.5em;
+    font-size: 14px;
     margin-bottom: 16px;
     animation: fadeInLeftBig 1s;
   }
@@ -51,13 +51,13 @@
 
     .team-name {
       color: $color-main;
-      font-size: 2em;
+      font-size: 12px;
       font-weight: $global-weight-bold;
     }
 
     .score {
       position: relative;
-      font-size: 1.5em;
+      font-size: 12px;
       span {
         font-weight: $global-weight-bold;
         color: $color-main;
