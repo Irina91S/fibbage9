@@ -20,14 +20,6 @@ class TotalScorePage extends Component {
     sortedPlayers: []
   };
 
-  shouldTemperScore = (player, playerToTemperAgainst) => {
-    if (player.totalScore === playerToTemperAgainst.totalScore) {
-      return true;
-    }
-
-    return false;
-  }
-
   getPlayersInfo = players => {
     return players.map(el => el[1]);
   };
@@ -49,19 +41,6 @@ class TotalScorePage extends Component {
       .map((player, index) => {
         const isCurrentPlayer = playerName === player.nickname;
         const color = player.animal ? player.animal.color : '';
-        let score = player.totalScore;
-
-        if (index === 1) {
-          if (this.shouldTemperScore(player, player[0])) {
-            score -= 10;
-          }
-        }
-
-        if (index === 2){
-          if (this.shouldTemperScore(player, player[1])) {
-            score -=10;
-          }
-        }
 
         const style = {
           color: color
@@ -80,7 +59,7 @@ class TotalScorePage extends Component {
                       {player.nickname}
                     </div>
                     <div className="u-h5">
-                      SCORE: {score}
+                      SCORE: {player.totalScore}
                     </div>
                   </div>
 
