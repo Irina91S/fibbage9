@@ -10,7 +10,7 @@ import { Card, Animal } from '../../../shared';
 
 import beerSvg from '../../../shared/assets/svg/beer.svg';
 
-const { fakeAnswers, question, players } = databaseRefs;
+const { fakeAnswers, question, players, game, lobby } = databaseRefs;
 
 class AnswerResultsPage extends Component {
   fakeAnswersRef = [];
@@ -32,6 +32,15 @@ class AnswerResultsPage extends Component {
     this.fakeAnswersRef = fakeAnswers(id, questionId);
     this.questionRef = question(id, questionId);
     this.playersRef = players(id);
+    this.gameRef = game(id);
+
+    this.gameRef.child('/currentScreen').on('value', snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        history.push(route);
+      }
+    });
 
     this.fakeAnswersRef.on('value', snapshot => {
       const fakeAnswers = getToupleFromSnapshot(snapshot.val());
@@ -74,6 +83,11 @@ class AnswerResultsPage extends Component {
 
     if (this.playersRef) {
       this.playersRef.off();
+    }
+
+    if (this.gameRef) {
+      this.gameRef.off();
+      this.gameRef.child('/currentScreen').off();
     }
   }
 

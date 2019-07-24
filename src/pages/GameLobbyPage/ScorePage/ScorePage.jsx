@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { databaseRefs } from '../../../lib/refs';
-import screensEnum from '../../../lib/screensEnum';
 
 import piechartSvg from '../../../shared/assets/svg/piechart.svg';
 
@@ -31,9 +30,7 @@ class ScorePage extends Component {
       const { history } = this.props;
       if (snapshot.val()) {
         const { route } = snapshot.val();
-        // if (screenId === screensEnum.ANSWER) {
-          history.push(route);
-        // }
+        history.push(route);
       }
     });
 
@@ -64,7 +61,7 @@ class ScorePage extends Component {
     return this.sortPlayersByScore(playersData);
   };
 
-  getTeamAnimal = () => {};
+  getTeamAnimal = () => { };
 
   render() {
     return (
