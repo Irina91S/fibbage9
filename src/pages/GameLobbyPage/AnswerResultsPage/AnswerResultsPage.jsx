@@ -147,7 +147,7 @@ class AnswerResultsPage extends Component {
 
     return (
       <div className="answer-results">
-        <img src={beerSvg} className="beer" />
+        <img src={beerSvg} className="beer" alt="berr"/>
         <div className="o-layout--stretch u-margin-bottom-small" style={{ minHeight: 50 }}>
           <Card type="success" className="correct-answer u-weight-bold u-margin-right-tiny">
             {correctAnswer.value}
@@ -171,9 +171,17 @@ class AnswerResultsPage extends Component {
             })}
           </Card>
         </div>
-        {fakeAnswers.map(answer => {
+        {fakeAnswers
+          .filter(answer => {
+            if (!answer[1].value) return;
+
+            return answer;
+          })
+          .map(answer => {
           const [key, data] = answer;
           const teamStyle = this.getAnimalByTeam(data.authorTeam);
+
+          if (!data.value) return;
 
           return (
             <Card

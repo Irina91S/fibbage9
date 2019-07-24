@@ -12,21 +12,21 @@ class SplashScreen extends React.Component {
           targets: '.container',
           height: [0, '100vh'],
           easing: 'easeOutExpo',
-          duration: 1200
+          duration: 800
         })
         .add({
           targets: '.info',
           translateY: [30, 0],
           opacity: [0, 1],
           easing: 'easeOutExpo',
-          duration: 1500
+          duration: 1100
         })
         .add({
           targets: '.letter',
           translateX: [40, 0],
           opacity: [0, 1],
           easing: 'easeOutExpo',
-          duration: 1300,
+          duration: 900,
           delay: function(el, i) {
             return 400 + 30 * i;
           }
@@ -45,7 +45,7 @@ class SplashScreen extends React.Component {
           targets: '.container',
           opacity: [1, 0],
           easing: 'easeOutExpo',
-          duration: 1500
+          duration: 900
         }).complete = () => {
         this.props.onComplete();
       };
