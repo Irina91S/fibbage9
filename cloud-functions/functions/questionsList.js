@@ -1,51 +1,51 @@
 const questionsList = [
   {
     answer: {
-      value: 'raspuns',
+      value: 'brown cows',
     },
     index: 0,
-    question: 'intrebarea',
-    score: 50
+    question: '7% of American adults believe that chocolate milk comes from .......',
+    score: 100
   },
   {
     answer: {
-      value: 'raspuns',
+      value: 'swimming pools',
     },
-    index: 0,
-    question: 'intrebarea',
-    score: 50
+    index: 1,
+    question: 'During your lifetime, you will produce enough saliva to fill two ........',
+    score: 100
   },
   {
     answer: {
-      value: 'raspuns',
+      value: 'milk',
     },
-    index: 0,
-    question: 'intrebarea',
-    score: 50
+    index: 2,
+    question: 'The top six foods that make you fart are beans, corn, bell peppers, cauliflower, cabbage and ............',
+    score: 100
   },
   {
     answer: {
-      value: 'raspuns',
+      value: 'guinea pig',
     },
-    index: 0,
-    question: 'intrebarea',
-    score: 50
+    index: 3,
+    question: 'In Switzerland it is illegal to own just one .........',
+    score: 100
   },
   {
     answer: {
-      value: 'raspuns',
+      value: 'fridge',
     },
-    index: 0,
-    question: 'intrebarea',
-    score: 50
+    index: 4,
+    question: '29th May is officially “Put a Pillow on Your ........ Day',
+    score: 100
   },
   {
     answer: {
-      value: 'raspuns',
+      value: 'a Monday',
     },
-    index: 0,
-    question: 'intrebarea',
-    score: 50
+    index: 5,
+    question: 'Heart attacks are more likely to happen on .......',
+    score: 100
   }
 ];
 
