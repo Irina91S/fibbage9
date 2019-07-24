@@ -1,30 +1,67 @@
-$spacing-unit: 6px;
+@import 'settings.colors.scss';
+@import 'settings.global.scss';
 
-.card.cancer {
-  display: flex;
-  align-items: center; 
-  justify-content: space-between;
+@keyframes fadeInLeftBig {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, 0, 0);
+  }
 
-  .card--left {
-    text-align: left;
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-.cancer-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.partial-score-page {
+  margin: 0 auto;
+  bottom: 24px;
 
-.grid-item {
-  display: inline-flex;
-  width: calc(50% - #{$spacing-unit});
-  
-  &:nth-child(odd) {
-    margin-right: $spacing-unit;
+  .score-img {
+    position: fixed;
+    width: 25%;
+    bottom: 10px;
+    right: 10px;
+    z-index: 0;
+    opacity: 0.8;
   }
 
-  &:nth-child(even) {
-    margin-left: $spacing-unit;
+  .title {
+    font-size: 1.5em;
+    margin-bottom: 16px;
+    animation: fadeInLeftBig 1s;
+  }
+
+  .team-card {
+    background-color: white;
+    padding: 16px 32px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    animation: fadeInLeftBig 2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+
+    .animal-svg {
+      height: 10vh;
+      width: 120px;
+    }
+
+    .team-name {
+      color: $color-main;
+      font-size: 2em;
+      font-weight: $global-weight-bold;
+    }
+
+    .score {
+      position: relative;
+      font-size: 1.5em;
+      span {
+        font-weight: $global-weight-bold;
+        color: $color-main;
+      }
+    }
   }
 }

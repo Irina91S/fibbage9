@@ -31,7 +31,8 @@ function App(props) {
     setGrayPage(
       props.location.pathname.endsWith('results') ||
         props.location.pathname.endsWith('wait-players') ||
-        props.location.pathname.endsWith('pick-answer')
+        props.location.pathname.endsWith('pick-answer') ||
+        props.location.pathname.endsWith('score')
     );
 
     // Each time the route changes, run this staggering animation

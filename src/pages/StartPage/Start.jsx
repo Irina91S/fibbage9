@@ -32,7 +32,7 @@ class Start extends React.Component {
     const { activeGames } = this.state;
 
     if (!pincode || pincode.toString().trim().length === 0) {
-      actions.setFieldError('pincode', () => <span>Really?... &#x1F611;&#x1F611; </span>);
+      actions.setFieldError('pincode', () => <span>Really?... <span role="img" aria-label="emoji">&#x1F611;&#x1F611;</span></span>);
 
       return;
     }

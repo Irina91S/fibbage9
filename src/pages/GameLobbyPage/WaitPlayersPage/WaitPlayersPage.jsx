@@ -159,7 +159,7 @@ class WaitPlayersPage extends Component {
             className="player u-margin-vertical-small u-weight-bold u-2/3"
             style={{ opacity: 0.4 }}
           >
-            Not yet... &#128542;&#128542;
+            Not yet... <span role="img" aria-label="emojis">&#128542;&#128542;</span>
           </Card>
         </div>
       );
