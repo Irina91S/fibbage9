@@ -185,6 +185,7 @@ class AnswerResultsPage extends Component {
 
             return answer;
           })
+          .sort((a, b) => b[1].voteCount - a[1].voteCount)
           .map(answer => {
             const [key, data] = answer;
             const teamStyle = this.getAnimalByTeam(data.authorTeam);
@@ -199,11 +200,12 @@ class AnswerResultsPage extends Component {
                 style={{ color: teamStyle.color }}
               >
                 <div className="fake-answer">
+                  <div className="answer">{data.value}</div>
+
                   <div className="team-name u-weight-bold">
-                    {this.getTeamNameById(data.authorTeam)}
+                    Added by: {this.getTeamNameById(data.authorTeam)}
                   </div>
 
-                  <div className="answer">{data.value}</div>
                   <div className="votes">
                     Votes: {data.voteCount} {data.votedBy && ' ( '}
                     {data.votedBy &&
