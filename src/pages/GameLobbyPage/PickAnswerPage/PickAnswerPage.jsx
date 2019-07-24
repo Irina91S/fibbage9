@@ -82,12 +82,6 @@ class PickAnswerPage extends Component {
       animal: { animal, color }
     } = playerInfo;
 
-    const {
-      match: {
-        params: { gameId, questionId }
-      }
-    } = this.props;
-
     this.setCorrectAnswer(playerId, playerName, animal, color);
   };
 
@@ -104,13 +98,14 @@ class PickAnswerPage extends Component {
 
   shuffleAnswers = (fakeAnswers, truth) => {
     const currentPlayer = useCurrentPlayer();
-    fakeAnswers = fakeAnswers.filter(answer => answer[1].authorTeam !== currentPlayer.playerId);
+    console.log('all fake answers: ', fakeAnswers)
+    const filteredFakeAnswers = fakeAnswers.filter(answer => answer[1].authorTeam !== currentPlayer.playerId);
 
-    const allAnswers = [...fakeAnswers, truth];
-
+    const allAnswers = [...filteredFakeAnswers, truth];
+    console.log('all answers displayed: ', allAnswers)
     const sorted = allAnswers.sort((a, b) => {
-      const firstValue = a.value ? a.value.toLowerCase() : a[1].value;
-      const secondValue = b.value ? b.value.toLowerCase() : b[1].value;
+      const firstValue = a.value ? a.value.toLowerCase() : a[1].value.toLowerCase();
+      const secondValue = b.value ? b.value.toLowerCase() : b[1].value.toLowerCase();
 
       if (firstValue < secondValue) {
         return -1;
@@ -119,6 +114,7 @@ class PickAnswerPage extends Component {
       }
       return 0;
     });
+    console.log('sorted answers: ', sorted);
     return sorted;
   };
 
@@ -128,7 +124,7 @@ class PickAnswerPage extends Component {
 
     callback();
 
-    allAnswers.forEach((answer, i) => (answer.selected = i == index));
+    allAnswers.forEach((answer, i) => (answer.selected = i === index));
     this.setState({ allAnswers });
   };
 
