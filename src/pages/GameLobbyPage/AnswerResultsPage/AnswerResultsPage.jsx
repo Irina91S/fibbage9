@@ -64,9 +64,17 @@ class AnswerResultsPage extends Component {
   }
 
   componentWillUnmount() {
-    this.fakeAnswersRef.off();
-    this.questionRef.off();
-    this.playersRef.off();
+    if (this.fakeAnswersRef) {
+      this.fakeAnswersRef.off();
+    }
+
+    if (this.questionRef) {
+      this.questionRef.off();
+    }
+
+    if (this.playersRef) {
+      this.playersRef.off();
+    }
   }
 
   componentDidUpdate() {
@@ -83,8 +91,8 @@ class AnswerResultsPage extends Component {
   getVotes = votedBy => {
     return votedBy
       ? getToupleFromSnapshot(votedBy).map((element, key) => (
-          <span key={key}>{`${element[1]}  `}</span>
-        ))
+        <span key={key}>{`${element[1]}  `}</span>
+      ))
       : '';
   };
 
@@ -147,7 +155,7 @@ class AnswerResultsPage extends Component {
 
     return (
       <div className="answer-results">
-        <img src={beerSvg} className="beer" alt="berr"/>
+        <img src={beerSvg} className="beer" alt="berr" />
         <div className="o-layout--stretch u-margin-bottom-small" style={{ minHeight: 50 }}>
           <Card type="success" className="correct-answer u-weight-bold u-margin-right-tiny">
             {correctAnswer.value}
@@ -178,42 +186,42 @@ class AnswerResultsPage extends Component {
             return answer;
           })
           .map(answer => {
-          const [key, data] = answer;
-          const teamStyle = this.getAnimalByTeam(data.authorTeam);
+            const [key, data] = answer;
+            const teamStyle = this.getAnimalByTeam(data.authorTeam);
 
-          if (!data.value) return;
+            if (!data.value) return;
 
-          return (
-            <Card
-              hasBg={answer[1].authorTeam == playerId}
-              key={key}
-              className="anime o-layout--flex u-margin-bottom-small"
-              style={{ color: teamStyle.color }}
-            >
-              <div className="fake-answer">
-                <div className="team-name u-weight-bold">
-                  {this.getTeamNameById(data.authorTeam)}
+            return (
+              <Card
+                hasBg={answer[1].authorTeam == playerId}
+                key={key}
+                className="anime o-layout--flex u-margin-bottom-small"
+                style={{ color: teamStyle.color }}
+              >
+                <div className="fake-answer">
+                  <div className="team-name u-weight-bold">
+                    {this.getTeamNameById(data.authorTeam)}
+                  </div>
+
+                  <div className="answer">{data.value}</div>
+                  <div className="votes">
+                    Votes: {data.voteCount} {data.votedBy && ' ( '}
+                    {data.votedBy &&
+                      Object.keys(data.votedBy).map(key => (
+                        <Animal
+                          key={key}
+                          animal={data.votedBy[key].animal}
+                          className="u-margin-right-tiny"
+                        />
+                      ))}{' '}
+                    {data.votedBy && ' )'}
+                  </div>
                 </div>
-
-                <div className="answer">{data.value}</div>
-                <div className="votes">
-                  Votes: {data.voteCount} {data.votedBy && ' ( '}
-                  {data.votedBy &&
-                    Object.keys(data.votedBy).map(key => (
-                      <Animal
-                        key={key}
-                        animal={data.votedBy[key].animal}
-                        className="u-margin-right-tiny"
-                      />
-                    ))}{' '}
-                  {data.votedBy && ' )'}
-                </div>
-              </div>
-              <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
-              <div className="bg"></div>
-            </Card>
-          );
-        })}
+                <Animal animal={teamStyle.animal} style={{ height: 72, width: 72 }} />
+                <div className="bg"></div>
+              </Card>
+            );
+          })}
       </div>
     );
   }

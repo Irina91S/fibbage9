@@ -47,6 +47,10 @@ class AddNickname extends Component {
     if (this.playersRef) {
       this.playersRef.off();
     }
+
+    if (this.playerRef) {
+      this.playerRef.off();
+    }
   }
 
   setNickname = async (newValues, actions) => {
@@ -59,8 +63,6 @@ class AddNickname extends Component {
     } = this.props;
     const { playersLength, limit } = this.state;
     this.playersRef = databaseRefs.players(gameId);
-
-    console.log(newValues)
 
     if (!newValues.nickname || newValues.nickname.trim().length === 0) {
       actions.setFieldError(

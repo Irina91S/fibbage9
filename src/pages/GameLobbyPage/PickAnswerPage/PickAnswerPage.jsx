@@ -239,6 +239,10 @@ class PickAnswerPage extends Component {
       this.lobbyRef.child('/fakeAnswers/votedBy/name').off();
       this.lobbyRef.child('/fakeAnswers/votedBy/animal').off();
     }
+
+    if (this.currentScreenRef) {
+      this.currentScreenRef.off();
+    }
   }
 
   render() {

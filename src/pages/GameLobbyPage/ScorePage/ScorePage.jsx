@@ -144,7 +144,6 @@ class ScorePage extends Component {
   }
 
   render() {
-    const { sortedPlayers } = this.state;
     return (
       <div>
         {this.renderListOfPlayers()}
