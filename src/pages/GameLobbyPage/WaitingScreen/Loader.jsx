@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import Owl from "../../../shared/assets/AnimalsIllustrations/Owl";
-import Panther from "../../../shared/assets/AnimalsIllustrations/Panther";
-import Llama from "../../../shared/assets/AnimalsIllustrations/Llama";
-import Lion from "../../../shared/assets/AnimalsIllustrations/Lion";
-import Fish from "../../../shared/assets/AnimalsIllustrations/Fish";
-import Sloth from "../../../shared/assets/AnimalsIllustrations/Sloth";
+import Owl from '../../../shared/assets/AnimalsIllustrations/Owl';
+import Panther from '../../../shared/assets/AnimalsIllustrations/Panther';
+import Llama from '../../../shared/assets/AnimalsIllustrations/Llama';
+import Lion from '../../../shared/assets/AnimalsIllustrations/Lion';
+import Fish from '../../../shared/assets/AnimalsIllustrations/Fish';
+import Bear from '../../../shared/assets/AnimalsIllustrations/Bear';
 
-import "./WaitingScreen.scss";
+import './WaitingScreen.scss';
 
 const Loader = () => {
   return (
@@ -28,8 +28,8 @@ const Loader = () => {
           <div className="animalWaitingScreen fish">
             <Fish />
           </div>
-          <div className="animalWaitingScreen sloth">
-            <Sloth />
+          <div className="animalWaitingScreen bear">
+            <Bear />
           </div>
           <div className="animalWaitingScreen lion">
             <Lion />
@@ -37,8 +37,7 @@ const Loader = () => {
         </div>
       </div>
       <div className="info">
-        Please be kind and wait, our hammster is working hard so we can process
-        your bulshit
+        Please be kind and wait, our 🐹 hamster 🐹 is working hard so we can process your bullshit
       </div>
     </div>
   );
