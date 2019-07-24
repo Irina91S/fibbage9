@@ -1,7 +1,7 @@
 import React from "react";
 
-const SvgFish = props => (
-  <svg height="100%" width="100%"  viewBox="0 0 100 500" preserveAspectRatio="xMinYMin"  {...props} name="fish">
+const SvgDeadFish = props => (
+  <svg height="100%" width="100%"  viewBox="0 0 512.00047 512" preserveAspectRatio="xMinYMin"  {...props} name="fish">
     <path
       d="M302.559 46.543s46.543-23.273 93.086-23.273C465.457 23.27 512 69.813 512 139.629c0 46.633-46.543 93.086-46.543 93.086zm0 0"
       fill="#004ed6"
@@ -136,4 +136,4 @@ const SvgFish = props => (
   </svg>
 );
 
-export default SvgFish;
+export default SvgDeadFish;

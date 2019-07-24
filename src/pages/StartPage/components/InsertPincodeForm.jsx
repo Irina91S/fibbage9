@@ -1,13 +1,13 @@
-import React from 'react';
-import Ink from 'react-ink';
-import { Formik, Form, ErrorMessage } from 'formik';
-
-import { Input } from '../../../shared';
+import React from "react";
+import Ink from "react-ink";
+import { Formik, Form, ErrorMessage } from "formik";
+import Duck from "../../../shared/assets/AnimalsIllustrations/Duck";
+import { Input } from "../../../shared";
 
 const InsertPincodeForm = ({ onSubmit }) => {
   return (
     <Formik
-      initialValues={{ pincode: '' }}
+      initialValues={{ pincode: "" }}
       onSubmit={onSubmit}
       render={({ errors }) => (
         <Form>
@@ -21,7 +21,11 @@ const InsertPincodeForm = ({ onSubmit }) => {
             placeholder="PINCODE"
             errors={errors}
           />
-          <ErrorMessage component="span" name="pincode" render={Data =>  <Data />} />
+          <ErrorMessage
+            component="span"
+            name="pincode"
+            render={Data => <Data />}
+          />
           <button type="submit" className="page-transition-elem">
             JOIN GAME
             <Ink />
