@@ -3,14 +3,16 @@ import './Card.scss';
 
 // basic or success cards
 const Card = ({ className, disabled, type = 'basic', hasBg, children, ...rest }) => {
-  const [ bgColor, setBgColor ] = useState(null);
+  const [bgColor, setBgColor] = useState(null);
   const ref = useRef(null);
 
   useEffect(() => {
     if (hasBg && ref.current) {
       setTimeout(() => {
-        setBgColor(ref.current.style.color);
-      }, 100);
+        if (ref.current) {
+          setBgColor(ref.current.style.color);
+        }
+      }, 200);
     }
   }, []);
 
@@ -18,14 +20,12 @@ const Card = ({ className, disabled, type = 'basic', hasBg, children, ...rest })
     <React.Fragment>
       <div
         ref={ref}
-        className={`card o-box--small ${type} ${
-          disabled ? 'disabled' : ''
-        }  ${className ? className : ''}`}
+        className={`card o-box--small ${type} ${disabled ? 'disabled' : ''}  ${
+          className ? className : ''
+        }`}
         {...rest}
       >
-        {hasBg && (
-          <div className="card-bg" style={{ backgroundColor: bgColor }} />
-        )}
+        {hasBg && <div className="card-bg" style={{ backgroundColor: bgColor }} />}
         {children}
       </div>
     </React.Fragment>

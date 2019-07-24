@@ -1,3 +1,5 @@
+@import 'settings.colors.scss';
+
 $spacing-unit: 6px;
 
 .card.cancer {
@@ -26,5 +28,18 @@ $spacing-unit: 6px;
 
   &:nth-child(even) {
     margin-left: $spacing-unit;
+  }
+}
+
+.start-new-game {
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $color-main;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
   }
 }

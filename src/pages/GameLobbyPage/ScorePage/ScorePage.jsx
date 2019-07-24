@@ -1,103 +1,22 @@
-import React, { Component, Fragment } from "react";
-import anime from 'animejs';
-import { databaseRefs } from "../../../lib/refs";
-import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
-import Animal from '../../../shared/Animal/Animal';
-import Card from '../../../shared/Card/Card';
+import React, { Component } from 'react';
+import { databaseRefs } from '../../../lib/refs';
+import screensEnum from '../../../lib/screensEnum';
 
-import FirstPlaceCrown from '../../../shared/assets/svg/first-place.svg';
-import SecondPlaceCrown from '../../../shared/assets/svg/second-place.svg';
+import piechartSvg from '../../../shared/assets/svg/piechart.svg';
 
 import './ScorePage.scss';
 
-const { players } = databaseRefs;
+import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
+import Animal from '../../../shared/Animal/Animal';
+// import FloatBaloon from '../../../components/FloatBaloon/FloatBaloon';
 
-const dimensions = { height: 72, width: 72 };
+const { game } = databaseRefs;
 
 class ScorePage extends Component {
+  gameRef = '';
+
   state = {
-    players: [],
-    sortedPlayers: []
-  };
-
-  getPlayersInfo = players => {
-    return players.map(el => el[1]);
-  };
-
-  sortPlayersByScore = players =>
-    players.sort((player1, player2) => player2.totalScore - player1.totalScore);
-
-  renderListOfPlayers = () => {
-    const { players } = this.state;
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
-    const { playerName } = playerInfo;
-
-    if (!players || players.length === 0) {
-      return [];
-    }
-
-    return players
-      .sort((player1, player2) => player2.totalScore - player1.totalScore)
-      .map((player, index) => {
-        const isCurrentPlayer = playerName === player.nickname;
-        const color = player.animal ? player.animal.color : '';
-
-        const style = {
-          color: color
-        };
-
-        return (
-          <Fragment key={player.animal.animal}>
-            {index <= 1 &&
-              <div className="winner o-layout--center o-layout--stretch u-1/1">
-                {index === 0 && <img src={FirstPlaceCrown} alt="first-place" />}
-                {index === 1 && <img src={SecondPlaceCrown} alt="second-place" />}
-
-                <Card hasBg={isCurrentPlayer} className="u-1/1 u-margin-bottom-small u-1/1 u-weight-bold card cancer" style={style}>
-                  <div className="card--left">
-                    <div className="u-h4 u-margin-bottom-small">
-                      {player.nickname}
-                    </div>
-                    <div className="u-h5">
-                      SCORE: {player.totalScore}
-                    </div>
-                  </div>
-
-                  <div className="card--right">
-                    <Animal
-                      className="u-margin-right-small"
-                      style={dimensions}
-                      animal={player.animal.animal}
-                    />
-                  </div>
-                </Card>
-
-                {index === 1 && <h1 className="u-h4 u-margin-top-small u-color-main">Better luck next time</h1>}
-              </div>
-            }
-            {
-              index > 1 &&
-              <div className="grid-item loser">
-                <Card hasBg={isCurrentPlayer} className="u-1/1 u-margin-bottom-small cancer-container" style={{...style, padding: '6px'}}>
-                  <div className="u-h6 u-margin-bottom-small">
-                    {player.nickname}
-                  </div>
-
-                  <Animal
-                    className="u-margin-bottom-small"
-                    style={dimensions}
-                    animal={player.animal.animal}
-                  />
-
-                  <div className="u-h5">
-                    SCORE: {player.totalScore}
-                  </div>
-                </Card>
-              </div>
-            }
-          </Fragment>
-        );
-      });
+    players: []
   };
 
   componentDidMount() {
@@ -106,47 +25,67 @@ class ScorePage extends Component {
         params: { gameId }
       }
     } = this.props;
-    const playersRef = players(gameId);
+    this.gameRef = game(gameId);
 
-    playersRef.on("value", snapshot => {
-      const playersSnapshot = snapshot.val();
-      const playersInfo = this.getPlayersInfo(
-        getToupleFromSnapshot(playersSnapshot)
-      );
-      const sortedPlayers = this.sortPlayersByScore(playersInfo);
-      this.setState({ players: playersInfo, sortedPlayers }, () => {
-        anime({
-          targets: '.winner',
-          translateX: [-1000, 0],
-          opacity: [0, 1],
-          delay: anime.stagger(100),
-          easing: 'easeInOutQuint',
-          duration: 400,
-        });
+    this.gameRef.child('/currentScreen').on('value', snapshot => {
+      const { history } = this.props;
+      if (snapshot.val()) {
+        const { route } = snapshot.val();
+        // if (screenId === screensEnum.ANSWER) {
+          history.push(route);
+        // }
+      }
+    });
 
-        anime({
-          display: 'inline-flex',
-          targets: '.loser',
-          translateY: [30, 0],
-          opacity: [0, 1],
-          delay: anime.stagger(100),
-          easing: 'easeInOutQuint',
-          duration: 800
+    this.gameRef.child('/players').on('value', snapshot => {
+      if (snapshot.val()) {
+        this.setState({
+          players: getToupleFromSnapshot(snapshot.val())
         });
-      });
+      }
     });
   }
 
   componentWillUnmount() {
-    if (this.playersRef) {
-      this.playersRef.off();
-    }
+    this.gameRef.off('value');
+    this.gameRef.child('/currentScreen').off('value');
+    this.gameRef.child('/players').off('value');
   }
+
+  sortPlayersByScore = players =>
+    players.sort((player1, player2) => player2.totalScore - player1.totalScore);
+
+  getPlayersInfo = () => {
+    const { players } = this.state;
+    const playersData = players.map(player => {
+      const [key, data] = player;
+      return data;
+    });
+    return this.sortPlayersByScore(playersData);
+  };
+
+  getTeamAnimal = () => {};
 
   render() {
     return (
-      <div>
-        {this.renderListOfPlayers()}
+      <div className="partial-score-page">
+        {/* <FloatBaloon style={{ top: '40%', right: '80%', width: '250px' }} className="up" /> */}
+        <img src={piechartSvg} className="score-img" alt="piechart" />
+        <div className="title">Scores so far</div>
+        {this.getPlayersInfo().map((el, i) => (
+          <div key={i} className="team-card">
+            <Animal animal={el.animal.animal} className="animal-svg" />
+            <div className="team-info">
+              <div style={{ color: el.animal.color }} className="team-name">
+                {el.nickname}
+              </div>
+              <div className="score">
+                <span style={{ color: el.animal.color }}>{`${el.totalScore}  `}</span>
+                points
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }

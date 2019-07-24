@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
-import { databaseRefs } from './../../../lib/refs';
-import { Formik, Form, Field } from 'formik';
-import WaitingScreen from '../WaitingScreen/WaitingScreen';
+import React, { Component } from "react";
+import { databaseRefs } from "./../../../lib/refs";
+import { Formik, Form, Field } from "formik";
+import WaitingScreen from "../WaitingScreen/WaitingScreen";
 
-import { Question, Timer } from '../../../shared';
+import { Question, Timer } from "../../../shared";
 
 const { lobby, game } = databaseRefs;
 
 class AddAnswerPage extends Component {
-  questionRef = '';
-  gameRef = '';
+  questionRef = "";
+  gameRef = "";
   state = {
-    id: '',
-    questionId: '',
+    id: "",
+    questionId: "",
     fakeAnswers: {},
-    answer: '',
-    question: '',
+    answer: "",
+    question: "",
     isCorrectAnswer: false,
-    correctAnswer: '',
+    correctAnswer: "",
     isSubmitted: false,
-    timerEndDate: ''
+    timerEndDate: "",
+    emptyAnswer: false
   };
 
   componentDidMount() {
@@ -29,7 +30,7 @@ class AddAnswerPage extends Component {
     this.questionRef = lobby(gameId, questionId);
     this.gameRef = game(gameId);
 
-    this.questionRef.on('value', snapshot => {
+    this.questionRef.on("value", snapshot => {
       const {
         question,
         answer: { value }
@@ -38,7 +39,7 @@ class AddAnswerPage extends Component {
       this.setState({ question, correctAnswer: value });
     });
 
-    this.gameRef.child('/currentScreen').on('value', snapshot => {
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
       const { history } = this.props;
       if (snapshot.val()) {
         const { route } = snapshot.val();
@@ -46,7 +47,7 @@ class AddAnswerPage extends Component {
       }
     });
 
-    this.gameRef.child('/timer/endTime').on('value', snapshot => {
+    this.gameRef.child("/timer/endTime").on("value", snapshot => {
       this.setState({ timerEndDate: snapshot.val() });
     });
   }
@@ -58,9 +59,9 @@ class AddAnswerPage extends Component {
 
     if (this.gameRef) {
       this.gameRef.off();
-      this.gameRef.child('/fakeAnswers').off();
-      this.gameRef.child('/currentScreen').off();
-      this.gameRef.child('/timer/endTime').off();
+      this.gameRef.child("/fakeAnswers").off();
+      this.gameRef.child("/currentScreen").off();
+      this.gameRef.child("/timer/endTime").off();
     }
   }
 
@@ -72,18 +73,23 @@ class AddAnswerPage extends Component {
       return;
     }
 
+    if (answer === "") {
+      this.setState({ emptyAnswer: true });
+      return;
+    }
+
     this.setState({ isSubmitted: true });
 
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
 
-    this.questionRef.child('/fakeAnswers').push({
+    this.questionRef.child("/fakeAnswers").push({
       authorTeam: playerInfo.playerId,
       value: answer,
       voteCount: 0,
       votedBy: {}
     });
 
-    this.gameRef.child('/currentScreen').on('value', snapshot => {
+    this.gameRef.child("/currentScreen").on("value", snapshot => {
       const { history } = this.props;
       if (snapshot.val()) {
         const { route } = snapshot.val();
@@ -93,11 +99,17 @@ class AddAnswerPage extends Component {
   };
 
   resetIsCorrectAnswer = () => {
-    this.setState({ isCorrectAnswer: false });
+    this.setState({ isCorrectAnswer: false, emptyAnswer: false });
   };
 
   render() {
-    const { question, isCorrectAnswer, isSubmitted, timerEndDate } = this.state;
+    const {
+      question,
+      isCorrectAnswer,
+      isSubmitted,
+      timerEndDate,
+      emptyAnswer
+    } = this.state;
     return (
       <div>
         {timerEndDate && (
@@ -109,7 +121,7 @@ class AddAnswerPage extends Component {
         <Question value={question} />
         <Formik
           initialValues={{
-            answer: ''
+            answer: ""
           }}
           onSubmit={this.handleAnswerSubmit}
           render={({ values, handleChange }) => (
@@ -127,15 +139,19 @@ class AddAnswerPage extends Component {
                 }}
               />
               {isCorrectAnswer ? (
-                <div>You entered the correct answer. Please enter a fake one</div>
+                <div>
+                  You entered the correct answer. Please enter a fake one
+                </div>
               ) : (
-                ''
+                ""
               )}
+              {emptyAnswer ? <div>Answer enter you must!</div> : ""}
               <button type="submit">I HOPE IT WORKS</button>
 
               <footer>
-                Answer your question, preferably with some bullshit answer to trick the other teams
-                into picking your bullshit and get points when they do it
+                Answer your question, preferably with some bullshit answer to
+                trick the other teams into picking your bullshit and get points
+                when they do it
               </footer>
             </Form>
           )}
