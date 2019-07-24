@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from "react";
-import anime from 'animejs';
+import anime from "animejs";
 import { databaseRefs } from "../../../lib/refs";
 import { getToupleFromSnapshot } from "../../../lib/firebaseUtils";
-import Animal from '../../../shared/Animal/Animal';
-import Card from '../../../shared/Card/Card';
+import Animal from "../../../shared/Animal/Animal";
+import Card from "../../../shared/Card/Card";
 
-import FirstPlaceCrown from '../../../shared/assets/svg/first-place.svg';
-import SecondPlaceCrown from '../../../shared/assets/svg/second-place.svg';
+import FirstPlaceCrown from "../../../shared/assets/svg/first-place.svg";
+import SecondPlaceCrown from "../../../shared/assets/svg/second-place.svg";
 
-import './TotalScoresPage.scss';
+import "./TotalScoresPage.scss";
 
 const { players } = databaseRefs;
 
@@ -26,7 +26,7 @@ class TotalScorePage extends Component {
     }
 
     return false;
-  }
+  };
 
   getPlayersInfo = players => {
     return players.map(el => el[1]);
@@ -37,7 +37,7 @@ class TotalScorePage extends Component {
 
   renderListOfPlayers = () => {
     const { players } = this.state;
-    const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+    const playerInfo = JSON.parse(localStorage.getItem("playerInfo"));
     const { playerName } = playerInfo;
 
     if (!players || players.length === 0) {
@@ -48,7 +48,7 @@ class TotalScorePage extends Component {
       .sort((player1, player2) => player2.totalScore - player1.totalScore)
       .map((player, index) => {
         const isCurrentPlayer = playerName === player.nickname;
-        const color = player.animal ? player.animal.color : '';
+        const color = player.animal ? player.animal.color : "";
         let score = player.totalScore;
 
         if (index === 1) {
@@ -57,9 +57,9 @@ class TotalScorePage extends Component {
           }
         }
 
-        if (index === 2){
+        if (index === 2) {
           if (this.shouldTemperScore(player, player[1])) {
-            score -=10;
+            score -= 10;
           }
         }
 
@@ -69,19 +69,23 @@ class TotalScorePage extends Component {
 
         return (
           <Fragment key={player.animal.animal}>
-            {index <= 1 &&
+            {index <= 1 && (
               <div className="winner o-layout--center o-layout--stretch u-1/1">
                 {index === 0 && <img src={FirstPlaceCrown} alt="first-place" />}
-                {index === 1 && <img src={SecondPlaceCrown} alt="second-place" />}
+                {index === 1 && (
+                  <img src={SecondPlaceCrown} alt="second-place" />
+                )}
 
-                <Card hasBg={isCurrentPlayer} className="u-1/1 u-margin-bottom-small u-1/1 u-weight-bold card cancer" style={style}>
+                <Card
+                  hasBg={isCurrentPlayer}
+                  className="u-1/1 u-margin-bottom-small u-1/1 u-weight-bold card cancer"
+                  style={style}
+                >
                   <div className="card--left">
                     <div className="u-h4 u-margin-bottom-small">
                       {player.nickname}
                     </div>
-                    <div className="u-h5">
-                      SCORE: {score}
-                    </div>
+                    <div className="u-h5">SCORE: {score}</div>
                   </div>
 
                   <div className="card--right">
@@ -93,13 +97,20 @@ class TotalScorePage extends Component {
                   </div>
                 </Card>
 
-                {index === 1 && <h1 className="u-h4 u-margin-top-small u-color-main">Better luck next time</h1>}
+                {index === 1 && (
+                  <h1 className="u-h4 u-margin-top-small u-color-main">
+                    Better luck next time
+                  </h1>
+                )}
               </div>
-            }
-            {
-              index > 1 &&
+            )}
+            {index > 1 && (
               <div className="grid-item loser">
-                <Card hasBg={isCurrentPlayer} className="u-1/1 u-margin-bottom-small cancer-container" style={{...style, padding: '6px'}}>
+                <Card
+                  hasBg={isCurrentPlayer}
+                  className="u-1/1 u-margin-bottom-small cancer-container"
+                  style={{ ...style, padding: "6px" }}
+                >
                   <div className="u-h6 u-margin-bottom-small">
                     {player.nickname}
                   </div>
@@ -110,15 +121,18 @@ class TotalScorePage extends Component {
                     animal={player.animal.animal}
                   />
 
-                  <div className="u-h5">
-                    SCORE: {player.totalScore}
-                  </div>
+                  <div className="u-h5">SCORE: {player.totalScore}</div>
                 </Card>
               </div>
-            }
+            )}
           </Fragment>
         );
       });
+  };
+
+  redirectToHomePage = () => {
+    const { history } = this.props;
+    history.push("/");
   };
 
   componentDidMount() {
@@ -137,21 +151,21 @@ class TotalScorePage extends Component {
       const sortedPlayers = this.sortPlayersByScore(playersInfo);
       this.setState({ players: playersInfo, sortedPlayers }, () => {
         anime({
-          targets: '.winner',
+          targets: ".winner",
           translateX: [-100, 0],
           opacity: [0, 1],
           delay: anime.stagger(100),
-          easing: 'easeInOutQuint',
-          duration: 800,
+          easing: "easeInOutQuint",
+          duration: 800
         });
 
         anime({
-          display: 'inline-flex',
-          targets: '.loser',
+          display: "inline-flex",
+          targets: ".loser",
           translateY: [30, 0],
           opacity: [0, 1],
           delay: anime.stagger(100),
-          easing: 'easeInOutQuint',
+          easing: "easeInOutQuint",
           duration: 800
         });
       });
@@ -168,6 +182,7 @@ class TotalScorePage extends Component {
     const { sortedPlayers } = this.state;
     return (
       <div>
+        <button onClick={this.redirectToHomePage}>Back Home</button>
         {this.renderListOfPlayers()}
       </div>
     );
