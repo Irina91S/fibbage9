@@ -85,7 +85,7 @@ const questionsList = [
     },
     index: 10,
     question: 'The Twitter bird actually has a name: .......',
-    score: 100
+    score: 200
   },
   {
     answer: {
@@ -109,7 +109,7 @@ const questionsList = [
     },
     index: 13,
     question: 'In 2011, more than 1 in 3 divorce filings in the U.S. contained the word: .......',
-    score: 100
+    score: 200
   },
   {
     answer: {
