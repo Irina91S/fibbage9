@@ -128,6 +128,7 @@ class AddAnswerPage extends Component {
             <Form>
               <label htmlFor="answer">Please add your answer:</label>
               <Field
+                autocomplete="off"
                 id="answer"
                 name="answer"
                 type="text"
@@ -143,8 +144,8 @@ class AddAnswerPage extends Component {
                   You entered the correct answer. Please enter a fake one
                 </div>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               {emptyAnswer ? <div>Answer enter you must!</div> : ""}
               <button type="submit">I HOPE IT WORKS</button>
 

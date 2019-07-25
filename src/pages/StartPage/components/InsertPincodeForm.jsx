@@ -15,6 +15,7 @@ const InsertPincodeForm = ({ onSubmit }) => {
             Enter a PINCODE
           </label>
           <Input
+            autocomplete="off"
             id="pincode"
             name="pincode"
             type="number"

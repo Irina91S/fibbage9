@@ -11,7 +11,7 @@ const Input = props => {
 
   return (
     <div className={`page-transition-elem input ${invalid && 'invalid'}`}>
-      <Field {...props} />
+      <Field autocomplete="off" {...props} />
       {invalid && (
         <SVG
           className="error"
@@ -24,14 +24,14 @@ const Input = props => {
               easing: 'easeInOutCubic',
               duration: 300,
               delay: anime.stagger(100),
-              begin: function() {
+              begin: function () {
                 const svg = document.querySelector('.cross');
                 if (!svg) return;
                 for (const child of svg.children) {
                   child.setAttribute('stroke', '#ab0927');
                 }
               },
-              complete: function() {
+              complete: function () {
                 const svg = document.querySelector('.cross');
                 if (!svg) return;
                 for (const child of svg.children) {

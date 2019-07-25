@@ -143,6 +143,7 @@ class AddNickname extends Component {
               Choose a nickname for your team
             </label>
             <Input
+              autocomplete="off"
               id="nickname"
               name="nickname"
               placeholder="NICKNAME"
