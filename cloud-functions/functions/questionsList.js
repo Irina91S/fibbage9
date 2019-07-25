@@ -132,7 +132,7 @@ const questionsList = [
       value: 'cat',
     },
     index: 16,
-    question: 'Ștefi owns only one ....... but she defineteley would like to have more.',
+    question: 'Ștefi owns only one ....... but she definitely would like to have more.',
     score: 200
   },
   {
