@@ -7,6 +7,7 @@ import './ScorePage.scss';
 
 import { getToupleFromSnapshot } from '../../../lib/firebaseUtils';
 import Animal from '../../../shared/Animal/Animal';
+import { useCurrentPlayer } from '../../../hooks';
 // import FloatBaloon from '../../../components/FloatBaloon/FloatBaloon';
 
 const { game } = databaseRefs;
@@ -56,14 +57,17 @@ class ScorePage extends Component {
     const { players } = this.state;
     const playersData = players.map(player => {
       const [key, data] = player;
+      data.id = key;
       return data;
     });
     return this.sortPlayersByScore(playersData);
   };
 
-  getTeamAnimal = () => { };
+  getTeamAnimal = () => {};
 
   render() {
+    const { playerId } = useCurrentPlayer();
+
     return (
       <div className="partial-score-page">
         {/* <FloatBaloon style={{ top: '40%', right: '80%', width: '250px' }} className="up" /> */}
@@ -81,6 +85,9 @@ class ScorePage extends Component {
                 points
               </div>
             </div>
+            {playerId == el.id && (
+              <div className="bg" style={{ backgroundColor: el.animal.color }} />
+            )}
           </div>
         ))}
       </div>
